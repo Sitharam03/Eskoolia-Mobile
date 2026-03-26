@@ -13,259 +13,324 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: 'Role Permission',
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeaderCard(),
-            const SizedBox(height: 16),
-            Expanded(child: _buildTreeCard()),
-          ],
-        ),
+      title: 'Assign Permission',
+      body: Column(
+        children: [
+          _buildHeader(context),
+          Expanded(child: _buildBody()),
+        ],
       ),
     );
   }
 
-  Widget _buildHeaderCard() {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Color(0xFFE5E7EB)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Wrap(
-          alignment: WrapAlignment.spaceBetween,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          runSpacing: 12,
-          spacing: 12,
-          children: [
-            Obx(() {
-              final roleName = controller.activeRoleName.value;
-              return Text(
-                'Assign Permission ${roleName != null ? '($roleName)' : ''}',
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF111827),
+  // ── Top card: role selector + save ──────────────────────────────────────
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Back button row
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () => Get.toNamed(AppRoutes.roles),
+                child: Row(
+                  children: [
+                    const Icon(Icons.arrow_back_ios_new, size: 16, color: Color(0xFF4F46E5)),
+                    const SizedBox(width: 4),
+                    Text('Back to Roles', style: GoogleFonts.inter(fontSize: 13, color: const Color(0xFF4F46E5), fontWeight: FontWeight.w500)),
+                  ],
                 ),
-              );
-            }),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                OutlinedButton.icon(
-                  onPressed: () => Get.toNamed(AppRoutes.roles),
-                  icon: const Icon(Icons.arrow_back, size: 16),
-                  label: const Text('Back To Role'),
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Obx(() => Container(
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Role dropdown + save
+          Obx(() => Row(
+                children: [
+                  // Role dropdown
+                  Expanded(
+                    child: Container(
+                      height: 48,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
+                        color: const Color(0xFFF9FAFB),
                         border: Border.all(color: const Color(0xFFE5E7EB)),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<int>(
+                          isExpanded: true,
                           value: controller.selectedRoleId.value,
-                          hint: const Text('Select Role'),
+                          hint: Text('Select Role', style: GoogleFonts.inter(fontSize: 14, color: const Color(0xFF9CA3AF))),
+                          icon: const Icon(Icons.keyboard_arrow_down, color: Color(0xFF6B7280)),
                           items: controller.roles.map((role) {
                             return DropdownMenuItem(
                               value: role.id,
-                              child: Text(role.name),
+                              child: Text(role.name, style: GoogleFonts.inter(fontSize: 14)),
                             );
                           }).toList(),
-                          onChanged: controller.isLoadingRoles.value || controller.isSaving.value 
-                              ? null 
-                              : controller.onRoleChanged,
+                          onChanged: controller.isLoadingRoles.value || controller.isSaving.value ? null : controller.onRoleChanged,
                         ),
                       ),
-                    )),
-                const SizedBox(width: 8),
-                Obx(() => ElevatedButton.icon(
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  // Save button
+                  SizedBox(
+                    height: 48,
+                    child: ElevatedButton.icon(
                       onPressed: controller.selectedRoleId.value == null || controller.isLoadingTree.value || controller.isSaving.value
                           ? null
                           : controller.save,
                       icon: controller.isSaving.value
                           ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                          : const Icon(Icons.save, size: 16),
+                          : const Icon(Icons.save_rounded, size: 18),
                       label: Text(controller.isSaving.value ? 'Saving...' : 'Save'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF4F46E5),
                         foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                       ),
-                    )),
-              ],
-            )
-          ],
-        ),
+                    ),
+                  ),
+                ],
+              )),
+          // Active role name
+          Obx(() {
+            final name = controller.activeRoleName.value;
+            if (name == null) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
+                children: [
+                  const Icon(Icons.shield_rounded, size: 14, color: Color(0xFF7C3AED)),
+                  const SizedBox(width: 4),
+                  Text('Editing permissions for: $name',
+                      style: GoogleFonts.inter(fontSize: 12, color: const Color(0xFF7C3AED), fontWeight: FontWeight.w500)),
+                ],
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
 
-  Widget _buildTreeCard() {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Color(0xFFE5E7EB)),
-      ),
-      child: Obx(() {
-        if (controller.isLoadingTree.value && controller.modules.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        
-        if (controller.modules.isEmpty) {
-          return const Center(child: Text('No modules available for this role.'));
-        }
-
-        return Stack(
-          children: [
-            LayoutBuilder(
-              builder: (context, constraints) {
-                // Determine column count based on available width
-                int crossAxisCount = 1;
-                if (constraints.maxWidth > 1200) {
-                  crossAxisCount = 3;
-                } else if (constraints.maxWidth > 800) {
-                  crossAxisCount = 2;
-                }
-
-                return GridView.builder(
-                  padding: const EdgeInsets.all(16),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    mainAxisExtent: 250, // Approx height for expanded items, though ExpansionTile usually prefers ListView
-                  ),
-                  itemCount: controller.modules.length,
-                  itemBuilder: (context, index) {
-                    final moduleRow = controller.modules[index];
-                    return _buildModuleCard(moduleRow);
-                  },
-                );
-              },
-            ),
-            if (controller.isSaving.value || controller.isLoadingTree.value)
-              Container(
-                color: Colors.white.withOpacity(0.6),
-                child: const Center(
-                  child: Card(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(width: 16),
-                          Text('Processing...'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+  // ── Module permission list ───────────────────────────────────────────────
+  Widget _buildBody() {
+    return Obx(() {
+      if (controller.isLoadingTree.value && controller.modules.isEmpty) {
+        return const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+      }
+      if (controller.modules.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/empty.png', width: 120, errorBuilder: (_, __, ___) => const Icon(Icons.lock_outline, size: 64, color: Colors.grey)),
+              const SizedBox(height: 16),
+              Text(
+                controller.selectedRoleId.value == null ? 'Select a role to view permissions' : 'No modules available',
+                style: GoogleFonts.inter(fontSize: 15, color: Colors.grey),
+                textAlign: TextAlign.center,
               ),
-          ],
+            ],
+          ),
         );
-      }),
-    );
+      }
+
+      return Stack(
+        children: [
+          ListView.separated(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+            itemCount: controller.modules.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            itemBuilder: (context, i) => _buildModuleCard(controller.modules[i]),
+          ),
+          if (controller.isSaving.value || controller.isLoadingTree.value)
+            Container(
+              color: Colors.black.withOpacity(0.15),
+              child: const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5))),
+            ),
+        ],
+      );
+    });
   }
 
   Widget _buildModuleCard(ModuleNode moduleRow) {
-    final total = moduleRow.permissions.length;
-    final checkedCount = moduleRow.permissions.where((p) => controller.selectedPermissionIds.contains(p.id)).length;
-    final allChecked = total > 0 && checkedCount == total;
+    return Obx(() {
+      final total = moduleRow.permissions.length;
+      final checkedCount = moduleRow.permissions.where((p) => controller.selectedPermissionIds.contains(p.id)).length;
+      final allChecked = total > 0 && checkedCount == total;
+      final isExpanded = controller.expandedModules[moduleRow.module] == true;
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFF7C3AED)),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          // Header
-          InkWell(
-            onTap: () => controller.toggleModuleExpanded(moduleRow.module),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF7C3AED), Color(0xFF6D28D9)],
-                ),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(9)),
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: isExpanded ? const Color(0xFF7C3AED) : const Color(0xFFE5E7EB)),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 6, offset: const Offset(0, 2)),
+          ],
+        ),
+        child: Column(
+          children: [
+            // Module header — tappable
+            InkWell(
+              onTap: () => controller.toggleModuleExpanded(moduleRow.module),
+              borderRadius: BorderRadius.vertical(
+                top: const Radius.circular(14),
+                bottom: isExpanded ? Radius.zero : const Radius.circular(14),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    controller.prettyModuleName(moduleRow.module),
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  Icon(
-                    controller.expandedModules[moduleRow.module] == true ? Icons.remove : Icons.add,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Body
-          if (controller.expandedModules[moduleRow.module] == true)
-            Expanded(
               child: Container(
-                padding: const EdgeInsets.all(12),
-                child: Column(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  gradient: isExpanded
+                      ? const LinearGradient(colors: [Color(0xFF7C3AED), Color(0xFF4F46E5)], begin: Alignment.topLeft, end: Alignment.bottomRight)
+                      : null,
+                  color: isExpanded ? null : Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: const Radius.circular(13),
+                    bottom: isExpanded ? Radius.zero : const Radius.circular(13),
+                  ),
+                ),
+                child: Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('$checkedCount/$total selected', style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: allChecked,
-                              onChanged: (val) => controller.toggleModule(moduleRow, val ?? false),
-                              activeColor: const Color(0xFF7C3AED),
-                            ),
-                            const Text('Select all', style: TextStyle(fontSize: 13)),
-                          ],
-                        )
-                      ],
-                    ),
-                    const Divider(),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: moduleRow.permissions.length,
-                        itemBuilder: (context, pIndex) {
-                          final permission = moduleRow.permissions[pIndex];
-                          return CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(permission.name, style: const TextStyle(fontSize: 13)),
-                            value: controller.selectedPermissionIds.contains(permission.id),
-                            onChanged: (_) => controller.togglePermission(permission.id),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            activeColor: const Color(0xFF7C3AED),
-                            dense: true,
-                          );
-                        },
+                    Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                        color: isExpanded ? Colors.white.withOpacity(0.2) : const Color(0xFFEDE9FE),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    )
+                      child: Icon(Icons.apps_rounded, size: 18, color: isExpanded ? Colors.white : const Color(0xFF7C3AED)),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            controller.prettyModuleName(moduleRow.module),
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: isExpanded ? Colors.white : const Color(0xFF111827),
+                            ),
+                          ),
+                          Text(
+                            '$checkedCount / $total permissions',
+                            style: TextStyle(fontSize: 11, color: isExpanded ? Colors.white70 : const Color(0xFF9CA3AF)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Mini progress
+                    if (!isExpanded)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: checkedCount > 0 ? const Color(0xFFEDE9FE) : const Color(0xFFF3F4F6),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '$checkedCount/$total',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: checkedCount > 0 ? const Color(0xFF7C3AED) : const Color(0xFF9CA3AF),
+                          ),
+                        ),
+                      ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                      color: isExpanded ? Colors.white : const Color(0xFF6B7280),
+                    ),
                   ],
                 ),
               ),
             ),
-        ],
-      ),
-    );
+
+            // Expanded permissions body
+            if (isExpanded)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                child: Column(
+                  children: [
+                    // Select all row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Permissions', style: GoogleFonts.inter(fontSize: 12, color: const Color(0xFF6B7280), fontWeight: FontWeight.w500)),
+                        Row(
+                          children: [
+                            Text('Select All', style: GoogleFonts.inter(fontSize: 12, color: const Color(0xFF7C3AED), fontWeight: FontWeight.w500)),
+                            Transform.scale(
+                              scale: 0.85,
+                              child: Checkbox(
+                                value: allChecked,
+                                onChanged: (val) => controller.toggleModule(moduleRow, val ?? false),
+                                activeColor: const Color(0xFF7C3AED),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 1),
+                    const SizedBox(height: 4),
+                    // Permission items
+                    ...moduleRow.permissions.map((permission) {
+                      final isChecked = controller.selectedPermissionIds.contains(permission.id);
+                      return InkWell(
+                        onTap: () => controller.togglePermission(permission.id),
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: isChecked ? const Color(0xFFF5F3FF) : Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              Transform.scale(
+                                scale: 0.85,
+                                child: Checkbox(
+                                  value: isChecked,
+                                  onChanged: (_) => controller.togglePermission(permission.id),
+                                  activeColor: const Color(0xFF7C3AED),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  permission.name,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 13,
+                                    color: isChecked ? const Color(0xFF5B21B6) : const Color(0xFF374151),
+                                    fontWeight: isChecked ? FontWeight.w500 : FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              if (isChecked) const Icon(Icons.check_circle_rounded, size: 16, color: Color(0xFF7C3AED)),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      );
+    });
   }
 }
