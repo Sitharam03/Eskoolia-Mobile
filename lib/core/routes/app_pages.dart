@@ -7,6 +7,18 @@ import '../../features/access_control/views/roles_view.dart';
 import '../../features/access_control/views/assign_permission_view.dart';
 import '../../features/access_control/views/login_permission_view.dart';
 import '../../features/access_control/views/due_fees_login_permission_view.dart';
+import '../../features/administration/bindings/administration_binding.dart';
+import '../../features/administration/views/visitor_book_view.dart';
+import '../../features/administration/views/complaint_view.dart';
+import '../../features/administration/views/phone_call_log_view.dart';
+import '../../features/administration/views/postal_dispatch_view.dart';
+import '../../features/administration/views/postal_receive_view.dart';
+import '../../features/administration/views/admin_setup_view.dart';
+import '../../features/administration/views/admission_query_view.dart';
+import '../../features/administration/views/id_card_view.dart';
+import '../../features/administration/views/certificate_view.dart';
+import '../../features/administration/views/generate_id_card_view.dart';
+import '../../features/administration/views/generate_certificate_view.dart';
 import '../routes/app_routes.dart';
 
 /// GetX page route table.
@@ -49,6 +61,18 @@ class AppPages {
       page: () => const DueFeesLoginPermissionView(),
       binding: AccessControlBinding(),
     ),
+    // Administration
+    GetPage(name: AppRoutes.adminVisitorBook, page: () => const VisitorBookView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminComplaint, page: () => const ComplaintView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminPhoneCallLog, page: () => const PhoneCallLogView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminPostalDispatch, page: () => const PostalDispatchView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminPostalReceive, page: () => const PostalReceiveView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminSetup, page: () => const AdminSetupView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminAdmissionQuery, page: () => const AdmissionQueryView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminIdCard, page: () => const IdCardView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminCertificate, page: () => const CertificateView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminGenerateIdCard, page: () => const GenerateIdCardView(), binding: AdministrationBinding()),
+    GetPage(name: AppRoutes.adminGenerateCertificate, page: () => const GenerateCertificateView(), binding: AdministrationBinding()),
     // Additional routes will be added module by module
   ];
 }

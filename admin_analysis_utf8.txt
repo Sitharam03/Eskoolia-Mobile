@@ -1,0 +1,70 @@
+﻿Analyzing administration...                                     
+
+   info - Statements in an if should be enclosed in a block - lib\features\administration\repositories\administration_repository.dart:15:5 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\admin_setup_view.dart:78:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\admin_setup_view.dart:285:21 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\admission_query_view.dart:435:41 - curly_braces_in_flow_control_structures
+  error - A value of type 'MultipartFile' can't be assigned to a variable of type 'String' - lib\features\administration\views\certificate_view.dart:129:35 - invalid_assignment
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\certificate_view.dart:163:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\certificate_view.dart:166:9 - curly_braces_in_flow_control_structures
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\features\administration\views\certificate_view.dart:233:21 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\features\administration\views\certificate_view.dart:249:21 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\complaint_view.dart:75:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\complaint_view.dart:79:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\complaint_view.dart:163:21 - curly_braces_in_flow_control_structures
+   info - Use 'const' with the constructor to improve performance - lib\features\administration\views\generate_certificate_view.dart:130:28 - prefer_const_constructors
+  error - The named parameter 'lineHeight' isn't defined - lib\features\administration\views\generate_certificate_view.dart:130:79 - undefined_named_parameter
+  error - The argument type 'List<DropdownMenuItem<Object>>' can't be assigned to the parameter type 'List<DropdownMenuItem<int>>'.  - lib\features\administration\views\generate_certificate_view.dart:187:69 - argument_type_not_assignable
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\generate_certificate_view.dart:258:38 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\generate_certificate_view.dart:259:28 - curly_braces_in_flow_control_structures
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\features\administration\views\generate_certificate_view.dart:277:9 - deprecated_member_use
+warning - Unused import: 'dart:typed_data' - lib\features\administration\views\generate_id_card_view.dart:1:8 - unused_import
+   info - Use 'const' with the constructor to improve performance - lib\features\administration\views\generate_id_card_view.dart:132:41 - prefer_const_constructors
+  error - The argument type 'List<DropdownMenuItem<Object>>' can't be assigned to the parameter type 'List<DropdownMenuItem<int>>'.  - lib\features\administration\views\generate_id_card_view.dart:209:69 - argument_type_not_assignable
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\generate_id_card_view.dart:280:38 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\generate_id_card_view.dart:281:28 - curly_braces_in_flow_control_structures
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\features\administration\views\generate_id_card_view.dart:299:9 - deprecated_member_use
+  error - A value of type 'MultipartFile' can't be assigned to a variable of type 'String' - lib\features\administration\views\id_card_view.dart:104:35 - invalid_assignment
+  error - A value of type 'MultipartFile' can't be assigned to a variable of type 'String' - lib\features\administration\views\id_card_view.dart:107:32 - invalid_assignment
+  error - A value of type 'MultipartFile' can't be assigned to a variable of type 'String' - lib\features\administration\views\id_card_view.dart:110:29 - invalid_assignment
+  error - A value of type 'MultipartFile' can't be assigned to a variable of type 'String' - lib\features\administration\views\id_card_view.dart:113:34 - invalid_assignment
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\id_card_view.dart:147:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\id_card_view.dart:150:9 - curly_braces_in_flow_control_structures
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\features\administration\views\id_card_view.dart:214:19 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\id_card_view.dart:239:34 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\id_card_view.dart:240:30 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\phone_call_log_view.dart:76:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\phone_call_log_view.dart:80:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\phone_call_log_view.dart:171:21 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\postal_dispatch_view.dart:76:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\postal_dispatch_view.dart:80:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\postal_dispatch_view.dart:154:21 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\postal_receive_view.dart:76:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\postal_receive_view.dart:80:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\postal_receive_view.dart:154:21 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\visitor_book_view.dart:76:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\visitor_book_view.dart:80:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\administration\views\visitor_book_view.dart:165:21 - curly_braces_in_flow_control_structures
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\administration\widgets\admin_record_card.dart:35:35 - deprecated_member_use
+
+flutter : 46 issues 
+found. (ran in 3.4s)
+At line:1 char:1
++ flutter analyze lib/f
+eatures/administration 
+> admin_analysis.txt 
+2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (46 issues fou   
+ nd. (ran in 3.4s):    
+String) [], Remote    
+Exception
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 

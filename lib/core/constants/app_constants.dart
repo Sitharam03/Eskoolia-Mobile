@@ -13,7 +13,7 @@ class AppConstants {
       // Android Emulator uses 10.0.2.2 to reach the host computer's 127.0.0.1
       // if (Platform.isAndroid) return 'http://10.0.2.2:8000';
       // If testing on a REAL physical phone, comment the line above and uncomment the line below:
-      if (Platform.isAndroid) return 'http://192.168.0.214:8000';
+      if (Platform.isAndroid) return 'http://192.168.0.124:8000';
     } catch (_) {}
     return 'http://127.0.0.1:8000'; // iOS Simulator or Web Default
   }

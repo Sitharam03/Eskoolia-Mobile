@@ -40,4 +40,17 @@ abstract class AppRoutes {
   static const String administration = '/administration';
   static const String behaviour = '/behaviour';
   static const String library = '/library';
+
+  // Administration sub-routes
+  static const String adminVisitorBook = '/administration/visitor-book';
+  static const String adminComplaint = '/administration/complaint';
+  static const String adminPhoneCallLog = '/administration/phone-call-log';
+  static const String adminPostalDispatch = '/administration/postal-dispatch';
+  static const String adminPostalReceive = '/administration/postal-receive';
+  static const String adminSetup = '/administration/admin-setup';
+  static const String adminAdmissionQuery = '/administration/admission-query';
+  static const String adminIdCard = '/administration/id-card';
+  static const String adminCertificate = '/administration/certificate';
+  static const String adminGenerateIdCard = '/administration/generate-id-card';
+  static const String adminGenerateCertificate = '/administration/generate-certificate';
 }
