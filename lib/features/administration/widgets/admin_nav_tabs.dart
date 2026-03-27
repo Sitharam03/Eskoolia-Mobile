@@ -3,9 +3,43 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// Horizontal scrollable tab chip navigation bar used across Administration views.
-class AdminNavTabs extends StatelessWidget {
+class AdminNavTabs extends StatefulWidget {
   final List<AdminTabItem> tabs;
   const AdminNavTabs({super.key, required this.tabs});
+
+  @override
+  State<AdminNavTabs> createState() => _AdminNavTabsState();
+}
+
+class _AdminNavTabsState extends State<AdminNavTabs> {
+  final _scrollController = ScrollController();
+  late final List<GlobalKey> _keys;
+
+  @override
+  void initState() {
+    super.initState();
+    _keys = List.generate(widget.tabs.length, (_) => GlobalKey());
+    // Jump instantly after layout — no animation so user never sees scroll-from-start
+    WidgetsBinding.instance.addPostFrameCallback((_) => _jumpToActive());
+  }
+
+  void _jumpToActive() {
+    final activeIndex = widget.tabs.indexWhere((t) => t.isActive);
+    if (activeIndex < 0) return;
+    final ctx = _keys[activeIndex].currentContext;
+    if (ctx == null) return;
+    Scrollable.ensureVisible(
+      ctx,
+      alignment: 0.5,
+      duration: Duration.zero, // instant — no visible slide-from-start
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +47,13 @@ class AdminNavTabs extends StatelessWidget {
       color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: SingleChildScrollView(
+        controller: _scrollController,
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            for (int i = 0; i < tabs.length; i++) ...[
+            for (int i = 0; i < widget.tabs.length; i++) ...[
               if (i > 0) const SizedBox(width: 8),
-              _NavChip(tab: tabs[i]),
+              _NavChip(key: _keys[i], tab: widget.tabs[i]),
             ],
           ],
         ),
@@ -37,7 +72,7 @@ class AdminTabItem {
 
 class _NavChip extends StatelessWidget {
   final AdminTabItem tab;
-  const _NavChip({required this.tab});
+  const _NavChip({super.key, required this.tab});
 
   @override
   Widget build(BuildContext context) {

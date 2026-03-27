@@ -33,6 +33,16 @@ abstract class AppRoutes {
 
   // Students
   static const String students = '/students';
+  static const String studentCategory = '/students/category';
+  static const String studentGroup = '/students/group';
+  static const String studentAdd = '/students/add';
+  static const String studentList = '/students/list';
+  static const String studentMultiClass = '/students/multi-class';
+  static const String studentPromote = '/students/promote';
+  static const String studentDisabled = '/students/disabled';
+  static const String studentUnassigned = '/students/unassigned';
+  static const String studentDeleteRecord = '/students/delete-record';
+  static const String studentExport = '/students/export';
 
   // HR / Finance / Administration / Behaviour / Library
   static const String hr = '/hr';

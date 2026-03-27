@@ -19,6 +19,17 @@ import '../../features/administration/views/id_card_view.dart';
 import '../../features/administration/views/certificate_view.dart';
 import '../../features/administration/views/generate_id_card_view.dart';
 import '../../features/administration/views/generate_certificate_view.dart';
+import '../../features/students/bindings/students_binding.dart';
+import '../../features/students/views/student_category_view.dart';
+import '../../features/students/views/student_group_view.dart';
+import '../../features/students/views/student_add_view.dart';
+import '../../features/students/views/student_list_view.dart';
+import '../../features/students/views/student_multi_class_view.dart';
+import '../../features/students/views/student_promote_view.dart';
+import '../../features/students/views/student_disabled_view.dart';
+import '../../features/students/views/student_unassigned_view.dart';
+import '../../features/students/views/student_delete_record_view.dart';
+import '../../features/students/views/student_export_view.dart';
 import '../routes/app_routes.dart';
 
 /// GetX page route table.
@@ -73,6 +84,57 @@ class AppPages {
     GetPage(name: AppRoutes.adminCertificate, page: () => const CertificateView(), binding: AdministrationBinding()),
     GetPage(name: AppRoutes.adminGenerateIdCard, page: () => const GenerateIdCardView(), binding: AdministrationBinding()),
     GetPage(name: AppRoutes.adminGenerateCertificate, page: () => const GenerateCertificateView(), binding: AdministrationBinding()),
+    // ── Students ──────────────────────────────────────────────────────────────
+    GetPage(
+      name: AppRoutes.studentCategory,
+      page: () => const StudentCategoryView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentGroup,
+      page: () => const StudentGroupView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentAdd,
+      page: () => const StudentAddView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentList,
+      page: () => const StudentListView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentMultiClass,
+      page: () => const StudentMultiClassView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentPromote,
+      page: () => const StudentPromoteView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentDisabled,
+      page: () => const StudentDisabledView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentUnassigned,
+      page: () => const StudentUnassignedView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentDeleteRecord,
+      page: () => const StudentDeleteRecordView(),
+      binding: StudentsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.studentExport,
+      page: () => const StudentExportView(),
+      binding: StudentsBinding(),
+    ),
     // Additional routes will be added module by module
   ];
 }
