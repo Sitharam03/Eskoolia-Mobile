@@ -176,15 +176,15 @@ class MenuData {
         SidebarItem(
             id: "add-homework",
             name: "Add Homework",
-            route: "/academics/homework-add"),
+            route: "/academics/homework/add"),
         SidebarItem(
             id: "homework-list",
             name: "Homework List",
-            route: "/academics/homework-list"),
+            route: "/academics/homework/list"),
         SidebarItem(
             id: "homework-report",
             name: "Homework Evaluation Report",
-            route: "/academics/homework-evaluation-report"),
+            route: "/academics/homework/eval-report"),
         SidebarItem(
             id: "upload-content",
             name: "Upload Content",
@@ -192,19 +192,19 @@ class MenuData {
         SidebarItem(
             id: "assignment-list",
             name: "Assignment List",
-            route: "/academics/assignment-list"),
+            route: "/academics/assignments"),
         SidebarItem(
             id: "study-material-list",
             name: "Study Material List",
-            route: "/academics/study-material-list"),
+            route: "/academics/study-material"),
         SidebarItem(
             id: "syllabus-list",
             name: "Syllabus List",
-            route: "/academics/syllabus-list"),
+            route: "/academics/syllabus"),
         SidebarItem(
             id: "other-downloads-list",
             name: "Other Downloads List",
-            route: "/academics/other-downloads-list"),
+            route: "/academics/other-downloads"),
       ],
     ),
     SidebarItem(

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/routes/app_routes.dart';
@@ -62,10 +63,21 @@ class LoginController extends GetxController {
 
       // Navigate to dashboard, clearing the back stack
       Get.offAllNamed(AppRoutes.dashboard);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final status = e.response!.statusCode;
+        if (status == 401 || status == 400) {
+          errorMessage.value = 'Invalid username or password.';
+        } else {
+          errorMessage.value = 'Server error ($status). Try again.';
+        }
+      } else {
+        // No response = network issue (wrong IP, server down, etc.)
+        errorMessage.value =
+            'Cannot reach server. Make sure the backend is running and your device is on the same Wi-Fi.';
+      }
     } catch (_) {
-      // Mirrors: 'Login failed. Verify credentials and backend availability.'
-      errorMessage.value =
-          'Login failed. Verify credentials and backend availability.';
+      errorMessage.value = 'Unexpected error. Please try again.';
     } finally {
       isLoading.value = false;
     }

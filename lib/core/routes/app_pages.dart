@@ -30,10 +30,28 @@ import '../../features/students/views/student_disabled_view.dart';
 import '../../features/students/views/student_unassigned_view.dart';
 import '../../features/students/views/student_delete_record_view.dart';
 import '../../features/students/views/student_export_view.dart';
+import '../../features/students/views/student_sms_view.dart';
+import '../../features/students/views/student_attendance_import_view.dart';
+import '../../features/students/views/subject_wise_attendance_view.dart';
+import '../../features/students/views/subject_wise_attendance_report_view.dart';
+// ── Academics ────────────────────────────────────────────────────────────────
+import '../../features/academics/bindings/academics_binding.dart';
+import '../../features/academics/views/core_setup_view.dart';
+import '../../features/academics/views/assign_class_teacher_view.dart';
+import '../../features/academics/views/assign_subject_view.dart';
+import '../../features/academics/views/class_room_view.dart';
+import '../../features/academics/views/class_routine_view.dart';
+import '../../features/academics/views/homework_add_view.dart';
+import '../../features/academics/views/homework_list_view.dart';
+import '../../features/academics/views/homework_evaluation_report_view.dart';
+import '../../features/academics/views/upload_content_view.dart';
+import '../../features/academics/views/content_list_view.dart';
+import '../../features/academics/views/lesson_view.dart';
+import '../../features/academics/views/topic_view.dart';
+import '../../features/academics/views/lesson_planner_view.dart';
 import '../routes/app_routes.dart';
 
 /// GetX page route table.
-/// Add new module routes here as each module is converted.
 class AppPages {
   AppPages._();
 
@@ -72,7 +90,7 @@ class AppPages {
       page: () => const DueFeesLoginPermissionView(),
       binding: AccessControlBinding(),
     ),
-    // Administration
+    // ── Administration ───────────────────────────────────────────────────────
     GetPage(name: AppRoutes.adminVisitorBook, page: () => const VisitorBookView(), binding: AdministrationBinding()),
     GetPage(name: AppRoutes.adminComplaint, page: () => const ComplaintView(), binding: AdministrationBinding()),
     GetPage(name: AppRoutes.adminPhoneCallLog, page: () => const PhoneCallLogView(), binding: AdministrationBinding()),
@@ -84,57 +102,53 @@ class AppPages {
     GetPage(name: AppRoutes.adminCertificate, page: () => const CertificateView(), binding: AdministrationBinding()),
     GetPage(name: AppRoutes.adminGenerateIdCard, page: () => const GenerateIdCardView(), binding: AdministrationBinding()),
     GetPage(name: AppRoutes.adminGenerateCertificate, page: () => const GenerateCertificateView(), binding: AdministrationBinding()),
-    // ── Students ──────────────────────────────────────────────────────────────
+    // ── Students ─────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.studentCategory, page: () => const StudentCategoryView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentGroup, page: () => const StudentGroupView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentAdd, page: () => const StudentAddView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentList, page: () => const StudentListView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentMultiClass, page: () => const StudentMultiClassView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentPromote, page: () => const StudentPromoteView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentDisabled, page: () => const StudentDisabledView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentUnassigned, page: () => const StudentUnassignedView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentDeleteRecord, page: () => const StudentDeleteRecordView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentExport, page: () => const StudentExportView(), binding: StudentsBinding()),
+    GetPage(name: AppRoutes.studentSms, page: () => const StudentSmsView()),
+    GetPage(name: AppRoutes.studentAttendanceImport, page: () => const StudentAttendanceImportView()),
+    GetPage(name: AppRoutes.studentSubjectWiseAttendance, page: () => const SubjectWiseAttendanceView()),
+    GetPage(name: AppRoutes.studentSubjectWiseAttendanceReport, page: () => const SubjectWiseAttendanceReportView()),
+    // ── Academics ────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.academicsCoreSetup, page: () => const CoreSetupView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsAssignClassTeacher, page: () => const AssignClassTeacherView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsAssignSubject, page: () => const AssignSubjectView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsClassRoom, page: () => const ClassRoomView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsClassRoutine, page: () => const ClassRoutineView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsHomeworkAdd, page: () => const HomeworkAddView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsHomeworkList, page: () => const HomeworkListView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsHomeworkEvalReport, page: () => const HomeworkEvaluationReportView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsUploadContent, page: () => const UploadContentView(), binding: AcademicsBinding()),
     GetPage(
-      name: AppRoutes.studentCategory,
-      page: () => const StudentCategoryView(),
-      binding: StudentsBinding(),
+      name: AppRoutes.academicsAssignmentList,
+      page: () => ContentListView(title: 'Assignment List', lockedType: 'as'),
+      binding: AcademicsBinding(),
     ),
     GetPage(
-      name: AppRoutes.studentGroup,
-      page: () => const StudentGroupView(),
-      binding: StudentsBinding(),
+      name: AppRoutes.academicsStudyMaterialList,
+      page: () => ContentListView(title: 'Study Material List', lockedType: 'st'),
+      binding: AcademicsBinding(),
     ),
     GetPage(
-      name: AppRoutes.studentAdd,
-      page: () => const StudentAddView(),
-      binding: StudentsBinding(),
+      name: AppRoutes.academicsSyllabusList,
+      page: () => ContentListView(title: 'Syllabus List', lockedType: 'sy'),
+      binding: AcademicsBinding(),
     ),
     GetPage(
-      name: AppRoutes.studentList,
-      page: () => const StudentListView(),
-      binding: StudentsBinding(),
+      name: AppRoutes.academicsOtherDownloadsList,
+      page: () => ContentListView(title: 'Other Downloads', lockedType: 'ot'),
+      binding: AcademicsBinding(),
     ),
-    GetPage(
-      name: AppRoutes.studentMultiClass,
-      page: () => const StudentMultiClassView(),
-      binding: StudentsBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.studentPromote,
-      page: () => const StudentPromoteView(),
-      binding: StudentsBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.studentDisabled,
-      page: () => const StudentDisabledView(),
-      binding: StudentsBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.studentUnassigned,
-      page: () => const StudentUnassignedView(),
-      binding: StudentsBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.studentDeleteRecord,
-      page: () => const StudentDeleteRecordView(),
-      binding: StudentsBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.studentExport,
-      page: () => const StudentExportView(),
-      binding: StudentsBinding(),
-    ),
-    // Additional routes will be added module by module
+    GetPage(name: AppRoutes.academicsLessons, page: () => const LessonView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsTopics, page: () => const TopicView(), binding: AcademicsBinding()),
+    GetPage(name: AppRoutes.academicsLessonPlanner, page: () => const LessonPlannerView(), binding: AcademicsBinding()),
   ];
 }

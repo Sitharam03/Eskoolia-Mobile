@@ -20,9 +20,28 @@ abstract class AppRoutes {
 
   // Academics
   static const String academics = '/academics';
+  static const String academicsCoreSetup = '/academics/core-setup';
+  static const String academicsAssignClassTeacher = '/academics/assign-class-teacher';
+  static const String academicsAssignSubject = '/academics/assign-subject';
+  static const String academicsClassRoom = '/academics/class-room';
+  static const String academicsClassRoutine = '/academics/class-routine';
+  static const String academicsHomeworkAdd = '/academics/homework/add';
+  static const String academicsHomeworkList = '/academics/homework/list';
+  static const String academicsHomeworkEvalReport = '/academics/homework/eval-report';
+  static const String academicsUploadContent = '/academics/upload-content';
+  static const String academicsAssignmentList = '/academics/assignments';
+  static const String academicsStudyMaterialList = '/academics/study-material';
+  static const String academicsSyllabusList = '/academics/syllabus';
+  static const String academicsOtherDownloadsList = '/academics/other-downloads';
+  static const String academicsLessons = '/academics/lessons';
+  static const String academicsTopics = '/academics/topics';
+  static const String academicsLessonPlanner = '/academics/lesson-planner';
 
   // Attendance
   static const String studentAttendance = '/attendance/students';
+  static const String studentAttendanceImport = '/attendance/student/import';
+  static const String studentSubjectWiseAttendance = '/attendance/subject';
+  static const String studentSubjectWiseAttendanceReport = '/attendance/subject-report';
   static const String subjectAttendance = '/attendance/subjects';
 
   // Admissions
@@ -43,6 +62,7 @@ abstract class AppRoutes {
   static const String studentUnassigned = '/students/unassigned';
   static const String studentDeleteRecord = '/students/delete-record';
   static const String studentExport = '/students/export';
+  static const String studentSms = '/students/sms-sending-time';
 
   // HR / Finance / Administration / Behaviour / Library
   static const String hr = '/hr';

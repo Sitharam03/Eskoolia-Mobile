@@ -15,16 +15,21 @@ class StudentNavTabs extends StatefulWidget {
 
 class _StudentNavTabsState extends State<StudentNavTabs> {
   static const _tabs = [
-    _TabItem(label: 'Categories', route: AppRoutes.studentCategory),
-    _TabItem(label: 'Groups', route: AppRoutes.studentGroup),
+    _TabItem(label: 'Student Categories', route: AppRoutes.studentCategory),
     _TabItem(label: 'Add Student', route: AppRoutes.studentAdd),
     _TabItem(label: 'Student List', route: AppRoutes.studentList),
-    _TabItem(label: 'Multi-Class', route: AppRoutes.studentMultiClass),
-    _TabItem(label: 'Promote', route: AppRoutes.studentPromote),
-    _TabItem(label: 'Disabled', route: AppRoutes.studentDisabled),
-    _TabItem(label: 'Unassigned', route: AppRoutes.studentUnassigned),
-    _TabItem(label: 'Delete Records', route: AppRoutes.studentDeleteRecord),
-    _TabItem(label: 'Export', route: AppRoutes.studentExport),
+    _TabItem(label: 'Multi-Class Student', route: AppRoutes.studentMultiClass),
+    _TabItem(label: 'Delete Student Records', route: AppRoutes.studentDeleteRecord),
+    _TabItem(label: 'Unassigned Student', route: AppRoutes.studentUnassigned),
+    _TabItem(label: 'Student Attendance', route: AppRoutes.studentAttendance),
+    _TabItem(label: 'Student Attendance Import', route: AppRoutes.studentAttendanceImport),
+    _TabItem(label: 'Student Groups', route: AppRoutes.studentGroup),
+    _TabItem(label: 'Student Promote', route: AppRoutes.studentPromote),
+    _TabItem(label: 'Disabled Students', route: AppRoutes.studentDisabled),
+    _TabItem(label: 'Subject Wise Attendance', route: AppRoutes.studentSubjectWiseAttendance),
+    _TabItem(label: 'Subject Wise Attendance Report', route: AppRoutes.studentSubjectWiseAttendanceReport),
+    _TabItem(label: 'Student Export', route: AppRoutes.studentExport),
+    _TabItem(label: 'SMS Sending Time', route: AppRoutes.studentSms),
   ];
 
   final _scrollController = ScrollController();
