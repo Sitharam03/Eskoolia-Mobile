@@ -7,6 +7,14 @@ import '../../features/access_control/views/roles_view.dart';
 import '../../features/access_control/views/assign_permission_view.dart';
 import '../../features/access_control/views/login_permission_view.dart';
 import '../../features/access_control/views/due_fees_login_permission_view.dart';
+// ── Fees ──────────────────────────────────────────────────────────────────────
+import '../../features/fees/bindings/fees_binding.dart';
+import '../../features/fees/views/fees_group_view.dart';
+import '../../features/fees/views/fees_type_view.dart';
+import '../../features/fees/views/fees_master_view.dart';
+import '../../features/fees/views/fees_payment_view.dart';
+import '../../features/fees/views/fees_due_view.dart';
+import '../../features/fees/views/fees_carry_forward_view.dart';
 import '../../features/administration/bindings/administration_binding.dart';
 import '../../features/administration/views/visitor_book_view.dart';
 import '../../features/administration/views/complaint_view.dart';
@@ -90,6 +98,13 @@ class AppPages {
       page: () => const DueFeesLoginPermissionView(),
       binding: AccessControlBinding(),
     ),
+    // ── Fees ─────────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.feesGroups, page: () => const FeesGroupView(), binding: FeesBinding()),
+    GetPage(name: AppRoutes.feesTypes, page: () => const FeesTypeView(), binding: FeesBinding()),
+    GetPage(name: AppRoutes.feesMaster, page: () => const FeesMasterView(), binding: FeesBinding()),
+    GetPage(name: AppRoutes.feesPayments, page: () => const FeesPaymentView(), binding: FeesBinding()),
+    GetPage(name: AppRoutes.feesDue, page: () => const FeesDueView(), binding: FeesBinding()),
+    GetPage(name: AppRoutes.feesCarryForward, page: () => const FeesCarryForwardView(), binding: FeesBinding()),
     // ── Administration ───────────────────────────────────────────────────────
     GetPage(name: AppRoutes.adminVisitorBook, page: () => const VisitorBookView(), binding: AdministrationBinding()),
     GetPage(name: AppRoutes.adminComplaint, page: () => const ComplaintView(), binding: AdministrationBinding()),
