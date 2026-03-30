@@ -42,6 +42,28 @@ import '../../features/students/views/student_sms_view.dart';
 import '../../features/students/views/student_attendance_import_view.dart';
 import '../../features/students/views/subject_wise_attendance_view.dart';
 import '../../features/students/views/subject_wise_attendance_report_view.dart';
+// ── Exams ─────────────────────────────────────────────────────────────────────
+import '../../features/exams/bindings/exam_binding.dart';
+import '../../features/exams/views/exam_type_view.dart';
+import '../../features/exams/views/exam_setup_view.dart';
+import '../../features/exams/views/exam_schedule_view.dart';
+import '../../features/exams/views/exam_marks_create_view.dart';
+import '../../features/exams/views/exam_marks_report_view.dart';
+import '../../features/exams/views/exam_admit_card_view.dart';
+import '../../features/exams/views/exam_seat_plan_view.dart';
+import '../../features/exams/views/exam_attendance_create_view.dart';
+import '../../features/exams/views/exam_attendance_report_view.dart';
+import '../../features/exams/views/exam_result_publish_view.dart';
+import '../../features/exams/views/exam_merit_report_view.dart';
+import '../../features/exams/views/exam_schedule_report_view.dart';
+import '../../features/exams/views/exam_student_report_view.dart';
+import '../../features/exams/views/online_exam_view.dart';
+// ── Library ──────────────────────────────────────────────────────────────────
+import '../../features/library/bindings/library_binding.dart';
+import '../../features/library/views/library_category_view.dart';
+import '../../features/library/views/library_book_view.dart';
+import '../../features/library/views/library_member_view.dart';
+import '../../features/library/views/library_issue_view.dart';
 // ── Academics ────────────────────────────────────────────────────────────────
 import '../../features/academics/bindings/academics_binding.dart';
 import '../../features/academics/views/core_setup_view.dart';
@@ -132,6 +154,26 @@ class AppPages {
     GetPage(name: AppRoutes.studentAttendanceImport, page: () => const StudentAttendanceImportView()),
     GetPage(name: AppRoutes.studentSubjectWiseAttendance, page: () => const SubjectWiseAttendanceView()),
     GetPage(name: AppRoutes.studentSubjectWiseAttendanceReport, page: () => const SubjectWiseAttendanceReportView()),
+    // ── Exams ────────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.examType, page: () => const ExamTypeView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examSetup, page: () => const ExamSetupView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examSchedule, page: () => const ExamScheduleView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examMarksCreate, page: () => const ExamMarksCreateView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examMarksRegister, page: () => const ExamMarksReportView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examAdmitCard, page: () => const ExamAdmitCardView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examSeatPlan, page: () => const ExamSeatPlanView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examAttendanceCreate, page: () => const ExamAttendanceCreateView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examAttendanceReport, page: () => const ExamAttendanceReportView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examResultPublish, page: () => const ExamResultPublishView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examMeritReport, page: () => const ExamMeritReportView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examScheduleReport, page: () => const ExamScheduleReportView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.examStudentReport, page: () => const ExamStudentReportView(), binding: ExamBinding()),
+    GetPage(name: AppRoutes.onlineExam, page: () => const OnlineExamView(), binding: ExamBinding()),
+    // ── Library ──────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.libraryCategories, page: () => const LibraryCategoryView(), binding: LibraryBinding()),
+    GetPage(name: AppRoutes.libraryBooks, page: () => const LibraryBookView(), binding: LibraryBinding()),
+    GetPage(name: AppRoutes.libraryMembers, page: () => const LibraryMemberView(), binding: LibraryBinding()),
+    GetPage(name: AppRoutes.libraryIssues, page: () => const LibraryIssueView(), binding: LibraryBinding()),
     // ── Academics ────────────────────────────────────────────────────────────
     GetPage(name: AppRoutes.academicsCoreSetup, page: () => const CoreSetupView(), binding: AcademicsBinding()),
     GetPage(name: AppRoutes.academicsAssignClassTeacher, page: () => const AssignClassTeacherView(), binding: AcademicsBinding()),
