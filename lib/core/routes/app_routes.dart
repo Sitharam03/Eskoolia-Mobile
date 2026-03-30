@@ -49,6 +49,20 @@ abstract class AppRoutes {
 
   // Exams
   static const String exams = '/exams';
+  static const String examType = '/exams/exam-type';
+  static const String examSetup = '/exams/setup';
+  static const String examSchedule = '/exams/schedule';
+  static const String examMarksCreate = '/exams/marks-register-create';
+  static const String examMarksRegister = '/exams/marks-register';
+  static const String examAdmitCard = '/exams/admit-card';
+  static const String examSeatPlan = '/exams/seat-plan';
+  static const String examAttendanceCreate = '/exams/attendance-create';
+  static const String examAttendanceReport = '/exams/attendance-report';
+  static const String examResultPublish = '/exams/result-publish';
+  static const String examMeritReport = '/exams/merit-report';
+  static const String examScheduleReport = '/exams/schedule-report';
+  static const String examStudentReport = '/exams/student-report';
+  static const String onlineExam = '/exams/online-exam';
 
   // Students
   static const String students = '/students';
@@ -64,12 +78,18 @@ abstract class AppRoutes {
   static const String studentExport = '/students/export';
   static const String studentSms = '/students/sms-sending-time';
 
-  // HR / Finance / Administration / Behaviour / Library
+  // HR / Finance / Administration / Behaviour
   static const String hr = '/hr';
   static const String finance = '/finance';
   static const String administration = '/administration';
   static const String behaviour = '/behaviour';
+
+  // Library
   static const String library = '/library';
+  static const String libraryCategories = '/library/categories';
+  static const String libraryBooks = '/library/books';
+  static const String libraryMembers = '/library/members';
+  static const String libraryIssues = '/library/issues';
 
   // Administration sub-routes
   static const String adminVisitorBook = '/administration/visitor-book';

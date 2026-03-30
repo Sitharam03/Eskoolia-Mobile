@@ -45,6 +45,7 @@ Widget sTextField({
   bool readOnly = false,
   VoidCallback? onTap,
   Widget? suffixIcon,
+  ValueChanged<String>? onChanged,
 }) =>
     TextField(
       controller: controller,
@@ -52,6 +53,7 @@ Widget sTextField({
       keyboardType: keyboardType,
       readOnly: readOnly,
       onTap: onTap,
+      onChanged: onChanged,
       style: GoogleFonts.inter(fontSize: 14, color: const Color(0xFF111827)),
       decoration: InputDecoration(
         hintText: hint,
