@@ -23,17 +23,17 @@ class _CertificateViewState extends State<CertificateView> {
   AdministrationController get _c => Get.find<AdministrationController>();
 
   static final _tabs = [
+    const AdminTabItem(label: 'Admission Query', route: AppRoutes.adminAdmissionQuery),
     const AdminTabItem(label: 'Visitor Book', route: AppRoutes.adminVisitorBook),
     const AdminTabItem(label: 'Complaint', route: AppRoutes.adminComplaint),
-    const AdminTabItem(label: 'Phone Call Log', route: AppRoutes.adminPhoneCallLog),
-    const AdminTabItem(label: 'Postal Dispatch', route: AppRoutes.adminPostalDispatch),
     const AdminTabItem(label: 'Postal Receive', route: AppRoutes.adminPostalReceive),
+    const AdminTabItem(label: 'Postal Dispatch', route: AppRoutes.adminPostalDispatch),
+    const AdminTabItem(label: 'Phone Call Log', route: AppRoutes.adminPhoneCallLog),
     const AdminTabItem(label: 'Admin Setup', route: AppRoutes.adminSetup),
-    const AdminTabItem(label: 'Admission Query', route: AppRoutes.adminAdmissionQuery),
     const AdminTabItem(label: 'ID Card', route: AppRoutes.adminIdCard),
     const AdminTabItem(label: 'Certificate', route: AppRoutes.adminCertificate, isActive: true),
-    const AdminTabItem(label: 'Generate ID', route: AppRoutes.adminGenerateIdCard),
-    const AdminTabItem(label: 'Generate Cert', route: AppRoutes.adminGenerateCertificate),
+    const AdminTabItem(label: 'Generate Certificate', route: AppRoutes.adminGenerateCertificate),
+    const AdminTabItem(label: 'Generate ID Card', route: AppRoutes.adminGenerateIdCard),
   ];
 
   final titleCtrl = TextEditingController();

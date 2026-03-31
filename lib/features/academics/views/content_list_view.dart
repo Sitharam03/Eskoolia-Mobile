@@ -9,33 +9,58 @@ import '../models/academics_models.dart';
 import '_academics_nav_tabs.dart';
 import '_academics_shared.dart';
 
-class ContentListView extends GetView<UploadContentController> {
+class ContentListView extends StatefulWidget {
   final String title;
   final String? lockedType;
+  const ContentListView({super.key, required this.title, this.lockedType});
 
-  // Not const because constructor parameters are non-const
-  ContentListView({super.key, required this.title, this.lockedType});
+  @override
+  State<ContentListView> createState() => _ContentListViewState();
+}
+
+class _ContentListViewState extends State<ContentListView> {
+  late final UploadContentController _c;
+
+  @override
+  void initState() {
+    super.initState();
+    _c = Get.find<UploadContentController>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _c.loadItems(lockedType: widget.lockedType);
+    });
+  }
+
+  String get _activeRoute {
+    switch (widget.lockedType) {
+      case 'as':
+        return AppRoutes.academicsAssignmentList;
+      case 'st':
+        return AppRoutes.academicsStudyMaterialList;
+      case 'sy':
+        return AppRoutes.academicsSyllabusList;
+      case 'ot':
+        return AppRoutes.academicsOtherDownloadsList;
+      default:
+        return AppRoutes.academicsUploadContent;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.loadItems(lockedType: lockedType);
-    });
-
     return AppScaffold(
-      title: title,
+      title: widget.title,
       body: Column(
         children: [
-          const AcademicsNavTabs(activeRoute: AppRoutes.academicsUploadContent),
+          AcademicsNavTabs(activeRoute: _activeRoute),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   _ListFilterCard(
-                      controller: controller, lockedType: lockedType),
+                      controller: _c, lockedType: widget.lockedType),
                   const SizedBox(height: 16),
-                  _ContentItemList(controller: controller),
+                  _ContentItemList(controller: _c),
                   const SizedBox(height: 40),
                 ],
               ),

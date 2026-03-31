@@ -17,16 +17,19 @@ class CoreSetupView extends GetView<CoreSetupController> {
       body: Column(
         children: [
           const AcademicsNavTabs(activeRoute: AppRoutes.academicsCoreSetup),
-          // Inner tab row
+          // Inner tab row — scrollable so "Academic Years" fits on narrow phones
           Obx(() => Container(
                 color: Colors.white,
-                child: Row(
-                  children: [
-                    _tabBtn(0, 'Academic Years'),
-                    _tabBtn(1, 'Classes'),
-                    _tabBtn(2, 'Sections'),
-                    _tabBtn(3, 'Subjects'),
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _tabBtn(0, 'Academic Years'),
+                      _tabBtn(1, 'Classes'),
+                      _tabBtn(2, 'Sections'),
+                      _tabBtn(3, 'Subjects'),
+                    ],
+                  ),
                 ),
               )),
           const Divider(height: 1, color: Color(0xFFE5E7EB)),
@@ -51,27 +54,24 @@ class CoreSetupView extends GetView<CoreSetupController> {
 
   Widget _tabBtn(int index, String label) {
     final active = controller.activeTab.value == index;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => controller.activeTab.value = index,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: active ? const Color(0xFF4F46E5) : Colors.transparent,
-                width: 2,
-              ),
+    return GestureDetector(
+      onTap: () => controller.activeTab.value = index,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: active ? const Color(0xFF4F46E5) : Colors.transparent,
+              width: 2,
             ),
           ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              fontSize: 11,
-              fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-              color: active ? const Color(0xFF4F46E5) : const Color(0xFF6B7280),
-            ),
+        ),
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 13,
+            fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+            color: active ? const Color(0xFF4F46E5) : const Color(0xFF6B7280),
           ),
         ),
       ),
