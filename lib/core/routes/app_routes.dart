@@ -78,11 +78,26 @@ abstract class AppRoutes {
   static const String studentExport = '/students/export';
   static const String studentSms = '/students/sms-sending-time';
 
-  // HR / Finance / Administration / Behaviour
+  // Finance
+  static const String financeChartOfAccounts = '/finance/chart-of-accounts';
+  static const String financeBankAccounts = '/finance/bank-accounts';
+  static const String financeLedger = '/finance/ledger';
+  static const String financeFundTransfer = '/finance/fund-transfer';
+
+  // HR / Administration / Behaviour
   static const String hr = '/hr';
   static const String finance = '/finance';
   static const String administration = '/administration';
   static const String behaviour = '/behaviour';
+
+  // Behaviour sub-routes
+  static const String behaviourIncidents = '/behaviour/incidents';
+  static const String behaviourAssignIncident = '/behaviour/assign-incident';
+  static const String behaviourStudentIncidentReport = '/behaviour/reports/student-incident';
+  static const String behaviourStudentRankReport = '/behaviour/reports/student-rank';
+  static const String behaviourClassSectionRankReport = '/behaviour/reports/class-section-rank';
+  static const String behaviourIncidentWiseReport = '/behaviour/reports/incident-wise';
+  static const String behaviourSettings = '/behaviour/settings';
 
   // Library
   static const String library = '/library';

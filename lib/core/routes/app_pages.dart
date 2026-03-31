@@ -64,6 +64,21 @@ import '../../features/library/views/library_category_view.dart';
 import '../../features/library/views/library_book_view.dart';
 import '../../features/library/views/library_member_view.dart';
 import '../../features/library/views/library_issue_view.dart';
+// ── Finance ───────────────────────────────────────────────────────────────────
+import '../../features/finance/bindings/finance_binding.dart';
+import '../../features/finance/views/chart_of_accounts_view.dart';
+import '../../features/finance/views/bank_account_view.dart';
+import '../../features/finance/views/ledger_entry_view.dart';
+import '../../features/finance/views/fund_transfer_view.dart';
+// ── Behaviour ────────────────────────────────────────────────────────────────
+import '../../features/behaviour/bindings/behaviour_binding.dart';
+import '../../features/behaviour/views/behaviour_incident_view.dart';
+import '../../features/behaviour/views/behaviour_assign_incident_view.dart';
+import '../../features/behaviour/views/behaviour_student_incident_report_view.dart';
+import '../../features/behaviour/views/behaviour_student_rank_report_view.dart';
+import '../../features/behaviour/views/behaviour_class_section_rank_report_view.dart';
+import '../../features/behaviour/views/behaviour_incident_wise_report_view.dart';
+import '../../features/behaviour/views/behaviour_settings_view.dart';
 // ── Academics ────────────────────────────────────────────────────────────────
 import '../../features/academics/bindings/academics_binding.dart';
 import '../../features/academics/views/core_setup_view.dart';
@@ -174,6 +189,19 @@ class AppPages {
     GetPage(name: AppRoutes.libraryBooks, page: () => const LibraryBookView(), binding: LibraryBinding()),
     GetPage(name: AppRoutes.libraryMembers, page: () => const LibraryMemberView(), binding: LibraryBinding()),
     GetPage(name: AppRoutes.libraryIssues, page: () => const LibraryIssueView(), binding: LibraryBinding()),
+    // ── Finance ──────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.financeChartOfAccounts, page: () => const ChartOfAccountsView(), binding: FinanceBinding()),
+    GetPage(name: AppRoutes.financeBankAccounts, page: () => const BankAccountView(), binding: FinanceBinding()),
+    GetPage(name: AppRoutes.financeLedger, page: () => const LedgerEntryView(), binding: FinanceBinding()),
+    GetPage(name: AppRoutes.financeFundTransfer, page: () => const FundTransferView(), binding: FinanceBinding()),
+    // ── Behaviour ────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.behaviourIncidents, page: () => const BehaviourIncidentView(), binding: BehaviourBinding()),
+    GetPage(name: AppRoutes.behaviourAssignIncident, page: () => const BehaviourAssignIncidentView(), binding: BehaviourBinding()),
+    GetPage(name: AppRoutes.behaviourStudentIncidentReport, page: () => const BehaviourStudentIncidentReportView(), binding: BehaviourBinding()),
+    GetPage(name: AppRoutes.behaviourStudentRankReport, page: () => const BehaviourStudentRankReportView(), binding: BehaviourBinding()),
+    GetPage(name: AppRoutes.behaviourClassSectionRankReport, page: () => const BehaviourClassSectionRankReportView(), binding: BehaviourBinding()),
+    GetPage(name: AppRoutes.behaviourIncidentWiseReport, page: () => const BehaviourIncidentWiseReportView(), binding: BehaviourBinding()),
+    GetPage(name: AppRoutes.behaviourSettings, page: () => const BehaviourSettingsView(), binding: BehaviourBinding()),
     // ── Academics ────────────────────────────────────────────────────────────
     GetPage(name: AppRoutes.academicsCoreSetup, page: () => const CoreSetupView(), binding: AcademicsBinding()),
     GetPage(name: AppRoutes.academicsAssignClassTeacher, page: () => const AssignClassTeacherView(), binding: AcademicsBinding()),

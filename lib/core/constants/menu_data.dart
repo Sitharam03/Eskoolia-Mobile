@@ -303,7 +303,9 @@ class MenuData {
             name: "Assign Incident",
             route: "/behaviour/assign-incident"),
         SidebarItem(
-            id: "behaviour-incident", name: "Incident", route: "/behaviour/incidents"),
+            id: "behaviour-incident",
+            name: "Incident",
+            route: "/behaviour/incidents"),
         SidebarItem(
             id: "behaviour-student-incident-report",
             name: "Student Incident Report",
