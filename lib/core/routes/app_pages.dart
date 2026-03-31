@@ -50,6 +50,32 @@ import '../../features/exams/views/exam_merit_report_view.dart';
 import '../../features/exams/views/exam_schedule_report_view.dart';
 import '../../features/exams/views/exam_student_report_view.dart';
 import '../../features/exams/views/online_exam_view.dart';
+// ── HR ───────────────────────────────────────────────────────────────────────
+import '../../features/hr/bindings/hr_binding.dart';
+import '../../features/hr/views/hr_department_view.dart';
+import '../../features/hr/views/hr_designation_view.dart';
+import '../../features/hr/views/hr_staff_view.dart';
+import '../../features/hr/views/hr_staff_directory_view.dart';
+import '../../features/hr/views/hr_leave_type_view.dart';
+import '../../features/hr/views/hr_leave_define_view.dart';
+import '../../features/hr/views/hr_leave_request_view.dart';
+import '../../features/hr/views/hr_staff_attendance_view.dart';
+import '../../features/hr/views/hr_payroll_view.dart';
+// ── Transport ─────────────────────────────────────────────────────────────────
+import '../../features/transport/bindings/transport_binding.dart';
+import '../../features/transport/views/transport_vehicle_view.dart';
+import '../../features/transport/views/transport_route_view.dart';
+import '../../features/transport/views/transport_assign_view.dart';
+import '../../features/transport/views/transport_student_report_view.dart';
+// ── Inventory ────────────────────────────────────────────────────────────────
+import '../../features/inventory/bindings/inventory_binding.dart';
+import '../../features/inventory/views/inventory_category_view.dart';
+import '../../features/inventory/views/inventory_store_view.dart';
+import '../../features/inventory/views/inventory_supplier_view.dart';
+import '../../features/inventory/views/inventory_item_view.dart';
+import '../../features/inventory/views/inventory_receive_view.dart';
+import '../../features/inventory/views/inventory_issue_view.dart';
+import '../../features/inventory/views/inventory_sell_view.dart';
 // ── Library ──────────────────────────────────────────────────────────────────
 import '../../features/library/bindings/library_binding.dart';
 import '../../features/library/views/library_category_view.dart';
@@ -154,6 +180,29 @@ class AppPages {
     GetPage(name: AppRoutes.examScheduleReport, page: () => const ExamScheduleReportView(), binding: ExamBinding()),
     GetPage(name: AppRoutes.examStudentReport, page: () => const ExamStudentReportView(), binding: ExamBinding()),
     GetPage(name: AppRoutes.onlineExam, page: () => const OnlineExamView(), binding: ExamBinding()),
+    // ── HR ───────────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.hrDepartments, page: () => const HrDepartmentView(), binding: HrBinding()),
+    GetPage(name: AppRoutes.hrDesignations, page: () => const HrDesignationView(), binding: HrBinding()),
+    GetPage(name: AppRoutes.hrStaff, page: () => const HrStaffView(), binding: HrBinding()),
+    GetPage(name: AppRoutes.hrStaffDirectory, page: () => const HrStaffDirectoryView(), binding: HrBinding()),
+    GetPage(name: AppRoutes.hrLeaveTypes, page: () => const HrLeaveTypeView(), binding: HrBinding()),
+    GetPage(name: AppRoutes.hrLeaveDefines, page: () => const HrLeaveDefineView(), binding: HrBinding()),
+    GetPage(name: AppRoutes.hrLeaveRequests, page: () => const HrLeaveRequestView(), binding: HrBinding()),
+    GetPage(name: AppRoutes.hrStaffAttendance, page: () => const HrStaffAttendanceView(), binding: HrBinding()),
+    GetPage(name: AppRoutes.hrPayroll, page: () => const HrPayrollView(), binding: HrBinding()),
+    // ── Transport ────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.transportVehicles, page: () => const TransportVehicleView(), binding: TransportBinding()),
+    GetPage(name: AppRoutes.transportRoutes, page: () => const TransportRouteView(), binding: TransportBinding()),
+    GetPage(name: AppRoutes.transportAssignVehicles, page: () => const TransportAssignView(), binding: TransportBinding()),
+    GetPage(name: AppRoutes.transportStudentReport, page: () => const TransportStudentReportView(), binding: TransportBinding()),
+    // ── Inventory ────────────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.inventoryCategories, page: () => const InventoryCategoryView(), binding: InventoryBinding()),
+    GetPage(name: AppRoutes.inventoryStores, page: () => const InventoryStoreView(), binding: InventoryBinding()),
+    GetPage(name: AppRoutes.inventorySuppliers, page: () => const InventorySupplierView(), binding: InventoryBinding()),
+    GetPage(name: AppRoutes.inventoryItems, page: () => const InventoryItemView(), binding: InventoryBinding()),
+    GetPage(name: AppRoutes.inventoryReceive, page: () => const InventoryReceiveView(), binding: InventoryBinding()),
+    GetPage(name: AppRoutes.inventoryIssue, page: () => const InventoryIssueView(), binding: InventoryBinding()),
+    GetPage(name: AppRoutes.inventorySell, page: () => const InventorySellView(), binding: InventoryBinding()),
     // ── Library ──────────────────────────────────────────────────────────────
     GetPage(name: AppRoutes.libraryCategories, page: () => const LibraryCategoryView(), binding: LibraryBinding()),
     GetPage(name: AppRoutes.libraryBooks, page: () => const LibraryBookView(), binding: LibraryBinding()),

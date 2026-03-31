@@ -80,9 +80,35 @@ abstract class AppRoutes {
 
   // HR / Finance / Administration / Behaviour
   static const String hr = '/hr';
+  static const String hrDepartments = '/hr/departments';
+  static const String hrDesignations = '/hr/designations';
+  static const String hrStaff = '/hr/staff';
+  static const String hrStaffDirectory = '/hr/staff-directory';
+  static const String hrLeaveTypes = '/hr/leave-types';
+  static const String hrLeaveDefines = '/hr/leave-defines';
+  static const String hrLeaveRequests = '/hr/leave-requests';
+  static const String hrStaffAttendance = '/hr/staff-attendance';
+  static const String hrPayroll = '/hr/payroll';
   static const String finance = '/finance';
   static const String administration = '/administration';
   static const String behaviour = '/behaviour';
+
+  // Transport
+  static const String transport = '/transport';
+  static const String transportVehicles = '/transport/vehicles';
+  static const String transportRoutes = '/transport/routes';
+  static const String transportAssignVehicles = '/transport/assign-vehicles';
+  static const String transportStudentReport = '/transport/student-report';
+
+  // Inventory
+  static const String inventory = '/inventory';
+  static const String inventoryCategories = '/inventory/categories';
+  static const String inventoryStores = '/inventory/stores';
+  static const String inventorySuppliers = '/inventory/suppliers';
+  static const String inventoryItems = '/inventory/items';
+  static const String inventoryReceive = '/inventory/receive';
+  static const String inventoryIssue = '/inventory/issue';
+  static const String inventorySell = '/inventory/sell';
 
   // Library
   static const String library = '/library';
