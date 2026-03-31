@@ -176,12 +176,15 @@ Widget _sectionHeader(
     const SizedBox(width: 10),
     Icon(icon, size: 18, color: color),
     const SizedBox(width: 6),
-    Text(
-      title,
-      style: GoogleFonts.inter(
-        fontSize: 14,
-        fontWeight: FontWeight.w700,
-        color: const Color(0xFF111827),
+    Expanded(
+      child: Text(
+        title,
+        overflow: TextOverflow.ellipsis,
+        style: GoogleFonts.inter(
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+          color: const Color(0xFF111827),
+        ),
       ),
     ),
   ]);

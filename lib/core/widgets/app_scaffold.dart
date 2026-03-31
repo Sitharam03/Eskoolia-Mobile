@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'app_drawer.dart';
-import '../services/storage_service.dart';
-import 'package:get/get.dart';
 import '../routes/app_routes.dart';
+import '../services/storage_service.dart';
 
-/// A reusable Scaffold wrapper that provides the AppBar and the AppDrawer (Sidebar).
-/// Use this to wrap the main content of every major module page.
+/// Scaffold wrapper for all module pages.
+/// Back button and device back → navigate to dashboard.
 class AppScaffold extends StatelessWidget {
   final String title;
   final Widget body;
@@ -27,32 +26,46 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9FBFF),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          title,
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.w700,
-            fontSize: 18,
-            color: const Color(0xFF1F2937),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) Get.offAllNamed(AppRoutes.dashboard);
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF9FBFF),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                color: Color(0xFF374151), size: 20),
+            onPressed: () => Get.offAllNamed(AppRoutes.dashboard),
+            splashRadius: 20,
+          ),
+          title: Text(
+            title,
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+              color: const Color(0xFF1F2937),
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout_rounded, color: Color(0xFF6B7280)),
+              tooltip: 'Logout',
+              onPressed: _logout,
+            ),
+            const SizedBox(width: 8),
+          ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1),
+            child: Container(height: 1, color: const Color(0xFFE5E7EB)),
           ),
         ),
-        iconTheme: const IconThemeData(color: Color(0xFF4B5563)),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout, color: Color(0xFF6B7280)),
-            tooltip: 'Logout',
-            onPressed: _logout,
-          ),
-          const SizedBox(width: 8),
-        ],
+        body: body,
+        floatingActionButton: floatingActionButton,
       ),
-      drawer: const AppDrawer(),
-      body: body,
-      floatingActionButton: floatingActionButton,
     );
   }
 }

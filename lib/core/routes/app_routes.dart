@@ -99,7 +99,6 @@ abstract class AppRoutes {
   static const String administration = '/administration';
   static const String behaviour = '/behaviour';
 
-<<<<<<< HEAD
   // Behaviour sub-routes
   static const String behaviourIncidents = '/behaviour/incidents';
   static const String behaviourAssignIncident = '/behaviour/assign-incident';
@@ -108,7 +107,7 @@ abstract class AppRoutes {
   static const String behaviourClassSectionRankReport = '/behaviour/reports/class-section-rank';
   static const String behaviourIncidentWiseReport = '/behaviour/reports/incident-wise';
   static const String behaviourSettings = '/behaviour/settings';
-=======
+
   // Transport
   static const String transport = '/transport';
   static const String transportVehicles = '/transport/vehicles';
@@ -125,7 +124,6 @@ abstract class AppRoutes {
   static const String inventoryReceive = '/inventory/receive';
   static const String inventoryIssue = '/inventory/issue';
   static const String inventorySell = '/inventory/sell';
->>>>>>> 6957a19d10c26252c4e62a91a9197b1a9cccf54a
 
   // Library
   static const String library = '/library';

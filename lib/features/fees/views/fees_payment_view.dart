@@ -113,13 +113,16 @@ class FeesPaymentView extends StatelessWidget {
                     ),
                     fStatusBadge(a.status),
                     const SizedBox(width: 12),
-                    Text(
-                      'Discount: ₹${fmtAmt(a.discountAmount)}',
-                      style: GoogleFonts.inter(
-                          fontSize: 12,
-                          color: const Color(0xFF6B7280)),
+                    Flexible(
+                      child: Text(
+                        'Discount: ₹${fmtAmt(a.discountAmount)}',
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: const Color(0xFF6B7280)),
+                      ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 8),
                     Text(
                       'Due: ₹${fmtAmt(a.dueAmount)}',
                       style: GoogleFonts.inter(

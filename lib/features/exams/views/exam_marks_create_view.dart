@@ -286,6 +286,8 @@ class _StudentMarksCard extends StatelessWidget {
                             color: const Color(0xFF111827))),
                     Text('Adm: ${student.admissionNo}'
                         '${student.rollNo.isNotEmpty ? ' · Roll: ${student.rollNo}' : ''}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(
                             fontSize: 12, color: const Color(0xFF6B7280))),
                   ],
@@ -389,6 +391,8 @@ class _MarkInputState extends State<_MarkInput> {
           Expanded(
             flex: 2,
             child: Text(widget.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.inter(
                     fontSize: 12,
                     color: const Color(0xFF374151),

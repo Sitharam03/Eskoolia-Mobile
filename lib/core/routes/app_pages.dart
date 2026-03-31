@@ -39,6 +39,7 @@ import '../../features/students/views/student_unassigned_view.dart';
 import '../../features/students/views/student_delete_record_view.dart';
 import '../../features/students/views/student_export_view.dart';
 import '../../features/students/views/student_sms_view.dart';
+import '../../features/students/views/student_attendance_view.dart';
 import '../../features/students/views/student_attendance_import_view.dart';
 import '../../features/students/views/subject_wise_attendance_view.dart';
 import '../../features/students/views/subject_wise_attendance_report_view.dart';
@@ -192,7 +193,9 @@ class AppPages {
     GetPage(name: AppRoutes.studentDeleteRecord, page: () => const StudentDeleteRecordView(), binding: StudentsBinding()),
     GetPage(name: AppRoutes.studentExport, page: () => const StudentExportView(), binding: StudentsBinding()),
     GetPage(name: AppRoutes.studentSms, page: () => const StudentSmsView()),
+    GetPage(name: AppRoutes.studentAttendance, page: () => const StudentAttendanceView(), binding: StudentsBinding()),
     GetPage(name: AppRoutes.studentAttendanceImport, page: () => const StudentAttendanceImportView()),
+    GetPage(name: AppRoutes.subjectAttendance, page: () => const SubjectWiseAttendanceView()),
     GetPage(name: AppRoutes.studentSubjectWiseAttendance, page: () => const SubjectWiseAttendanceView()),
     GetPage(name: AppRoutes.studentSubjectWiseAttendanceReport, page: () => const SubjectWiseAttendanceReportView()),
     // ── Exams ────────────────────────────────────────────────────────────────

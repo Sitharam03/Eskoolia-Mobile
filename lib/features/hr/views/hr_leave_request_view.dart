@@ -391,11 +391,14 @@ class _RequestCard extends StatelessWidget {
                           const Icon(Icons.date_range_rounded,
                               size: 12, color: Color(0xFF9CA3AF)),
                           const SizedBox(width: 4),
-                          Text(
-                            '${request.fromDate} → ${request.toDate}',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: const Color(0xFF6B7280),
+                          Expanded(
+                            child: Text(
+                              '${request.fromDate} → ${request.toDate}',
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: const Color(0xFF6B7280),
+                              ),
                             ),
                           ),
                         ]),
@@ -407,11 +410,14 @@ class _RequestCard extends StatelessWidget {
                             const Icon(Icons.person_outline_rounded,
                                 size: 12, color: Color(0xFF9CA3AF)),
                             const SizedBox(width: 4),
-                            Text(
-                              request.staffName,
-                              style: GoogleFonts.inter(
-                                fontSize: 12,
-                                color: const Color(0xFF6B7280),
+                            Expanded(
+                              child: Text(
+                                request.staffName,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  color: const Color(0xFF6B7280),
+                                ),
                               ),
                             ),
                           ]),
