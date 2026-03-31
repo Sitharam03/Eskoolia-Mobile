@@ -276,6 +276,31 @@ class MenuData {
       ],
     ),
     SidebarItem(
+      id: "inventory",
+      name: "Inventory",
+      iconCodePoint: 0xe3b8, // Icons.inventory_2
+      children: [
+        SidebarItem(id: "inventory-categories", name: "Item Categories", route: "/inventory/categories"),
+        SidebarItem(id: "inventory-stores", name: "Item Stores", route: "/inventory/stores"),
+        SidebarItem(id: "inventory-suppliers", name: "Suppliers", route: "/inventory/suppliers"),
+        SidebarItem(id: "inventory-items", name: "Items", route: "/inventory/items"),
+        SidebarItem(id: "inventory-receive", name: "Item Receive", route: "/inventory/receive"),
+        SidebarItem(id: "inventory-issue", name: "Item Issue", route: "/inventory/issue"),
+        SidebarItem(id: "inventory-sell", name: "Item Sell", route: "/inventory/sell"),
+      ],
+    ),
+    SidebarItem(
+      id: "transport",
+      name: "Transport",
+      iconCodePoint: 0xe531, // Icons.directions_bus
+      children: [
+        SidebarItem(id: "transport-vehicles", name: "Vehicles", route: "/transport/vehicles"),
+        SidebarItem(id: "transport-routes", name: "Transport Routes", route: "/transport/routes"),
+        SidebarItem(id: "transport-assign-vehicles", name: "Assign Vehicles", route: "/transport/assign-vehicles"),
+        SidebarItem(id: "transport-student-report", name: "Student Report", route: "/transport/student-report"),
+      ],
+    ),
+    SidebarItem(
       id: "library",
       name: "Library",
       iconCodePoint: 0xe3e4, // Icons.local_library

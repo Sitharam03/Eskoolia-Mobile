@@ -14,19 +14,19 @@ import '../controllers/online_exam_controller.dart';
 class ExamBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ExamTypeController>(() => ExamTypeController());
-    Get.lazyPut<ExamSetupController>(() => ExamSetupController());
-    Get.lazyPut<ExamScheduleController>(() => ExamScheduleController());
-    Get.lazyPut<ExamMarksController>(() => ExamMarksController());
-    Get.lazyPut<ExamMarksReportController>(() => ExamMarksReportController());
-    Get.lazyPut<ExamAdmitCardController>(() => ExamAdmitCardController());
-    Get.lazyPut<ExamSeatPlanController>(() => ExamSeatPlanController());
-    Get.lazyPut<ExamAttendanceController>(() => ExamAttendanceController());
-    Get.lazyPut<ExamAttendanceReportController>(() => ExamAttendanceReportController());
-    Get.lazyPut<ExamResultPublishController>(() => ExamResultPublishController());
-    Get.lazyPut<ExamMeritReportController>(() => ExamMeritReportController());
-    Get.lazyPut<ExamStudentReportController>(() => ExamStudentReportController());
-    Get.lazyPut<ExamScheduleReportController>(() => ExamScheduleReportController());
-    Get.lazyPut<OnlineExamController>(() => OnlineExamController());
+    Get.lazyPut<ExamTypeController>(() => ExamTypeController(), fenix: true);
+    Get.lazyPut<ExamSetupController>(() => ExamSetupController(), fenix: true);
+    Get.lazyPut<ExamScheduleController>(() => ExamScheduleController(), fenix: true);
+    Get.lazyPut<ExamMarksController>(() => ExamMarksController(), fenix: true);
+    Get.lazyPut<ExamMarksReportController>(() => ExamMarksReportController(), fenix: true);
+    Get.lazyPut<ExamAdmitCardController>(() => ExamAdmitCardController(), fenix: true);
+    Get.lazyPut<ExamSeatPlanController>(() => ExamSeatPlanController(), fenix: true);
+    Get.lazyPut<ExamAttendanceController>(() => ExamAttendanceController(), fenix: true);
+    Get.lazyPut<ExamAttendanceReportController>(() => ExamAttendanceReportController(), fenix: true);
+    Get.lazyPut<ExamResultPublishController>(() => ExamResultPublishController(), fenix: true);
+    Get.lazyPut<ExamMeritReportController>(() => ExamMeritReportController(), fenix: true);
+    Get.lazyPut<ExamStudentReportController>(() => ExamStudentReportController(), fenix: true);
+    Get.lazyPut<ExamScheduleReportController>(() => ExamScheduleReportController(), fenix: true);
+    Get.lazyPut<OnlineExamController>(() => OnlineExamController(), fenix: true);
   }
 }
