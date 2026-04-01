@@ -133,7 +133,7 @@ class _IdCardViewState extends State<IdCardView> {
           _resetForm();
           _showForm(context);
         },
-        backgroundColor: const Color(0xFF4F46E5),
+        backgroundColor: const Color(0xFF6366F1),
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('Add Template'),
@@ -144,12 +144,12 @@ class _IdCardViewState extends State<IdCardView> {
   Widget _buildList() {
     return Obx(() {
       if (_c.isLoading.value && _c.idCardTemplates.isEmpty)
-        return const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+        return const Center(child: CircularProgressIndicator(color: Color(0xFF6366F1)));
       final items = _c.idCardTemplates.where((i) => i.title.toLowerCase().contains(_c.searchQuery.value.trim().toLowerCase())).toList();
       if (items.isEmpty)
         return _empty('No templates found.', _c.loadIdCardTemplates);
       return RefreshIndicator(
-        color: const Color(0xFF4F46E5),
+        color: const Color(0xFF6366F1),
         onRefresh: _c.loadIdCardTemplates,
         child: ListView.builder(
           padding: const EdgeInsets.only(top: 4, bottom: 100),
@@ -158,7 +158,7 @@ class _IdCardViewState extends State<IdCardView> {
             final t = items[i];
             return AdminRecordCard(
               icon: Icons.badge_outlined,
-              iconColor: const Color(0xFF4F46E5),
+              iconColor: const Color(0xFF6366F1),
               title: t.title,
               subtitle: 'Layout: ${t.pageLayoutStyle.capitalizeFirst} | Roles: ${t.applicableRoleIds.length}',
               onEdit: () {
@@ -197,7 +197,7 @@ class _IdCardViewState extends State<IdCardView> {
             child: Row(children: [
               Expanded(
                   child: Text(_c.editingId.value != null ? 'Edit ID Card' : 'Add ID Card',
-                      style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF111827)))),
+                      style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF111827)))),
               IconButton(icon: const Icon(Icons.close_rounded, color: Color(0xFF6B7280)), onPressed: () => Navigator.pop(sheetCtx)),
             ]),
           ),
@@ -233,8 +233,8 @@ class _IdCardViewState extends State<IdCardView> {
                     return FilterChip(
                       label: Text(r.name, style: GoogleFonts.inter(fontSize: 12)),
                       selected: selected,
-                      selectedColor: const Color(0xFF4F46E5).withValues(alpha: 0.1),
-                      checkmarkColor: const Color(0xFF4F46E5),
+                      selectedColor: const Color(0xFF6366F1).withValues(alpha: 0.1),
+                      checkmarkColor: const Color(0xFF6366F1),
                       onSelected: (val) {
                         if (val) _c.idCardRoleIds.add(r.id);
                         else _c.idCardRoleIds.remove(r.id);
@@ -289,7 +289,7 @@ class _IdCardViewState extends State<IdCardView> {
           const SizedBox(width: 12),
           Expanded(child: Obx(() => Text(
             rxPath.value?.split('/').last ?? 'No file selected',
-            style: GoogleFonts.inter(fontSize: 12, color: rxPath.value != null ? const Color(0xFF4F46E5) : Colors.grey),
+            style: GoogleFonts.inter(fontSize: 12, color: rxPath.value != null ? const Color(0xFF6366F1) : Colors.grey),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ))),
@@ -353,7 +353,7 @@ class _IdCardViewState extends State<IdCardView> {
             child: ElevatedButton(
           onPressed: isSaving ? null : onSave,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF4F46E5),
+            backgroundColor: const Color(0xFF6366F1),
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

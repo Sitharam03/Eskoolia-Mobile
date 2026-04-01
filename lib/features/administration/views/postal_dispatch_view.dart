@@ -55,7 +55,7 @@ class _PostalDispatchViewState extends State<PostalDispatchView> {
           _c.resetPostalForm();
           _showForm(context);
         },
-        backgroundColor: const Color(0xFF4F46E5),
+        backgroundColor: const Color(0xFF6366F1),
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('Add Dispatch'),
@@ -67,14 +67,14 @@ class _PostalDispatchViewState extends State<PostalDispatchView> {
     return Obx(() {
       if (_c.isLoading.value)
         return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+            child: CircularProgressIndicator(color: Color(0xFF6366F1)));
       final items = _c.filteredPostalDispatch;
       if (items.isEmpty)
         return _empty(
             'No postal dispatch records.\nTap + to add the first entry.',
             _c.loadPostalDispatch);
       return RefreshIndicator(
-        color: const Color(0xFF4F46E5),
+        color: const Color(0xFF6366F1),
         onRefresh: _c.loadPostalDispatch,
         child: ListView.builder(
           padding: const EdgeInsets.only(top: 4, bottom: 100),
@@ -240,7 +240,7 @@ class _FormSheet extends StatelessWidget {
             child: Row(children: [
               Expanded(
                   child: Text(title,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: const Color(0xFF111827)))),
@@ -264,10 +264,10 @@ class _FormSheet extends StatelessWidget {
 Widget _section(String label) => Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Text(label,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.poppins(
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF4F46E5),
+              color: const Color(0xFF6366F1),
               letterSpacing: 0.5)),
     );
 
@@ -293,7 +293,7 @@ Widget _actionRow(
           child: ElevatedButton(
               onPressed: isSaving ? null : onSave,
               style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4F46E5),
+                  backgroundColor: const Color(0xFF6366F1),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(

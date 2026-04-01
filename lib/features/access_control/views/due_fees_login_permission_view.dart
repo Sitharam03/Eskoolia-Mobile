@@ -51,8 +51,9 @@ class DueFeesLoginPermissionView extends GetView<DueFeesPermissionController> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFF4F46E5) : const Color(0xFFF3F4F6),
+          color: isActive ? const Color(0xFF4F46E5) : Colors.white,
           borderRadius: BorderRadius.circular(20),
+          border: isActive ? null : Border.all(color: const Color(0xFFE0E4EF)),
         ),
         child: Text(
           label,
@@ -109,16 +110,23 @@ class DueFeesLoginPermissionView extends GetView<DueFeesPermissionController> {
           Obx(() => SizedBox(
                 width: double.infinity,
                 height: 46,
-                child: ElevatedButton.icon(
-                  onPressed: controller.isLoadingCriteria.value || controller.isLoading.value ? null : controller.searchUsers,
-                  icon: controller.isLoading.value
-                      ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                      : const Icon(Icons.search_rounded, size: 18),
-                  label: Text(controller.isLoading.value ? 'Searching...' : 'Search Students'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4F46E5),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(colors: [Color(0xFF6366F1), Color(0xFF4F46E5)]),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ElevatedButton.icon(
+                    onPressed: controller.isLoadingCriteria.value || controller.isLoading.value ? null : controller.searchUsers,
+                    icon: controller.isLoading.value
+                        ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                        : const Icon(Icons.search_rounded, size: 18),
+                    label: Text(controller.isLoading.value ? 'Searching...' : 'Search Students'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
                   ),
                 ),
               )),
@@ -137,9 +145,9 @@ class DueFeesLoginPermissionView extends GetView<DueFeesPermissionController> {
           height: 46,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: const Color(0xFFF9FAFB),
-            border: Border.all(color: const Color(0xFFE5E7EB)),
-            borderRadius: BorderRadius.circular(10),
+            color: const Color(0xFFF5F7FF),
+            border: Border.all(color: const Color(0xFFE0E4EF)),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
@@ -170,10 +178,10 @@ class DueFeesLoginPermissionView extends GetView<DueFeesPermissionController> {
             hintText: hint,
             hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 13),
             filled: true,
-            fillColor: const Color(0xFFF9FAFB),
+            fillColor: const Color(0xFFF5F7FF),
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE0E4EF))),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE0E4EF))),
           ),
         ),
       ],
@@ -215,10 +223,13 @@ class DueFeesLoginPermissionView extends GetView<DueFeesPermissionController> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 6, offset: const Offset(0, 2))],
+        gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Colors.white, Color(0xFFFCFCFF)]),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE0E4EF)),
+        boxShadow: [
+          BoxShadow(color: const Color(0xFF6366F1).withValues(alpha: 0.06), blurRadius: 12, offset: const Offset(0, 4)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 4, offset: const Offset(0, 1)),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -243,7 +254,7 @@ class DueFeesLoginPermissionView extends GetView<DueFeesPermissionController> {
                     children: [
                       Text(
                         row.studentName ?? 'Unknown',
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14, color: const Color(0xFF111827)),
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 14, color: const Color(0xFF111827)),
                       ),
                       Text(
                         [

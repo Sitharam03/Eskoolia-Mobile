@@ -149,7 +149,7 @@ class _CertificateViewState extends State<CertificateView> {
           _resetForm();
           _showForm(context);
         },
-        backgroundColor: const Color(0xFF4F46E5),
+        backgroundColor: const Color(0xFF6366F1),
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('Add Template'),
@@ -160,12 +160,12 @@ class _CertificateViewState extends State<CertificateView> {
   Widget _buildList() {
     return Obx(() {
       if (_c.isLoading.value && _c.certificateTemplates.isEmpty)
-        return const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+        return const Center(child: CircularProgressIndicator(color: Color(0xFF6366F1)));
       final items = _c.certificateTemplates.where((i) => i.title.toLowerCase().contains(_c.searchQuery.value.trim().toLowerCase())).toList();
       if (items.isEmpty)
         return _empty('No templates found.', _c.loadCertificateTemplates);
       return RefreshIndicator(
-        color: const Color(0xFF4F46E5),
+        color: const Color(0xFF6366F1),
         onRefresh: _c.loadCertificateTemplates,
         child: ListView.builder(
           padding: const EdgeInsets.only(top: 4, bottom: 100),
@@ -175,7 +175,7 @@ class _CertificateViewState extends State<CertificateView> {
             final roleName = _c.generateRoles.firstWhereOrNull((r) => r.id == t.applicableRoleId)?.name ?? 'All Roles';
             return AdminRecordCard(
               icon: Icons.workspace_premium_outlined,
-              iconColor: const Color(0xFF4F46E5),
+              iconColor: const Color(0xFF6366F1),
               title: t.title,
               subtitle: 'Type: ${t.type} | Role: $roleName',
               onEdit: () {
@@ -215,7 +215,7 @@ class _CertificateViewState extends State<CertificateView> {
               child: Row(children: [
                 Expanded(
                     child: Text(_c.editingId.value != null ? 'Edit Certificate' : 'Add Certificate',
-                        style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF111827)))),
+                        style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF111827)))),
                 IconButton(icon: const Icon(Icons.close_rounded, color: Color(0xFF6B7280)), onPressed: () => Navigator.pop(sheetCtx)),
               ]),
             ),
@@ -271,7 +271,7 @@ class _CertificateViewState extends State<CertificateView> {
                   ),
 
                   const SizedBox(height: 24),
-                  Text('Dimensions (mm)', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: const Color(0xFF4F46E5))),
+                  Text('Dimensions (mm)', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w700, color: const Color(0xFF6366F1))),
                   const SizedBox(height: 8),
                   Row(children: [
                     Expanded(child: AdminField(controller: widthCtrl, label: 'Width (165)', keyboardType: TextInputType.number)),
@@ -280,7 +280,7 @@ class _CertificateViewState extends State<CertificateView> {
                   ]),
 
                   const SizedBox(height: 16),
-                  Text('Padding (mm)', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: const Color(0xFF4F46E5))),
+                  Text('Padding (mm)', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w700, color: const Color(0xFF6366F1))),
                   const SizedBox(height: 8),
                   Row(children: [
                     Expanded(child: AdminField(controller: ptCtrl, label: 'Top', keyboardType: TextInputType.number)),
@@ -339,7 +339,7 @@ class _CertificateViewState extends State<CertificateView> {
           const SizedBox(width: 12),
           Expanded(child: Obx(() => Text(
             rxPath.value?.split('/').last ?? 'No file selected',
-            style: GoogleFonts.inter(fontSize: 12, color: rxPath.value != null ? const Color(0xFF4F46E5) : Colors.grey),
+            style: GoogleFonts.inter(fontSize: 12, color: rxPath.value != null ? const Color(0xFF6366F1) : Colors.grey),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ))),
@@ -401,7 +401,7 @@ class _CertificateViewState extends State<CertificateView> {
             child: ElevatedButton(
           onPressed: isSaving ? null : onSave,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF4F46E5),
+            backgroundColor: const Color(0xFF6366F1),
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

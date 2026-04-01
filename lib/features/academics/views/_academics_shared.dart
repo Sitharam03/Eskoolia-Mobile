@@ -2,24 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // ── Colours ──────────────────────────────────────────────────────────────────
-const _kIndigo = Color(0xFF4F46E5);
-const _kBorder = Color(0xFFE5E7EB);
+const _kIndigo = Color(0xFF6366F1);
+const _kBorder = Color(0xFFE0E4EF);
 const _kGrey = Color(0xFF6B7280);
 const _kRed = Color(0xFFDC2626);
+const _kViolet = Color(0xFF7C3AED);
 
 // ── Card decoration ──────────────────────────────────────────────────────────
 
-/// White card with subtle border and shadow. Never put color+decoration together —
-/// decoration already carries the white fill.
+/// White-to-soft-violet gradient card with dramatic indigo + black shadows.
+/// Never put color+decoration together — decoration already carries the fill.
 BoxDecoration aCardDecoration() => BoxDecoration(
-      color: Colors.white,
-      border: Border.all(color: _kBorder),
-      borderRadius: BorderRadius.circular(12),
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Colors.white, Color(0xFFF0EEFF)],
+      ),
+      border: Border.all(color: _kIndigo.withValues(alpha: 0.12)),
+      borderRadius: BorderRadius.circular(18),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.04),
-          blurRadius: 8,
-          offset: const Offset(0, 2),
+          color: _kIndigo.withValues(alpha: 0.10),
+          blurRadius: 16,
+          offset: const Offset(0, 6),
+        ),
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.03),
+          blurRadius: 4,
+          offset: const Offset(0, 1),
         ),
       ],
     );
@@ -42,22 +52,23 @@ TextFormField aTextField(
       labelText: label,
       hintText: hint,
       labelStyle: GoogleFonts.inter(fontSize: 13, color: _kGrey),
-      hintStyle: GoogleFonts.inter(fontSize: 13, color: const Color(0xFF9CA3AF)),
+      hintStyle:
+          GoogleFonts.inter(fontSize: 13, color: const Color(0xFF9CA3AF)),
       filled: true,
-      fillColor: const Color(0xFFF9FAFB),
+      fillColor: Colors.white.withValues(alpha: 0.7),
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kBorder),
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: _kIndigo.withValues(alpha: 0.15)),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kBorder),
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: _kIndigo.withValues(alpha: 0.15)),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kIndigo, width: 1.5),
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: _kIndigo, width: 1.8),
       ),
     ),
   );
@@ -81,20 +92,20 @@ DropdownButtonFormField<T> aDropdown<T>({
       labelText: label,
       labelStyle: GoogleFonts.inter(fontSize: 13, color: _kGrey),
       filled: true,
-      fillColor: const Color(0xFFF9FAFB),
+      fillColor: Colors.white.withValues(alpha: 0.7),
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kBorder),
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: _kIndigo.withValues(alpha: 0.15)),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kBorder),
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: _kIndigo.withValues(alpha: 0.15)),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kIndigo, width: 1.5),
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: _kIndigo, width: 1.8),
       ),
     ),
   );
@@ -107,29 +118,39 @@ Widget aSearchBar(
   String hint, {
   ValueChanged<String>? onChanged,
 }) {
-  return TextFormField(
-    controller: controller,
-    onChanged: onChanged,
-    style: GoogleFonts.inter(fontSize: 14, color: const Color(0xFF111827)),
-    decoration: InputDecoration(
-      hintText: hint,
-      hintStyle: GoogleFonts.inter(fontSize: 13, color: const Color(0xFF9CA3AF)),
-      prefixIcon: const Icon(Icons.search_rounded, color: _kGrey, size: 20),
-      filled: true,
-      fillColor: const Color(0xFFF9FAFB),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kBorder),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kBorder),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _kIndigo, width: 1.5),
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.white.withValues(alpha: 0.75),
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: _kIndigo.withValues(alpha: 0.12)),
+      boxShadow: [
+        BoxShadow(
+          color: _kIndigo.withValues(alpha: 0.06),
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: TextFormField(
+      controller: controller,
+      onChanged: onChanged,
+      style: GoogleFonts.inter(fontSize: 14, color: const Color(0xFF111827)),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle:
+            GoogleFonts.inter(fontSize: 13, color: const Color(0xFF9CA3AF)),
+        prefixIcon: ShaderMask(
+          shaderCallback: (bounds) => const LinearGradient(
+            colors: [_kIndigo, _kViolet],
+          ).createShader(bounds),
+          child: const Icon(Icons.search_rounded, color: Colors.white, size: 20),
+        ),
+        filled: false,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
       ),
     ),
   );
@@ -142,12 +163,41 @@ Widget aEmptyState(String message) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.inbox_rounded, size: 64, color: Colors.grey.shade300),
-        const SizedBox(height: 12),
+        Container(
+          width: 90,
+          height: 90,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [_kIndigo, _kViolet],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: _kIndigo.withValues(alpha: 0.35),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: const Icon(Icons.inbox_rounded, size: 42, color: Colors.white),
+        ),
+        const SizedBox(height: 16),
         Text(
           message,
           textAlign: TextAlign.center,
-          style: GoogleFonts.inter(fontSize: 14, color: _kGrey),
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: const Color(0xFF111827),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Pull down to refresh',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.poppins(fontSize: 12, color: _kGrey),
         ),
       ],
     ),
@@ -160,25 +210,40 @@ Future<bool> aDeleteDialog(BuildContext context, String message) async {
   final result = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
       title: Text('Confirm Delete',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
       content: Text(message, style: GoogleFonts.inter(fontSize: 14)),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child:
-              Text('Cancel', style: GoogleFonts.inter(color: _kGrey)),
+          child: Text('Cancel', style: GoogleFonts.inter(color: _kGrey)),
         ),
-        ElevatedButton(
-          onPressed: () => Navigator.pop(ctx, true),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _kRed,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8)),
+        Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
+            ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: _kRed.withValues(alpha: 0.35),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          child: Text('Delete', style: GoogleFonts.inter()),
+          child: ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            child: Text('Delete', style: GoogleFonts.inter()),
+          ),
         ),
       ],
     ),
@@ -191,24 +256,40 @@ Future<bool> aConfirmDialog(
   final result = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
       title: Text(title,
-          style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
       content: Text(message, style: GoogleFonts.inter(fontSize: 14)),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
           child: Text('Cancel', style: GoogleFonts.inter(color: _kGrey)),
         ),
-        ElevatedButton(
-          onPressed: () => Navigator.pop(ctx, true),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _kIndigo,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8)),
+        Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [_kIndigo, Color(0xFF4F46E5)],
+            ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: _kIndigo.withValues(alpha: 0.35),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          child: Text('Confirm', style: GoogleFonts.inter()),
+          child: ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            child: Text('Confirm', style: GoogleFonts.inter()),
+          ),
         ),
       ],
     ),
@@ -231,8 +312,14 @@ Widget aBadge(String text, Color color) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
     decoration: BoxDecoration(
-      color: color.withValues(alpha: 0.12),
+      gradient: LinearGradient(
+        colors: [
+          color.withValues(alpha: 0.12),
+          color.withValues(alpha: 0.06),
+        ],
+      ),
       borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: color.withValues(alpha: 0.25)),
     ),
     child: Text(
       text,
@@ -256,14 +343,18 @@ Widget aSectionHeader(String title) {
           width: 4,
           height: 18,
           decoration: BoxDecoration(
-            color: _kIndigo,
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [_kIndigo, _kViolet],
+            ),
             borderRadius: BorderRadius.circular(2),
           ),
         ),
         const SizedBox(width: 10),
         Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF111827),
@@ -312,27 +403,44 @@ Widget aPrimaryBtn(
 }) {
   return SizedBox(
     width: double.infinity,
-    child: ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _kIndigo,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        elevation: 0,
+    child: Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [_kIndigo, Color(0xFF4F46E5)],
+        ),
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: _kIndigo.withValues(alpha: 0.35),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      child: isLoading
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                  strokeWidth: 2, color: Colors.white),
-            )
-          : Text(
-              label,
-              style: GoogleFonts.inter(
-                  fontSize: 14, fontWeight: FontWeight.w600),
-            ),
+      child: ElevatedButton(
+        onPressed: isLoading ? null : onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          elevation: 0,
+        ),
+        child: isLoading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: Colors.white),
+              )
+            : Text(
+                label,
+                style: GoogleFonts.inter(
+                    fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+      ),
     ),
   );
 }
@@ -359,19 +467,36 @@ Widget aSecondaryBtn(String label, VoidCallback? onPressed) {
 Widget aDangerBtn(String label, VoidCallback? onPressed) {
   return SizedBox(
     width: double.infinity,
-    child: ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _kRed,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        elevation: 0,
+    child: Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [_kRed, Color(0xFFB91C1C)],
+        ),
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: _kRed.withValues(alpha: 0.35),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      child: Text(
-        label,
-        style:
-            GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          elevation: 0,
+        ),
+        child: Text(
+          label,
+          style:
+              GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
       ),
     ),
   );
@@ -393,6 +518,23 @@ Widget aInfoCard({
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                _kIndigo.withValues(alpha: 0.15),
+                _kViolet.withValues(alpha: 0.10),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Icon(Icons.description_rounded, size: 18, color: _kIndigo),
+        ),
+        const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

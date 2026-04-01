@@ -27,14 +27,24 @@ String fmtAmt(double v) {
 
 // ── Card decoration ────────────────────────────────────────────────────────────
 BoxDecoration fCardDecoration() => BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: const Color(0xFFE5E7EB)),
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Colors.white, Color(0xFFE8FAF6)],
+      ),
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(
+          color: const Color(0xFF14B8A6).withValues(alpha: 0.12)),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.04),
-          blurRadius: 8,
-          offset: const Offset(0, 2),
+          color: const Color(0xFF14B8A6).withValues(alpha: 0.10),
+          blurRadius: 16,
+          offset: const Offset(0, 6),
+        ),
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.03),
+          blurRadius: 4,
+          offset: const Offset(0, 1),
         ),
       ],
     );
@@ -76,21 +86,23 @@ Widget fTextField(
             fontSize: 14, color: const Color(0xFF9CA3AF)),
         prefixText: prefixText,
         filled: true,
-        fillColor: const Color(0xFFF9FAFB),
+        fillColor: Colors.white.withValues(alpha: 0.7),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(
+              color: kFeesPrimary.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(
+              color: kFeesPrimary.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(14),
           borderSide:
-              const BorderSide(color: kFeesPrimary, width: 1.5),
+              const BorderSide(color: kFeesPrimary, width: 1.8),
         ),
       ),
     );
@@ -113,21 +125,23 @@ Widget fDropdown<T>({
         hintStyle: GoogleFonts.inter(
             fontSize: 14, color: const Color(0xFF9CA3AF)),
         filled: true,
-        fillColor: const Color(0xFFF9FAFB),
+        fillColor: Colors.white.withValues(alpha: 0.7),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(
+              color: kFeesPrimary.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(
+              color: kFeesPrimary.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(14),
           borderSide:
-              const BorderSide(color: kFeesPrimary, width: 1.5),
+              const BorderSide(color: kFeesPrimary, width: 1.8),
         ),
       ),
     );
@@ -141,86 +155,111 @@ Widget fPrimaryBtn({
 }) =>
     SizedBox(
       width: double.infinity,
-      child: ElevatedButton(
-        onPressed: loading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10)),
-          elevation: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [color, color.withValues(alpha: 0.8)],
+          ),
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.35),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        child: loading
-            ? const SizedBox(
-                width: 18,
-                height: 18,
-                child: CircularProgressIndicator(
-                    strokeWidth: 2, color: Colors.white),
-              )
-            : Text(label,
-                style: GoogleFonts.inter(
-                    fontSize: 14, fontWeight: FontWeight.w600)),
+        child: ElevatedButton(
+          onPressed: loading ? null : onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14)),
+            elevation: 0,
+          ),
+          child: loading
+              ? const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white),
+                )
+              : Text(label,
+                  style: GoogleFonts.inter(
+                      fontSize: 14, fontWeight: FontWeight.w600)),
+        ),
       ),
     );
 
 // ── Status badge ───────────────────────────────────────────────────────────────
 Widget fStatusBadge(String status) {
-  Color bg;
-  Color fg;
+  Color color;
   String label;
 
   switch (status.toLowerCase()) {
     case 'paid':
-      bg = const Color(0xFFDCFCE7);
-      fg = const Color(0xFF166534);
+      color = const Color(0xFF166534);
       label = 'Paid';
       break;
     case 'partial':
-      bg = const Color(0xFFFEF3C7);
-      fg = const Color(0xFF92400E);
+      color = const Color(0xFF92400E);
       label = 'Partial';
       break;
     default:
-      bg = const Color(0xFFFEE2E2);
-      fg = const Color(0xFF991B1B);
+      color = const Color(0xFF991B1B);
       label = 'Unpaid';
   }
 
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
     decoration: BoxDecoration(
-      color: bg,
+      gradient: LinearGradient(
+        colors: [
+          color.withValues(alpha: 0.12),
+          color.withValues(alpha: 0.06),
+        ],
+      ),
       borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: color.withValues(alpha: 0.25)),
     ),
     child: Text(
       label,
       style: GoogleFonts.inter(
-          fontSize: 11, fontWeight: FontWeight.w600, color: fg),
+          fontSize: 11, fontWeight: FontWeight.w600, color: color),
     ),
   );
 }
 
 // ── Active/Inactive badge ──────────────────────────────────────────────────────
-Widget fActiveBadge(bool active) => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: active
-            ? const Color(0xFFDCFCE7)
-            : const Color(0xFFF3F4F6),
-        borderRadius: BorderRadius.circular(20),
+Widget fActiveBadge(bool active) {
+  final color = active
+      ? const Color(0xFF166534)
+      : const Color(0xFF6B7280);
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          color.withValues(alpha: 0.12),
+          color.withValues(alpha: 0.06),
+        ],
       ),
-      child: Text(
-        active ? 'Active' : 'Inactive',
-        style: GoogleFonts.inter(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: active
-              ? const Color(0xFF166534)
-              : const Color(0xFF6B7280),
-        ),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: color.withValues(alpha: 0.25)),
+    ),
+    child: Text(
+      active ? 'Active' : 'Inactive',
+      style: GoogleFonts.inter(
+        fontSize: 11,
+        fontWeight: FontWeight.w600,
+        color: color,
       ),
-    );
+    ),
+  );
+}
 
 // ── Method badge ───────────────────────────────────────────────────────────────
 Widget fMethodBadge(String method) {
@@ -236,8 +275,14 @@ Widget fMethodBadge(String method) {
     padding:
         const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
     decoration: BoxDecoration(
-      color: color.withOpacity(0.1),
+      gradient: LinearGradient(
+        colors: [
+          color.withValues(alpha: 0.12),
+          color.withValues(alpha: 0.06),
+        ],
+      ),
       borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: color.withValues(alpha: 0.25)),
     ),
     child: Text(
       method[0].toUpperCase() + method.substring(1),
@@ -257,14 +302,28 @@ Widget fSummaryCard({
     Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.white,
+            accent.withValues(alpha: 0.08),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+            color: accent.withValues(alpha: 0.15)),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 6,
-              offset: const Offset(0, 2)),
+            color: accent.withValues(alpha: 0.12),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 4,
+            offset: const Offset(0, 1),
+          ),
         ],
       ),
       child: Column(
@@ -273,10 +332,24 @@ Widget fSummaryCard({
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(7),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: accent.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      accent.withValues(alpha: 0.22),
+                      accent.withValues(alpha: 0.08),
+                    ],
+                  ),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: accent.withValues(alpha: 0.18),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Icon(icon, size: 16, color: accent),
               ),
@@ -309,12 +382,40 @@ Widget fEmptyState(String msg, {IconData icon = Icons.inbox_outlined}) =>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 48, color: const Color(0xFFD1D5DB)),
-            const SizedBox(height: 12),
+            Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFF14B8A6).withValues(alpha: 0.14),
+                    const Color(0xFF14B8A6).withValues(alpha: 0.04),
+                  ],
+                ),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF14B8A6).withValues(alpha: 0.12),
+                    blurRadius: 20,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Icon(icon, size: 48, color: const Color(0xFFB0B8C8)),
+            ),
+            const SizedBox(height: 14),
             Text(msg,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.inter(
-                    fontSize: 14, color: const Color(0xFF9CA3AF))),
+                style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF6B7280))),
+            const SizedBox(height: 6),
+            Text('Pull down to refresh',
+                style: GoogleFonts.poppins(
+                    fontSize: 12, color: const Color(0xFFB0B8C8))),
           ],
         ),
       ),
@@ -330,9 +431,9 @@ Future<void> fDeleteDialog(
       context: context,
       builder: (_) => AlertDialog(
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
         title: Text('Confirm Delete',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
+            style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
         content: Text(message, style: GoogleFonts.inter(fontSize: 14)),
         actions: [
           TextButton(
@@ -340,18 +441,38 @@ Future<void> fDeleteDialog(
             child: Text('Cancel',
                 style: GoogleFonts.inter(color: const Color(0xFF6B7280))),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              onConfirm();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: kFeesRed,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  kFeesRed,
+                  kFeesRed.withValues(alpha: 0.8),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: kFeesRed.withValues(alpha: 0.35),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
-            child: Text('Delete', style: GoogleFonts.inter()),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                onConfirm();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                elevation: 0,
+              ),
+              child: Text('Delete', style: GoogleFonts.inter()),
+            ),
           ),
         ],
       ),
@@ -368,8 +489,15 @@ Widget fActionBtn(
       child: Container(
         padding: const EdgeInsets.all(7),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(8),
+          color: color.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.10),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Icon(icon, size: 16, color: color),
       ),

@@ -57,11 +57,21 @@ class _BehaviourNavTabsState extends State<BehaviourNavTabs> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Color(0xFFF3F4F6))),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Color(0xFFF5F3FF)],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF6366F1).withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: SingleChildScrollView(
         controller: _scrollCtrl,
         scrollDirection: Axis.horizontal,
@@ -103,18 +113,37 @@ class _BehChip extends StatelessWidget {
         if (!isActive) Get.offNamed(route);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
         decoration: BoxDecoration(
-          color: isActive
-              ? const Color(0xFF7C3AED)
-              : const Color(0xFFF3F4F6),
-          borderRadius: BorderRadius.circular(20),
+          gradient: isActive
+              ? const LinearGradient(colors: [Color(0xFF6366F1), Color(0xFF7C3AED)])
+              : null,
+          color: isActive ? null : Colors.white.withValues(alpha: 0.8),
+          borderRadius: BorderRadius.circular(22),
+          border: isActive
+              ? null
+              : Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.12)),
+          boxShadow: isActive
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFF6366F1).withValues(alpha: 0.35),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
         ),
         child: Text(
           label,
-          style: GoogleFonts.inter(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
             color: isActive ? Colors.white : const Color(0xFF6B7280),
           ),
         ),

@@ -56,8 +56,8 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
                       height: 48,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF9FAFB),
-                        border: Border.all(color: const Color(0xFFE5E7EB)),
+                        color: const Color(0xFFF5F7FF),
+                        border: Border.all(color: const Color(0xFFE0E4EF)),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -81,19 +81,26 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
                   // Save button
                   SizedBox(
                     height: 48,
-                    child: ElevatedButton.icon(
-                      onPressed: controller.selectedRoleId.value == null || controller.isLoadingTree.value || controller.isSaving.value
-                          ? null
-                          : controller.save,
-                      icon: controller.isSaving.value
-                          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                          : const Icon(Icons.save_rounded, size: 18),
-                      label: Text(controller.isSaving.value ? 'Saving...' : 'Save'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4F46E5),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(colors: [Color(0xFF6366F1), Color(0xFF4F46E5)]),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ElevatedButton.icon(
+                        onPressed: controller.selectedRoleId.value == null || controller.isLoadingTree.value || controller.isSaving.value
+                            ? null
+                            : controller.save,
+                        icon: controller.isSaving.value
+                            ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                            : const Icon(Icons.save_rounded, size: 18),
+                        label: Text(controller.isSaving.value ? 'Saving...' : 'Save'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                        ),
                       ),
                     ),
                   ),
@@ -153,7 +160,7 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
           ),
           if (controller.isSaving.value || controller.isLoadingTree.value)
             Container(
-              color: Colors.black.withOpacity(0.15),
+              color: Colors.black.withValues(alpha: 0.15),
               child: const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5))),
             ),
         ],
@@ -170,11 +177,12 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
 
       return Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: isExpanded ? const Color(0xFF7C3AED) : const Color(0xFFE5E7EB)),
+          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Colors.white, Color(0xFFFCFCFF)]),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: isExpanded ? const Color(0xFF7C3AED) : const Color(0xFFE0E4EF)),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 6, offset: const Offset(0, 2)),
+            BoxShadow(color: const Color(0xFF6366F1).withValues(alpha: 0.06), blurRadius: 12, offset: const Offset(0, 4)),
+            BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 4, offset: const Offset(0, 1)),
           ],
         ),
         child: Column(
@@ -183,8 +191,8 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
             InkWell(
               onTap: () => controller.toggleModuleExpanded(moduleRow.module),
               borderRadius: BorderRadius.vertical(
-                top: const Radius.circular(14),
-                bottom: isExpanded ? Radius.zero : const Radius.circular(14),
+                top: const Radius.circular(16),
+                bottom: isExpanded ? Radius.zero : const Radius.circular(16),
               ),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -194,8 +202,8 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
                       : null,
                   color: isExpanded ? null : Colors.white,
                   borderRadius: BorderRadius.vertical(
-                    top: const Radius.circular(13),
-                    bottom: isExpanded ? Radius.zero : const Radius.circular(13),
+                    top: const Radius.circular(15),
+                    bottom: isExpanded ? Radius.zero : const Radius.circular(15),
                   ),
                 ),
                 child: Row(
@@ -204,7 +212,7 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
                       width: 34,
                       height: 34,
                       decoration: BoxDecoration(
-                        color: isExpanded ? Colors.white.withOpacity(0.2) : const Color(0xFFEDE9FE),
+                        color: isExpanded ? Colors.white.withValues(alpha: 0.2) : const Color(0xFFEDE9FE),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(Icons.apps_rounded, size: 18, color: isExpanded ? Colors.white : const Color(0xFF7C3AED)),
@@ -216,7 +224,7 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
                         children: [
                           Text(
                             controller.prettyModuleName(moduleRow.module),
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: isExpanded ? Colors.white : const Color(0xFF111827),
@@ -234,7 +242,8 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: checkedCount > 0 ? const Color(0xFFEDE9FE) : const Color(0xFFF3F4F6),
+                          color: checkedCount > 0 ? const Color(0xFFEDE9FE) : Colors.white,
+                          border: checkedCount > 0 ? null : Border.all(color: const Color(0xFFE0E4EF)),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(

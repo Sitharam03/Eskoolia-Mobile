@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,8 +22,7 @@ class _DashboardViewState extends State<DashboardView>
   late final AnimationController _entranceCtrl;
   late final AnimationController _bellCtrl;
 
-  bool _showWelcome = true;
-  Timer? _welcomeTimer;
+  // Welcome card is always visible
 
   @override
   void initState() {
@@ -39,16 +37,14 @@ class _DashboardViewState extends State<DashboardView>
       duration: const Duration(milliseconds: 900),
     )..repeat(reverse: true);
 
-    _welcomeTimer = Timer(const Duration(seconds: 5), () {
-      if (mounted) setState(() => _showWelcome = false);
-    });
+    // Welcome card stays visible permanently
   }
 
   @override
   void dispose() {
     _entranceCtrl.dispose();
     _bellCtrl.dispose();
-    _welcomeTimer?.cancel();
+    // no timer to cancel
     super.dispose();
   }
 
@@ -87,37 +83,109 @@ class _DashboardViewState extends State<DashboardView>
 
   SliverAppBar _buildAppBar() {
     return SliverAppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       elevation: 0,
       pinned: true,
       automaticallyImplyLeading: false,
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF6366F1), Color(0xFF4F46E5), Color(0xFF7C3AED)],
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -20,
+              top: -20,
+              child: Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
+              ),
+            ),
+            Positioned(
+              left: -10,
+              bottom: -10,
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.04),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const _EskooliaLogo(),
-          const SizedBox(width: 8),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withValues(alpha: 0.15),
+                  blurRadius: 12,
+                ),
+              ],
+            ),
+            child: const _EskooliaLogo(),
+          ),
+          const SizedBox(width: 10),
           Text(
             'eSkoolia',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w700,
-              fontSize: 17,
-              color: const Color(0xFF1F2937),
+              fontSize: 18,
+              color: Colors.white,
             ),
           ),
         ],
       ),
       actions: [
         _PulseBell(controller: _bellCtrl),
-        IconButton(
-          icon: const Icon(Icons.logout_rounded, color: Color(0xFF9CA3AF), size: 22),
-          splashRadius: 20,
-          onPressed: _logout,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: GestureDetector(
+            onTap: _logout,
+            child: Container(
+              width: 38,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(11),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
+              ),
+              child: const Icon(Icons.logout_rounded,
+                  color: Colors.white, size: 18),
+            ),
+          ),
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: 12),
       ],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
-        child: Container(height: 1, color: const Color(0xFFE5E7EB)),
+        preferredSize: const Size.fromHeight(3),
+        child: Container(
+          height: 3,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFF6366F1).withValues(alpha: 0.0),
+                Colors.white.withValues(alpha: 0.4),
+                const Color(0xFF7C3AED).withValues(alpha: 0.0),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -125,20 +193,7 @@ class _DashboardViewState extends State<DashboardView>
   // ── Welcome Card ──────────────────────────────────────────────────────────────
 
   Widget _buildWelcomeAnimated() {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 400),
-      transitionBuilder: (child, animation) => FadeTransition(
-        opacity: animation,
-        child: SizeTransition(
-          sizeFactor: animation,
-          axisAlignment: -1,
-          child: child,
-        ),
-      ),
-      child: _showWelcome
-          ? KeyedSubtree(key: const ValueKey('wc'), child: _buildWelcomeCard())
-          : const SizedBox.shrink(),
-    );
+    return _buildWelcomeCard();
   }
 
   Widget _buildWelcomeCard() {
@@ -246,7 +301,7 @@ class _DashboardViewState extends State<DashboardView>
                   ),
                   const SizedBox(height: 8),
                   GestureDetector(
-                    onTap: () => setState(() => _showWelcome = false),
+                    onTap: () {},
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 3),
@@ -531,10 +586,10 @@ class _ModuleCardState extends State<_ModuleCard>
                         m.title,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
-                          fontSize: 10,
+                          fontSize: 11.5,
                           fontWeight: FontWeight.w700,
                           color: const Color(0xFF1F2937),
-                          height: 1.25,
+                          height: 1.2,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -624,7 +679,7 @@ class _PulseBell extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: IconButton(
               icon: const Icon(Icons.notifications_rounded,
-                  color: Color(0xFF374151), size: 24),
+                  color: Colors.white, size: 24),
               splashRadius: 20,
               onPressed: () {},
             ),
@@ -636,9 +691,15 @@ class _PulseBell extends StatelessWidget {
           child: Container(
             width: 8,
             height: 8,
-            decoration: const BoxDecoration(
-              color: Color(0xFFEF4444),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFBBF24),
               shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFBBF24).withValues(alpha: 0.5),
+                  blurRadius: 4,
+                ),
+              ],
             ),
           ),
         ),

@@ -26,17 +26,13 @@ Future<void> main() async {
     permanent: true,
   );
 
-  // Auto-route: if a token exists skip login and go to dashboard
-  final bool loggedIn = await StorageService.to.isLoggedIn();
-  final String initialRoute =
-      loggedIn ? AppRoutes.dashboard : AppRoutes.login;
-
-  runApp(EskooliaApp(initialRoute: initialRoute));
+  // Always start with splash — it handles navigation to login/dashboard
+  runApp(const EskooliaApp(initialRoute: AppRoutes.splash));
 }
 
 class EskooliaApp extends StatelessWidget {
   final String initialRoute;
-  const EskooliaApp({super.key, required this.initialRoute});
+  const EskooliaApp({super.key, this.initialRoute = AppRoutes.splash});
 
   @override
   Widget build(BuildContext context) {

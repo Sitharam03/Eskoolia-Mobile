@@ -58,7 +58,7 @@ class _AdminSetupViewState extends State<AdminSetupView> {
           _c.resetSetupForm();
           _showForm(context);
         },
-        backgroundColor: const Color(0xFF4F46E5),
+        backgroundColor: const Color(0xFF6366F1),
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('Add Setup'),
@@ -70,9 +70,9 @@ class _AdminSetupViewState extends State<AdminSetupView> {
     return Obx(() {
       if (_c.isLoading.value)
         return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+            child: CircularProgressIndicator(color: Color(0xFF6366F1)));
       return RefreshIndicator(
-        color: const Color(0xFF4F46E5),
+        color: const Color(0xFF6366F1),
         onRefresh: _c.loadAdminSetups,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
@@ -84,8 +84,8 @@ class _AdminSetupViewState extends State<AdminSetupView> {
               margin: const EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: const Color(0xFFE5E7EB)),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFE0E4EF)),
                 boxShadow: [
                   BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -106,7 +106,7 @@ class _AdminSetupViewState extends State<AdminSetupView> {
                         color: const Color(0xFFEEF2FF),
                         borderRadius: BorderRadius.circular(8)),
                     child: const Icon(Icons.settings_outlined,
-                        color: Color(0xFF4F46E5), size: 18),
+                        color: Color(0xFF6366F1), size: 18),
                   ),
                   title: Text(typeLabel,
                       style: GoogleFonts.inter(
@@ -122,7 +122,7 @@ class _AdminSetupViewState extends State<AdminSetupView> {
                     child: Text('${items.length}',
                         style: GoogleFonts.inter(
                             fontSize: 12,
-                            color: const Color(0xFF4F46E5),
+                            color: const Color(0xFF6366F1),
                             fontWeight: FontWeight.w600)),
                   ),
                   children: [
@@ -149,9 +149,9 @@ class _AdminSetupViewState extends State<AdminSetupView> {
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9FAFB),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        color: const Color(0xFFF5F7FF),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE0E4EF)),
       ),
       child: Row(children: [
         Expanded(
@@ -244,13 +244,13 @@ class _AdminSetupViewState extends State<AdminSetupView> {
                           horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? const Color(0xFF4F46E5)
+                            ? const Color(0xFF6366F1)
                             : const Color(0xFFF3F4F6),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                             color: isSelected
-                                ? const Color(0xFF4F46E5)
-                                : const Color(0xFFE5E7EB)),
+                                ? const Color(0xFF6366F1)
+                                : const Color(0xFFE0E4EF)),
                       ),
                       child: Text(opt.$2,
                           style: GoogleFonts.inter(
@@ -323,7 +323,7 @@ class _FormSheet extends StatelessWidget {
             child: Row(children: [
               Expanded(
                   child: Text(title,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: const Color(0xFF111827)))),
@@ -347,10 +347,10 @@ class _FormSheet extends StatelessWidget {
 Widget _section(String label) => Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Text(label,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.poppins(
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF4F46E5),
+              color: const Color(0xFF6366F1),
               letterSpacing: 0.5)),
     );
 
@@ -376,7 +376,7 @@ Widget _actionRow(
           child: ElevatedButton(
               onPressed: isSaving ? null : onSave,
               style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4F46E5),
+                  backgroundColor: const Color(0xFF6366F1),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(

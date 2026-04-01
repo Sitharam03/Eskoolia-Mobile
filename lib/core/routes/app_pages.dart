@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../../features/auth/bindings/login_binding.dart';
 import '../../features/auth/views/login_view.dart';
+import '../../features/auth/views/splash_view.dart';
 import '../../features/dashboard/views/dashboard_view.dart';
 import '../../features/access_control/bindings/access_control_binding.dart';
 import '../../features/access_control/views/roles_view.dart';
@@ -128,6 +129,10 @@ class AppPages {
   AppPages._();
 
   static final List<GetPage<dynamic>> routes = [
+    GetPage(
+      name: AppRoutes.splash,
+      page: () => const SplashView(),
+    ),
     GetPage(
       name: AppRoutes.login,
       page: () => const LoginView(),

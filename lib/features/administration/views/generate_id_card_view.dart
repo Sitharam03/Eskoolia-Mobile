@@ -193,7 +193,7 @@ class _GenerateIdCardViewState extends State<GenerateIdCardView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Select Criteria', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text('Select Criteria', style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           Obx(() {
             final tOptions = _c.idCardTemplates.where((t) => roleId == null || t.applicableRoleIds.isEmpty || t.applicableRoleIds.contains(roleId)).toList();
@@ -213,7 +213,7 @@ class _GenerateIdCardViewState extends State<GenerateIdCardView> {
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: ElevatedButton(onPressed: _search, style: _btnStyle(const Color(0xFF4F46E5)), child: Obx(() => Text(_c.isLoading.value ? 'Loading...' : 'Search')))),
+              Expanded(child: ElevatedButton(onPressed: _search, style: _btnStyle(const Color(0xFF6366F1)), child: Obx(() => Text(_c.isLoading.value ? 'Loading...' : 'Search')))),
               const SizedBox(width: 12),
               Expanded(child: ElevatedButton(onPressed: _print, style: _btnStyle(const Color(0xFF0F766E)), child: const Text('Print Selected'))),
             ],
@@ -233,7 +233,7 @@ class _GenerateIdCardViewState extends State<GenerateIdCardView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Student List', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text('Student List', style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold)),
               Obx(() {
                 final allSelected = _c.generateRecipients.isNotEmpty && _c.selectedRecipientIds.length == _c.generateRecipients.length;
                 return Row(
@@ -241,7 +241,7 @@ class _GenerateIdCardViewState extends State<GenerateIdCardView> {
                     Text('Select All', style: GoogleFonts.inter(fontSize: 12, color: Colors.grey.shade600)),
                     Checkbox(
                       value: allSelected,
-                      activeColor: const Color(0xFF4F46E5),
+                      activeColor: const Color(0xFF6366F1),
                       onChanged: (v) {
                         if (v == true) {
                           _c.selectedRecipientIds.assignAll(_c.generateRecipients.map((e) => e.id));
@@ -275,7 +275,7 @@ class _GenerateIdCardViewState extends State<GenerateIdCardView> {
                   contentPadding: EdgeInsets.zero,
                   leading: Checkbox(
                     value: selected,
-                    activeColor: const Color(0xFF4F46E5),
+                    activeColor: const Color(0xFF6366F1),
                     onChanged: (v) {
                       if (v == true) _c.selectedRecipientIds.add(s.id);
                       else _c.selectedRecipientIds.remove(s.id);
@@ -313,6 +313,6 @@ class _GenerateIdCardViewState extends State<GenerateIdCardView> {
         backgroundColor: c,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 14),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       );
 }

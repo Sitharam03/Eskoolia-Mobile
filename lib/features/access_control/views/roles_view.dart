@@ -60,8 +60,9 @@ class RolesView extends GetView<RoleController> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFF4F46E5) : const Color(0xFFF3F4F6),
+          color: isActive ? const Color(0xFF4F46E5) : Colors.white,
           borderRadius: BorderRadius.circular(20),
+          border: isActive ? null : Border.all(color: const Color(0xFFE0E4EF)),
         ),
         child: Text(
           label,
@@ -85,18 +86,18 @@ class RolesView extends GetView<RoleController> {
           hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
           prefixIcon: const Icon(Icons.search, color: Color(0xFF9CA3AF), size: 20),
           filled: true,
-          fillColor: const Color(0xFFF9FAFB),
+          fillColor: const Color(0xFFF5F7FF),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+            borderSide: const BorderSide(color: Color(0xFFE0E4EF)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+            borderSide: const BorderSide(color: Color(0xFFE0E4EF)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFF4F46E5)),
+            borderSide: const BorderSide(color: Color(0xFF6366F1)),
           ),
           contentPadding: const EdgeInsets.symmetric(vertical: 12),
         ),
@@ -137,16 +138,21 @@ class RolesView extends GetView<RoleController> {
     final isSystem = role.isSystem as bool;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
+        gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Colors.white, Color(0xFFFCFCFF)]),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: const Color(0xFF6366F1).withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 4,
+            offset: const Offset(0, 1),
           ),
         ],
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        border: Border.all(color: const Color(0xFFE0E4EF)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -173,7 +179,7 @@ class RolesView extends GetView<RoleController> {
                     children: [
                       Text(
                         role.name,
-                        style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF111827)),
+                        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF111827)),
                       ),
                       const SizedBox(height: 2),
                       Container(
@@ -240,9 +246,9 @@ class RolesView extends GetView<RoleController> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
+          color: color.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -260,7 +266,7 @@ class RolesView extends GetView<RoleController> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('Delete Role'),
         content: Text('Are you sure you want to delete "${role.name}"?'),
         actions: [
@@ -311,7 +317,7 @@ class RolesView extends GetView<RoleController> {
                 const SizedBox(height: 16),
                 Obx(() => Text(
                       controller.editingRoleId.value != null ? 'Edit Role' : 'Create New Role',
-                      style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.bold, color: const Color(0xFF111827)),
+                      style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold, color: const Color(0xFF111827)),
                     )),
                 const SizedBox(height: 20),
                 Text('Role Name *', style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF374151))),
@@ -323,10 +329,10 @@ class RolesView extends GetView<RoleController> {
                   decoration: InputDecoration(
                     hintText: 'Enter role name',
                     filled: true,
-                    fillColor: const Color(0xFFF9FAFB),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF4F46E5), width: 2)),
+                    fillColor: const Color(0xFFF5F7FF),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE0E4EF))),
+                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE0E4EF))),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF6366F1), width: 2)),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
                 ),
@@ -356,22 +362,29 @@ class RolesView extends GetView<RoleController> {
                       return const SizedBox.shrink();
                     }),
                     Expanded(
-                      child: Obx(() => ElevatedButton(
-                            onPressed: controller.isSaving.value
-                                ? null
-                                : () {
-                                    controller.submit();
-                                    Get.back();
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF4F46E5),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      child: Obx(() => Container(
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(colors: [Color(0xFF6366F1), Color(0xFF4F46E5)]),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            child: controller.isSaving.value
-                                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                                : const Text('Save Role', style: TextStyle(fontWeight: FontWeight.w600)),
+                            child: ElevatedButton(
+                              onPressed: controller.isSaving.value
+                                  ? null
+                                  : () {
+                                      controller.submit();
+                                      Get.back();
+                                    },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              ),
+                              child: controller.isSaving.value
+                                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                                  : const Text('Save Role', style: TextStyle(fontWeight: FontWeight.w600)),
+                            ),
                           )),
                     ),
                   ],

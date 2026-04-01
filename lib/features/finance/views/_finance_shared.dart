@@ -77,14 +77,23 @@ String finFmtDate(String iso) {
 
 // ── Card decoration ────────────────────────────────────────────────────────────
 BoxDecoration finCardDecoration({Color? accent}) => BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: const Color(0xFFE5E7EB)),
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Colors.white, Color(0xFFE8FBF0)],
+      ),
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(color: kFinPrimary.withValues(alpha: 0.12)),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.04),
-          blurRadius: 8,
-          offset: const Offset(0, 2),
+          color: kFinPrimary.withValues(alpha: 0.10),
+          blurRadius: 16,
+          offset: const Offset(0, 6),
+        ),
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.03),
+          blurRadius: 4,
+          offset: const Offset(0, 1),
         ),
       ],
     );
@@ -126,20 +135,20 @@ Widget finTextField(
         hintStyle: GoogleFonts.inter(
             fontSize: 14, color: const Color(0xFF9CA3AF)),
         filled: true,
-        fillColor: const Color(0xFFF9FAFB),
+        fillColor: Colors.white.withValues(alpha: 0.7),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: kFinPrimary.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: kFinPrimary.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: kFinPrimary, width: 1.5),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: kFinPrimary, width: 1.8),
         ),
       ),
     );
@@ -162,20 +171,20 @@ Widget finDropdown<T>({
         hintStyle: GoogleFonts.inter(
             fontSize: 14, color: const Color(0xFF9CA3AF)),
         filled: true,
-        fillColor: const Color(0xFFF9FAFB),
+        fillColor: Colors.white.withValues(alpha: 0.7),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: kFinPrimary.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: kFinPrimary.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: kFinPrimary, width: 1.5),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: kFinPrimary, width: 1.8),
         ),
       ),
     );
@@ -191,34 +200,50 @@ Widget finPrimaryBtn({
     SizedBox(
       width: double.infinity,
       height: 46,
-      child: ElevatedButton(
-        onPressed: loading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10)),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [color, color.withValues(alpha: 0.8)],
+          ),
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.35),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        child: loading
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                    color: Colors.white, strokeWidth: 2),
-              )
-            : Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (icon != null) ...[
-                    Icon(icon, size: 16),
-                    const SizedBox(width: 6),
+        child: ElevatedButton(
+          onPressed: loading ? null : onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14)),
+          ),
+          child: loading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                      color: Colors.white, strokeWidth: 2),
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (icon != null) ...[
+                      Icon(icon, size: 16),
+                      const SizedBox(width: 6),
+                    ],
+                    Text(label,
+                        style: GoogleFonts.inter(
+                            fontSize: 14, fontWeight: FontWeight.w600)),
                   ],
-                  Text(label,
-                      style: GoogleFonts.inter(
-                          fontSize: 14, fontWeight: FontWeight.w600)),
-                ],
-              ),
+                ),
+        ),
       ),
     );
 
@@ -230,14 +255,14 @@ Widget finDateTile({
 }) =>
     InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(14),
       child: Container(
         padding:
             const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFFF9FAFB),
-          border: Border.all(color: const Color(0xFFE5E7EB)),
-          borderRadius: BorderRadius.circular(10),
+          color: Colors.white.withValues(alpha: 0.7),
+          border: Border.all(color: kFinPrimary.withValues(alpha: 0.15)),
+          borderRadius: BorderRadius.circular(14),
         ),
         child: Row(
           children: [
@@ -262,23 +287,30 @@ Widget finDateTile({
     );
 
 // ── Active badge ───────────────────────────────────────────────────────────────
-Widget finActiveBadge(bool active) => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: active
-            ? kFinGreen.withValues(alpha: 0.1)
-            : kFinGray.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
+Widget finActiveBadge(bool active) {
+  final color = active ? kFinGreen : kFinGray;
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          color.withValues(alpha: 0.12),
+          color.withValues(alpha: 0.06),
+        ],
       ),
-      child: Text(
-        active ? 'Active' : 'Inactive',
-        style: GoogleFonts.inter(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: active ? kFinGreen : kFinGray,
-        ),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: color.withValues(alpha: 0.25)),
+    ),
+    child: Text(
+      active ? 'Active' : 'Inactive',
+      style: GoogleFonts.inter(
+        fontSize: 11,
+        fontWeight: FontWeight.w600,
+        color: color,
       ),
-    );
+    ),
+  );
+}
 
 // ── Type badge ─────────────────────────────────────────────────────────────────
 Widget finTypeBadge(String type) {
@@ -286,8 +318,14 @@ Widget finTypeBadge(String type) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
     decoration: BoxDecoration(
-      color: color.withValues(alpha: 0.1),
+      gradient: LinearGradient(
+        colors: [
+          color.withValues(alpha: 0.12),
+          color.withValues(alpha: 0.06),
+        ],
+      ),
       borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: color.withValues(alpha: 0.25)),
     ),
     child: Text(
       finTypeLabel(type),
@@ -307,8 +345,14 @@ Widget finEntryBadge(String type) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
     decoration: BoxDecoration(
-      color: color.withValues(alpha: 0.1),
+      gradient: LinearGradient(
+        colors: [
+          color.withValues(alpha: 0.12),
+          color.withValues(alpha: 0.06),
+        ],
+      ),
       borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: color.withValues(alpha: 0.25)),
     ),
     child: Text(
       isDebit ? 'Debit' : 'Credit',
@@ -327,7 +371,12 @@ Widget finAmtBadge(String amount, {bool isDebit = true}) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
     decoration: BoxDecoration(
-      color: color.withValues(alpha: 0.08),
+      gradient: LinearGradient(
+        colors: [
+          color.withValues(alpha: 0.12),
+          color.withValues(alpha: 0.06),
+        ],
+      ),
       borderRadius: BorderRadius.circular(20),
       border: Border.all(color: color.withValues(alpha: 0.25)),
     ),
@@ -349,9 +398,23 @@ Widget finStatCard({
     Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            color.withValues(alpha: 0.08),
+            color.withValues(alpha: 0.03),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
+        boxShadow: [
+          BoxShadow(
+            color: color.withValues(alpha: 0.12),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,7 +422,24 @@ Widget finStatCard({
         children: [
           Row(
             children: [
-              Icon(icon, size: 16, color: color),
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      color.withValues(alpha: 0.2),
+                      color.withValues(alpha: 0.08),
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Icon(icon, size: 16, color: color),
+                ),
+              ),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
@@ -391,8 +471,14 @@ Widget finStatCard({
 Widget finChip(IconData icon, String label, Color color) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.08),
+        gradient: LinearGradient(
+          colors: [
+            color.withValues(alpha: 0.12),
+            color.withValues(alpha: 0.06),
+          ],
+        ),
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -417,7 +503,14 @@ Widget finActionBtn(IconData icon, Color color, VoidCallback onTap) =>
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.10),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Icon(icon, size: 16, color: color),
       ),
@@ -432,13 +525,42 @@ Widget finEmptyState(String msg,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(icon, size: 52, color: const Color(0xFFD1D5DB)),
-          const SizedBox(height: 12),
+          Container(
+            width: 90,
+            height: 90,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  kFinPrimary.withValues(alpha: 0.15),
+                  kFinPrimary.withValues(alpha: 0.05),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: kFinPrimary.withValues(alpha: 0.18),
+                  blurRadius: 20,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Icon(icon, size: 52, color: kFinPrimary.withValues(alpha: 0.4)),
+          ),
+          const SizedBox(height: 14),
           Text(
             msg,
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.poppins(
                 fontSize: 14, color: const Color(0xFF9CA3AF)),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Pull down to refresh',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+                fontSize: 12, color: const Color(0xFFD1D5DB)),
           ),
         ],
       ),
@@ -451,23 +573,44 @@ void finDeleteDialog(
     context: ctx,
     builder: (_) => AlertDialog(
       shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
       title: Text('Confirm Delete',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
       content: Text(msg, style: GoogleFonts.inter(fontSize: 14)),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx),
           child: Text('Cancel', style: GoogleFonts.inter()),
         ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.pop(ctx);
-            onConfirm();
-          },
-          style: ElevatedButton.styleFrom(
-              backgroundColor: kFinRed, foregroundColor: Colors.white),
-          child: Text('Delete', style: GoogleFonts.inter()),
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [kFinRed, kFinRed.withValues(alpha: 0.8)],
+            ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: kFinRed.withValues(alpha: 0.35),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              onConfirm();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            child: Text('Delete', style: GoogleFonts.inter()),
+          ),
         ),
       ],
     ),
