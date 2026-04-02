@@ -8,6 +8,7 @@ import '../controllers/fund_transfer_controller.dart';
 import '../models/finance_models.dart';
 import '_finance_nav_tabs.dart';
 import '_finance_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class FundTransferView extends StatelessWidget {
   const FundTransferView({super.key});
@@ -24,10 +25,7 @@ class FundTransferView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.transfers.isEmpty) {
-                return const SizedBox(
-                  height: 150,
-                  child: Center(child: CircularProgressIndicator()),
-                );
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,

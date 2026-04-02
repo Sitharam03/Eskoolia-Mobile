@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -137,8 +138,8 @@ class LessonPlannerController extends GetxController {
       isLoading.value = true;
       error.value = '';
       planners.value = await _repo.getLessonPlanners();
-    } catch (_) {
-      error.value = 'Unable to load lesson planners.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Unable to load lesson planners.');
     } finally {
       isLoading.value = false;
     }
@@ -215,8 +216,8 @@ class LessonPlannerController extends GetxController {
       }
       resetForm();
       await loadAll();
-    } catch (_) {
-      error.value = 'Failed to save lesson planner.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to save lesson planner.');
     } finally {
       isSaving.value = false;
     }
@@ -268,8 +269,8 @@ class LessonPlannerController extends GetxController {
       error.value = '';
       await _repo.deleteLessonPlanner(id);
       await loadPlanners();
-    } catch (_) {
-      error.value = 'Failed to delete lesson plan.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete lesson plan.');
     }
   }
 }

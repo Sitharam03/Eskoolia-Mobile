@@ -7,6 +7,7 @@ import '../../students/views/_student_shared.dart';
 import '../controllers/transport_vehicle_controller.dart';
 import '../models/transport_models.dart';
 import '_transport_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class TransportVehicleView extends StatelessWidget {
   const TransportVehicleView({super.key});
@@ -23,9 +24,7 @@ class TransportVehicleView extends StatelessWidget {
         Expanded(
           child: Obx(() {
             if (_c.isLoading.value) {
-              return const Center(
-                  child: CircularProgressIndicator(
-                      color: Color(0xFF4F46E5)));
+              return const SchoolLoader();
             }
             return RefreshIndicator(
               color: const Color(0xFF4F46E5),

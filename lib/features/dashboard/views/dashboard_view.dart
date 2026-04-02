@@ -21,6 +21,7 @@ class _DashboardViewState extends State<DashboardView>
 
   late final AnimationController _entranceCtrl;
   late final AnimationController _bellCtrl;
+  late final AnimationController _sceneCtrl;
 
   // Welcome card is always visible
 
@@ -37,6 +38,11 @@ class _DashboardViewState extends State<DashboardView>
       duration: const Duration(milliseconds: 900),
     )..repeat(reverse: true);
 
+    _sceneCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 18),
+    )..repeat();
+
     // Welcome card stays visible permanently
   }
 
@@ -44,6 +50,7 @@ class _DashboardViewState extends State<DashboardView>
   void dispose() {
     _entranceCtrl.dispose();
     _bellCtrl.dispose();
+    _sceneCtrl.dispose();
     // no timer to cancel
     super.dispose();
   }
@@ -58,7 +65,7 @@ class _DashboardViewState extends State<DashboardView>
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFF),
       bottomNavigationBar: _BottomBar(
-        onReports: () => ModulePopup.show(context, kReportsModule),
+        onChat: () => Get.toNamed(AppRoutes.chat),
         onSettings: () => ModulePopup.show(context, kSettingsModule),
       ),
       body: Stack(
@@ -74,6 +81,11 @@ class _DashboardViewState extends State<DashboardView>
             ],
           ),
           const Positioned.fill(child: _FloatingParticles()),
+          Positioned.fill(
+            child: IgnorePointer(
+              child: _DashboardSchoolScene(controller: _sceneCtrl),
+            ),
+          ),
         ],
       ),
     );
@@ -711,10 +723,10 @@ class _PulseBell extends StatelessWidget {
 // ── Bottom Navigation Bar ──────────────────────────────────────────────────────
 
 class _BottomBar extends StatelessWidget {
-  final VoidCallback onReports;
+  final VoidCallback onChat;
   final VoidCallback onSettings;
 
-  const _BottomBar({required this.onReports, required this.onSettings});
+  const _BottomBar({required this.onChat, required this.onSettings});
 
   @override
   Widget build(BuildContext context) {
@@ -736,10 +748,10 @@ class _BottomBar extends StatelessWidget {
                 onTap: () {},
               ),
               _NavItem(
-                icon: Icons.bar_chart_rounded,
-                label: 'Reports',
+                icon: Icons.chat_rounded,
+                label: 'Chat',
                 selected: false,
-                onTap: onReports,
+                onTap: onChat,
               ),
               _NavItem(
                 icon: Icons.settings_rounded,
@@ -906,6 +918,98 @@ class _NavItem extends StatelessWidget {
                 ],
               ),
       ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SCHOOL SCENE — bus, children, buildings (dashboard version)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _DashboardSchoolScene extends StatelessWidget {
+  final AnimationController controller;
+  const _DashboardSchoolScene({required this.controller});
+
+  static double _sin(double x) {
+    x = x % 6.283;
+    if (x > 3.1416) x -= 6.283;
+    final x2 = x * x;
+    return x * (1.0 - x2 / 6.0 * (1.0 - x2 / 20.0));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
+    const c = Color(0xFF6366F1);
+
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (_, __) {
+        final busX = (controller.value * (w + 80)) - 40;
+        final bobA = 3.0 * _sin(controller.value * 12.566);
+        final bobB = 3.0 * _sin((controller.value + 0.3) * 12.566);
+        final bobC = 3.0 * _sin((controller.value + 0.6) * 12.566);
+
+        return Stack(
+          children: [
+            // Ground line
+            Positioned(
+              left: 0, right: 0, bottom: 0, height: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    c.withValues(alpha: 0.0),
+                    c.withValues(alpha: 0.06),
+                    c.withValues(alpha: 0.0),
+                  ]),
+                ),
+              ),
+            ),
+            // School building
+            Positioned(left: 10, bottom: 4, child: Opacity(
+              opacity: 0.06,
+              child: Icon(Icons.school_rounded, size: 28, color: c),
+            )),
+            // Trees
+            Positioned(right: 20, bottom: 4, child: Opacity(
+              opacity: 0.05,
+              child: Icon(Icons.park_rounded, size: 24, color: c),
+            )),
+            Positioned(left: w * 0.4, bottom: 4, child: Opacity(
+              opacity: 0.04,
+              child: Icon(Icons.nature_rounded, size: 20, color: c),
+            )),
+            // Moving bus
+            Positioned(left: busX, bottom: 6, child: Opacity(
+              opacity: 0.08,
+              child: Icon(Icons.directions_bus_rounded, size: 22, color: c),
+            )),
+            // Walking children
+            Positioned(left: w * 0.22, bottom: 6 + bobA, child: Opacity(
+              opacity: 0.05,
+              child: Icon(Icons.directions_walk_rounded, size: 16, color: c),
+            )),
+            Positioned(left: w * 0.55, bottom: 6 + bobB, child: Opacity(
+              opacity: 0.05,
+              child: Icon(Icons.directions_run_rounded, size: 14, color: c),
+            )),
+            Positioned(left: w * 0.75, bottom: 6 + bobC, child: Opacity(
+              opacity: 0.04,
+              child: Icon(Icons.boy_rounded, size: 16, color: c),
+            )),
+            // Flying bird
+            Positioned(
+              left: ((controller.value * 1.3) % 1.0) * w,
+              top: h * 0.12 + bobA,
+              child: Opacity(
+                opacity: 0.04,
+                child: Icon(Icons.flutter_dash, size: 14, color: c),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/hr_models.dart';
 import '../repositories/hr_repository.dart';
 
@@ -68,7 +69,7 @@ class HrPayrollController extends GetxController {
       totalAllowance.value = double.tryParse(summary['total_allowance']?.toString() ?? '0') ?? 0;
       totalDeduction.value = double.tryParse(summary['total_deduction']?.toString() ?? '0') ?? 0;
       totalNet.value = double.tryParse(summary['total_net_salary']?.toString() ?? '0') ?? 0;
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isLoading.value = false; }
   }
 
@@ -96,12 +97,12 @@ class HrPayrollController extends GetxController {
         'deduction': deductionCtrl.text.trim(),
       });
       resetForm(); await load();
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isSaving.value = false; }
   }
 
   Future<void> markPaid(int id) async {
     try { await _repo.markPayrollPaid(id); await load(); }
-    catch (e) { errorMsg.value = e.toString(); }
+    catch (e) { errorMsg.value = ApiError.extract(e); }
   }
 }

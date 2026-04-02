@@ -3,6 +3,8 @@ import '../../features/auth/bindings/login_binding.dart';
 import '../../features/auth/views/login_view.dart';
 import '../../features/auth/views/splash_view.dart';
 import '../../features/dashboard/views/dashboard_view.dart';
+import '../../features/chat/bindings/chat_binding.dart';
+import '../../features/chat/views/chat_view.dart';
 import '../../features/access_control/bindings/access_control_binding.dart';
 import '../../features/access_control/views/roles_view.dart';
 import '../../features/access_control/views/assign_permission_view.dart';
@@ -107,6 +109,9 @@ import '../../features/behaviour/views/behaviour_student_rank_report_view.dart';
 import '../../features/behaviour/views/behaviour_class_section_rank_report_view.dart';
 import '../../features/behaviour/views/behaviour_incident_wise_report_view.dart';
 import '../../features/behaviour/views/behaviour_settings_view.dart';
+// ── Communication ───────────────────────────────────────────────────────────
+import '../../features/communication/bindings/communication_binding.dart';
+import '../../features/communication/views/communication_view.dart';
 // ── Academics ────────────────────────────────────────────────────────────────
 import '../../features/academics/bindings/academics_binding.dart';
 import '../../features/academics/views/core_setup_view.dart';
@@ -137,6 +142,11 @@ class AppPages {
       name: AppRoutes.login,
       page: () => const LoginView(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.chat,
+      page: () => const ChatView(),
+      binding: ChatBinding(),
     ),
     GetPage(
       name: AppRoutes.dashboard,
@@ -259,6 +269,8 @@ class AppPages {
     GetPage(name: AppRoutes.behaviourClassSectionRankReport, page: () => const BehaviourClassSectionRankReportView(), binding: BehaviourBinding()),
     GetPage(name: AppRoutes.behaviourIncidentWiseReport, page: () => const BehaviourIncidentWiseReportView(), binding: BehaviourBinding()),
     GetPage(name: AppRoutes.behaviourSettings, page: () => const BehaviourSettingsView(), binding: BehaviourBinding()),
+    // ── Communication ─────────────────────────────────────────────────────
+    GetPage(name: AppRoutes.communication, page: () => const CommunicationView(), binding: CommunicationBinding()),
     // ── Academics ────────────────────────────────────────────────────────────
     GetPage(name: AppRoutes.academicsCoreSetup, page: () => const CoreSetupView(), binding: AcademicsBinding()),
     GetPage(name: AppRoutes.academicsAssignClassTeacher, page: () => const AssignClassTeacherView(), binding: AcademicsBinding()),

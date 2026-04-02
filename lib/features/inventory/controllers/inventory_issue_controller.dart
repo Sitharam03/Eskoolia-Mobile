@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/inventory_models.dart';
 import '../repositories/inventory_repository.dart';
 
@@ -46,7 +47,7 @@ class InventoryIssueController extends GetxController {
       stores.value = results[1] as List<ItemStore>;
       items.value = results[2] as List<InventoryItem>;
     } catch (e) {
-      errorMsg.value = e.toString();
+      errorMsg.value = ApiError.extract(e);
     } finally {
       isLoading.value = false;
     }
@@ -84,7 +85,7 @@ class InventoryIssueController extends GetxController {
       resetForm();
       await load();
     } catch (e) {
-      errorMsg.value = e.toString();
+      errorMsg.value = ApiError.extract(e);
     } finally {
       isSaving.value = false;
     }
@@ -95,7 +96,7 @@ class InventoryIssueController extends GetxController {
       await _repo.deleteIssue(id);
       await load();
     } catch (e) {
-      errorMsg.value = e.toString();
+      errorMsg.value = ApiError.extract(e);
     }
   }
 }

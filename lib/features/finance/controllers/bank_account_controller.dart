@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/network/api_error.dart';
 import '../models/finance_models.dart';
 import '../repositories/finance_repository.dart';
 
@@ -186,7 +187,7 @@ class BankAccountController extends GetxController {
   void _showError(Object e) {
     Get.snackbar(
       'Error',
-      e.toString(),
+      ApiError.extract(e),
       backgroundColor: const Color(0xFFDC2626),
       colorText: Colors.white,
       snackPosition: SnackPosition.BOTTOM,

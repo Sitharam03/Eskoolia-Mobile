@@ -3,6 +3,7 @@ abstract class AppRoutes {
   static const String splash = '/splash';
   static const String login = '/login';
   static const String dashboard = '/dashboard';
+  static const String chat = '/chat';
 
   // Access Control
   static const String roles = '/roles';
@@ -132,6 +133,9 @@ abstract class AppRoutes {
   static const String libraryBooks = '/library/books';
   static const String libraryMembers = '/library/members';
   static const String libraryIssues = '/library/issues';
+
+  // Communication
+  static const String communication = '/communication';
 
   // Administration sub-routes
   static const String adminVisitorBook = '/administration/visitor-book';

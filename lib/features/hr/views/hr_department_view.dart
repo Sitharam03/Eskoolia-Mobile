@@ -6,6 +6,20 @@ import '../../students/views/_student_shared.dart';
 import '../controllers/hr_department_controller.dart';
 import '../models/hr_models.dart';
 import '_hr_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
+
+const _kPri = Color(0xFF0EA5E9);
+const _kVio = Color(0xFF6366F1);
+
+Color _accentFor(String name) {
+  if (name.isEmpty) return _kPri;
+  final code = name.codeUnitAt(0) % 6;
+  const palette = [
+    Color(0xFF6366F1), Color(0xFF0EA5E9), Color(0xFF7C3AED),
+    Color(0xFF14B8A6), Color(0xFFF59E0B), Color(0xFFEC4899),
+  ];
+  return palette[code];
+}
 
 class HrDepartmentView extends StatelessWidget {
   const HrDepartmentView({super.key});
@@ -19,14 +33,14 @@ class HrDepartmentView extends StatelessWidget {
         const HrNavTabs(activeRoute: '/hr/departments'),
         Expanded(child: Obx(() {
           if (_c.isLoading.value) {
-            return const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+            return const SchoolLoader();
           }
           return RefreshIndicator(
-            color: const Color(0xFF4F46E5),
+            color: _kPri,
             onRefresh: _c.load,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 100),
+              padding: const EdgeInsets.fromLTRB(14, 14, 14, 100),
               child: Column(children: [
                 _StatsRow(c: _c),
                 const SizedBox(height: 14),
@@ -37,11 +51,9 @@ class HrDepartmentView extends StatelessWidget {
                         child: _ErrorBanner(msg: _c.errorMsg.value))
                     : const SizedBox.shrink()),
                 const SizedBox(height: 16),
-                sSearchBar(
-                  hint: 'Search departments…',
-                  onChanged: (v) => _c.searchQuery.value = v,
-                ),
-                const SizedBox(height: 12),
+                sSearchBar(hint: 'Search departments…',
+                    onChanged: (v) => _c.searchQuery.value = v),
+                const SizedBox(height: 14),
                 _DeptList(c: _c),
               ]),
             ),
@@ -52,173 +64,107 @@ class HrDepartmentView extends StatelessWidget {
   }
 }
 
-// ── Stats ─────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _StatsRow extends StatelessWidget {
   final HrDepartmentController c;
   const _StatsRow({required this.c});
-
   @override
   Widget build(BuildContext context) => Obx(() {
         final total = c.departments.length;
         final active = c.departments.where((d) => d.isActive).length;
         return Row(children: [
-          _Stat(
-            value: '$total',
-            label: 'Total',
-            color: const Color(0xFF4F46E5),
-            icon: Icons.business_rounded,
-          ),
+          _Stat(value: '$total', label: 'Total', color: _kVio, icon: Icons.apartment_rounded),
           const SizedBox(width: 8),
-          _Stat(
-            value: '$active',
-            label: 'Active',
-            color: const Color(0xFF059669),
-            icon: Icons.check_circle_rounded,
-          ),
+          _Stat(value: '$active', label: 'Active', color: const Color(0xFF22C55E), icon: Icons.verified_rounded),
           const SizedBox(width: 8),
-          _Stat(
-            value: '${total - active}',
-            label: 'Inactive',
-            color: const Color(0xFF9CA3AF),
-            icon: Icons.remove_circle_rounded,
-          ),
+          _Stat(value: '${total - active}', label: 'Inactive', color: const Color(0xFF9CA3AF), icon: Icons.pause_circle_rounded),
         ]);
       });
 }
 
 class _Stat extends StatelessWidget {
-  final String value;
-  final String label;
-  final Color color;
-  final IconData icon;
-  const _Stat({
-    required this.value,
-    required this.label,
-    required this.color,
-    required this.icon,
-  });
-
+  final String value; final String label; final Color color; final IconData icon;
+  const _Stat({required this.value, required this.label, required this.color, required this.icon});
   @override
   Widget build(BuildContext context) => Expanded(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: const Color(0xFFE5E7EB)),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-              )
-            ],
+            gradient: LinearGradient(colors: [Colors.white, color.withValues(alpha: 0.05)]),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: color.withValues(alpha: 0.12)),
+            boxShadow: [BoxShadow(color: color.withValues(alpha: 0.10), blurRadius: 10, offset: const Offset(0, 4))],
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 32, height: 32,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(colors: [color, color.withValues(alpha: 0.7)]),
+                borderRadius: BorderRadius.circular(9),
+                boxShadow: [BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 6, offset: const Offset(0, 2))],
               ),
               alignment: Alignment.center,
-              child: Icon(icon, size: 16, color: color),
+              child: Icon(icon, size: 16, color: Colors.white),
             ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: GoogleFonts.inter(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: const Color(0xFF111827),
-              ),
-            ),
-            Text(
-              label,
-              style: GoogleFonts.inter(
-                fontSize: 11,
-                color: const Color(0xFF6B7280),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            const SizedBox(height: 10),
+            Text(value, style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w800, color: const Color(0xFF111827))),
+            Text(label, style: GoogleFonts.inter(fontSize: 11, color: const Color(0xFF6B7280), fontWeight: FontWeight.w500)),
           ]),
         ),
       );
 }
 
-// ── Form Card ─────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// FORM
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _FormCard extends StatelessWidget {
   final HrDepartmentController c;
   const _FormCard({required this.c});
-
   @override
   Widget build(BuildContext context) => Container(
-        decoration: sCardDecoration,
-        clipBehavior: Clip.hardEdge,
+        decoration: sCardDecoration, clipBehavior: Clip.antiAlias,
         child: Obx(() => Column(children: [
               _FormHeader(
-                icon: c.editingId.value != null
-                    ? Icons.edit_rounded
-                    : Icons.add_rounded,
-                title: c.editingId.value != null
-                    ? 'Edit Department'
-                    : 'Add Department',
+                icon: c.editingId.value != null ? Icons.edit_rounded : Icons.add_circle_rounded,
+                title: c.editingId.value != null ? 'Edit Department' : 'New Department',
                 subtitle: 'Manage organizational departments',
                 onCancel: c.editingId.value != null ? c.cancelEdit : null,
               ),
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    sFieldLabel('Department Name *'),
-                    const SizedBox(height: 6),
-                    sTextField(
-                      controller: c.nameCtrl,
-                      hint: 'e.g. Information Technology',
-                    ),
-                    const SizedBox(height: 14),
-                    sFieldLabel('Description'),
-                    const SizedBox(height: 6),
-                    sTextField(
-                      controller: c.descCtrl,
-                      hint: 'Optional description',
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: 14),
-                    Obx(() => _Toggle(
-                          label: 'Active',
-                          value: c.isActive.value,
-                          onChanged: (v) => c.isActive.value = v,
-                        )),
-                    const SizedBox(height: 16),
-                    Obx(() => _SaveBtn(
-                          isSaving: c.isSaving.value,
-                          isEditing: c.editingId.value != null,
-                          onPressed: c.save,
-                        )),
-                  ],
-                ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  sFieldLabel('Department Name *'),
+                  const SizedBox(height: 6),
+                  sTextField(controller: c.nameCtrl, hint: 'e.g. Information Technology'),
+                  const SizedBox(height: 14),
+                  sFieldLabel('Description'),
+                  const SizedBox(height: 6),
+                  sTextField(controller: c.descCtrl, hint: 'Optional description', maxLines: 2),
+                  const SizedBox(height: 14),
+                  Obx(() => _Toggle(label: 'Active', value: c.isActive.value, onChanged: (v) => c.isActive.value = v)),
+                  const SizedBox(height: 16),
+                  Obx(() => _SaveBtn(isSaving: c.isSaving.value, isEditing: c.editingId.value != null, onPressed: c.save)),
+                ]),
               ),
             ])),
       );
 }
 
-// ── Department List ───────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// DEPARTMENT LIST + CARD
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _DeptList extends StatelessWidget {
   final HrDepartmentController c;
   const _DeptList({required this.c});
-
   @override
   Widget build(BuildContext context) => Obx(() {
         final items = c.filtered;
-        if (items.isEmpty) {
-          return sEmptyState('No departments found', Icons.business_outlined);
-        }
+        if (items.isEmpty) return sEmptyState('No departments found', Icons.apartment_rounded);
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           _ListHeader(title: 'Departments', count: items.length),
           const SizedBox(height: 10),
@@ -227,11 +173,7 @@ class _DeptList extends StatelessWidget {
                 onEdit: () => c.startEdit(d),
                 onDelete: () => showDialog(
                   context: context,
-                  builder: (_) => sDeleteDialog(
-                    context: context,
-                    message: 'Delete "${d.name}"?',
-                    onConfirm: () => c.delete(d.id),
-                  ),
+                  builder: (_) => sDeleteDialog(context: context, message: 'Delete "${d.name}"?', onConfirm: () => c.delete(d.id)),
                 ),
               )),
         ]);
@@ -242,361 +184,217 @@ class _DeptCard extends StatelessWidget {
   final Department dept;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
-  const _DeptCard({
-    required this.dept,
-    required this.onEdit,
-    required this.onDelete,
-  });
+  const _DeptCard({required this.dept, required this.onEdit, required this.onDelete});
 
   @override
-  Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: const Color(0xFFE5E7EB)),
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            )
-          ],
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: IntrinsicHeight(
-          child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+  Widget build(BuildContext context) {
+    final accent = _accentFor(dept.name);
+    final isActive = dept.isActive;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: [Colors.white, accent.withValues(alpha: 0.04)]),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: accent.withValues(alpha: 0.12)),
+        boxShadow: [
+          BoxShadow(color: accent.withValues(alpha: 0.10), blurRadius: 14, offset: const Offset(0, 5)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 4, offset: const Offset(0, 1)),
+        ],
+      ),
+      child: Stack(children: [
+        Positioned(right: -12, bottom: -12, child: Container(width: 50, height: 50,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: accent.withValues(alpha: 0.06)))),
+        Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(children: [
+            // Gradient icon badge
             Container(
-              width: 4,
-              color: dept.isActive
-                  ? const Color(0xFF4F46E5)
-                  : const Color(0xFF9CA3AF),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Row(children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF4F46E5).withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.business_rounded,
-                      size: 22,
-                      color: Color(0xFF4F46E5),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          dept.name,
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF111827),
-                          ),
-                        ),
-                        if (dept.description.isNotEmpty) ...[
-                          const SizedBox(height: 3),
-                          Text(
-                            dept.description,
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: const Color(0xFF6B7280),
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                        const SizedBox(height: 5),
-                        sBadge(
-                          dept.isActive ? 'Active' : 'Inactive',
-                          dept.isActive
-                              ? const Color(0xFF059669)
-                              : const Color(0xFF6B7280),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _ActionBtn(
-                        icon: Icons.edit_rounded,
-                        color: const Color(0xFF0EA5E9),
-                        onTap: onEdit,
-                      ),
-                      const SizedBox(height: 6),
-                      _ActionBtn(
-                        icon: Icons.delete_outline_rounded,
-                        color: const Color(0xFFDC2626),
-                        onTap: onDelete,
-                      ),
-                    ],
-                  ),
-                ]),
+              width: 50, height: 50,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [accent, accent.withValues(alpha: 0.7)]),
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [BoxShadow(color: accent.withValues(alpha: 0.35), blurRadius: 10, offset: const Offset(0, 4))],
               ),
+              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                const Icon(Icons.apartment_rounded, color: Colors.white, size: 20),
+                const SizedBox(height: 1),
+                Text(dept.name.isNotEmpty ? dept.name[0].toUpperCase() : '?',
+                    style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white.withValues(alpha: 0.8))),
+              ]),
             ),
+            const SizedBox(width: 14),
+            // Info
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(dept.name, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w700, color: const Color(0xFF111827)),
+                  maxLines: 1, overflow: TextOverflow.ellipsis),
+              if (dept.description.isNotEmpty) ...[
+                const SizedBox(height: 3),
+                Text(dept.description, style: GoogleFonts.inter(fontSize: 12, color: const Color(0xFF6B7280)),
+                    maxLines: 2, overflow: TextOverflow.ellipsis),
+              ],
+              const SizedBox(height: 6),
+              _InfoChip(
+                icon: isActive ? Icons.check_circle_rounded : Icons.cancel_rounded,
+                label: isActive ? 'Active' : 'Inactive',
+                color: isActive ? const Color(0xFF22C55E) : const Color(0xFF9CA3AF),
+              ),
+            ])),
+            const SizedBox(width: 8),
+            // Actions
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              _ActionBtn(icon: Icons.edit_rounded, color: _kPri, onTap: onEdit),
+              const SizedBox(height: 6),
+              _ActionBtn(icon: Icons.delete_rounded, color: const Color(0xFFDC2626), onTap: onDelete),
+            ]),
           ]),
         ),
+      ]),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SHARED WIDGETS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _InfoChip extends StatelessWidget {
+  final IconData icon; final String label; final Color color;
+  const _InfoChip({required this.icon, required this.label, required this.color});
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [color.withValues(alpha: 0.12), color.withValues(alpha: 0.05)]),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(icon, size: 11, color: color), const SizedBox(width: 4),
+          Text(label, style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w600, color: color)),
+        ]),
       );
 }
 
-// ── Shared Widgets ────────────────────────────────────────────────────────────
-
 class _FormHeader extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback? onCancel;
-  const _FormHeader({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    this.onCancel,
-  });
-
+  final IconData icon; final String title; final String subtitle; final VoidCallback? onCancel;
+  const _FormHeader({required this.icon, required this.title, required this.subtitle, this.onCancel});
   @override
   Widget build(BuildContext context) => Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: const Color(0xFF4F46E5).withValues(alpha: 0.05),
-          border: const Border(
-            bottom: BorderSide(color: Color(0xFFE5E7EB)),
-          ),
+          gradient: LinearGradient(colors: [_kPri.withValues(alpha: 0.08), _kVio.withValues(alpha: 0.04)]),
         ),
         child: Row(children: [
-          Container(
-            width: 36,
-            height: 36,
+          Container(width: 38, height: 38,
             decoration: BoxDecoration(
-              color: const Color(0xFF4F46E5).withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(9),
+              gradient: const LinearGradient(colors: [_kPri, _kVio]), borderRadius: BorderRadius.circular(11),
+              boxShadow: [BoxShadow(color: _kPri.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 3))],
             ),
             alignment: Alignment.center,
-            child: Icon(icon, size: 18, color: const Color(0xFF4F46E5)),
+            child: Icon(icon, size: 18, color: Colors.white)),
+          const SizedBox(width: 12),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(title, style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w700, color: const Color(0xFF111827))),
+            Text(subtitle, style: GoogleFonts.inter(fontSize: 11, color: const Color(0xFF9CA3AF))),
+          ])),
+          if (onCancel != null) GestureDetector(
+            onTap: onCancel,
+            child: Container(padding: const EdgeInsets.all(7),
+              decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFFDC2626).withValues(alpha: 0.2))),
+              child: const Icon(Icons.close_rounded, size: 15, color: Color(0xFFDC2626))),
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFF111827),
-                  ),
-                ),
-                Text(
-                  subtitle,
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    color: const Color(0xFF9CA3AF),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (onCancel != null)
-            GestureDetector(
-              onTap: onCancel,
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF3F4F6),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.close_rounded,
-                  size: 16,
-                  color: Color(0xFF6B7280),
-                ),
-              ),
-            ),
         ]),
       );
 }
 
 class _Toggle extends StatelessWidget {
-  final String label;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-  const _Toggle({
-    required this.label,
-    required this.value,
-    required this.onChanged,
-  });
-
+  final String label; final bool value; final ValueChanged<bool> onChanged;
+  const _Toggle({required this.label, required this.value, required this.onChanged});
   @override
   Widget build(BuildContext context) => Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
-          color: const Color(0xFFF9FAFB),
-          border: Border.all(color: const Color(0xFFE5E7EB)),
-          borderRadius: BorderRadius.circular(8),
+          color: Colors.white.withValues(alpha: 0.7), borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: (value ? _kPri : const Color(0xFF9CA3AF)).withValues(alpha: 0.15)),
         ),
         child: Row(children: [
-          Icon(
-            value ? Icons.toggle_on_rounded : Icons.toggle_off_rounded,
-            size: 22,
-            color: value ? const Color(0xFF4F46E5) : const Color(0xFF9CA3AF),
-          ),
+          Icon(value ? Icons.toggle_on_rounded : Icons.toggle_off_rounded, size: 24, color: value ? _kPri : const Color(0xFF9CA3AF)),
           const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              label,
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                color: const Color(0xFF374151),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeColor: const Color(0xFF4F46E5),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
+          Expanded(child: Text(label, style: GoogleFonts.inter(fontSize: 14, color: const Color(0xFF374151), fontWeight: FontWeight.w500))),
+          Switch(value: value, onChanged: onChanged, activeColor: _kPri, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
         ]),
       );
 }
 
 class _SaveBtn extends StatelessWidget {
-  final bool isSaving;
-  final bool isEditing;
-  final VoidCallback onPressed;
-  const _SaveBtn({
-    required this.isSaving,
-    required this.isEditing,
-    required this.onPressed,
-  });
-
+  final bool isSaving; final bool isEditing; final VoidCallback onPressed;
+  const _SaveBtn({required this.isSaving, required this.isEditing, required this.onPressed});
   @override
-  Widget build(BuildContext context) => SizedBox(
-        width: double.infinity,
-        height: 48,
-        child: ElevatedButton.icon(
-          onPressed: isSaving ? null : onPressed,
-          icon: isSaving
-              ? sSavingIndicator()
-              : Icon(
-                  isEditing ? Icons.update_rounded : Icons.save_rounded,
-                  size: 18,
-                ),
-          label: Text(
-            isSaving ? 'Saving…' : (isEditing ? 'Update' : 'Save'),
-            style: GoogleFonts.inter(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-            ),
+  Widget build(BuildContext context) => SizedBox(width: double.infinity, height: 48,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(colors: [_kPri, _kVio]), borderRadius: BorderRadius.circular(14),
+            boxShadow: [BoxShadow(color: _kPri.withValues(alpha: 0.35), blurRadius: 10, offset: const Offset(0, 4))],
           ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF4F46E5),
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            elevation: 0,
+          child: ElevatedButton.icon(
+            onPressed: isSaving ? null : onPressed,
+            icon: isSaving ? sSavingIndicator() : Icon(isEditing ? Icons.update_rounded : Icons.save_rounded, size: 18),
+            label: Text(isSaving ? 'Saving…' : (isEditing ? 'Update' : 'Save'),
+                style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 14)),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent,
+                foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
           ),
         ),
       );
 }
 
 class _ListHeader extends StatelessWidget {
-  final String title;
-  final int count;
+  final String title; final int count;
   const _ListHeader({required this.title, required this.count});
-
   @override
-  Widget build(BuildContext context) =>
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+  Widget build(BuildContext context) => Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         sectionHeader(title),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: const Color(0xFF4F46E5).withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(colors: [_kVio.withValues(alpha: 0.12), _kVio.withValues(alpha: 0.06)]),
+            borderRadius: BorderRadius.circular(20), border: Border.all(color: _kVio.withValues(alpha: 0.2)),
           ),
-          child: Text(
-            '$count records',
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              color: const Color(0xFF4F46E5),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          child: Text('$count records', style: GoogleFonts.inter(fontSize: 12, color: _kVio, fontWeight: FontWeight.w600)),
         ),
       ]);
 }
 
 class _ActionBtn extends StatelessWidget {
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-  const _ActionBtn({
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
+  final IconData icon; final Color color; final VoidCallback onTap;
+  const _ActionBtn({required this.icon, required this.color, required this.onTap});
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 34,
-          height: 34,
+  Widget build(BuildContext context) => GestureDetector(onTap: onTap,
+        child: Container(width: 36, height: 36, alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(8),
+            gradient: LinearGradient(colors: [color.withValues(alpha: 0.12), color.withValues(alpha: 0.05)]),
+            borderRadius: BorderRadius.circular(10), border: Border.all(color: color.withValues(alpha: 0.2)),
           ),
-          alignment: Alignment.center,
-          child: Icon(icon, size: 17, color: color),
-        ),
+          child: Icon(icon, size: 17, color: color)),
       );
 }
 
 class _ErrorBanner extends StatelessWidget {
   final String msg;
   const _ErrorBanner({required this.msg});
-
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: const Color(0xFFDC2626).withValues(alpha: 0.08),
-          border: Border.all(
-            color: const Color(0xFFDC2626).withValues(alpha: 0.3),
-          ),
-          borderRadius: BorderRadius.circular(8),
+          gradient: LinearGradient(colors: [const Color(0xFFDC2626).withValues(alpha: 0.10), const Color(0xFFDC2626).withValues(alpha: 0.05)]),
+          border: Border.all(color: const Color(0xFFDC2626).withValues(alpha: 0.25)), borderRadius: BorderRadius.circular(14),
         ),
         child: Row(children: [
-          const Icon(
-            Icons.error_outline_rounded,
-            color: Color(0xFFDC2626),
-            size: 18,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              msg,
-              style: GoogleFonts.inter(
-                fontSize: 13,
-                color: const Color(0xFFDC2626),
-              ),
-            ),
-          ),
+          Container(width: 28, height: 28, decoration: BoxDecoration(color: const Color(0xFFDC2626).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
+            child: const Icon(Icons.error_outline_rounded, color: Color(0xFFDC2626), size: 16)),
+          const SizedBox(width: 10),
+          Expanded(child: Text(msg, style: GoogleFonts.inter(fontSize: 13, color: const Color(0xFFDC2626)))),
         ]),
       );
 }

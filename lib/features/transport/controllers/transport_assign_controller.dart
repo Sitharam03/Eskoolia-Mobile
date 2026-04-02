@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/transport_models.dart';
 import '../repositories/transport_repository.dart';
 
@@ -36,8 +37,8 @@ class TransportAssignController extends GetxController {
       assignments.value = results[0] as List<AssignVehicle>;
       vehicles.value = results[1] as List<Vehicle>;
       routes.value = results[2] as List<TransportRoute>;
-    } catch (_) {
-      errorMsg.value = 'Unable to load assignments.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to load assignments.');
     } finally {
       isLoading.value = false;
     }
@@ -95,8 +96,8 @@ class TransportAssignController extends GetxController {
       }
       cancelEdit();
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to save assignment.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to save assignment.');
     } finally {
       isSaving.value = false;
     }
@@ -106,8 +107,8 @@ class TransportAssignController extends GetxController {
     try {
       await _repo.deleteAssignment(id);
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to delete assignment.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to delete assignment.');
     }
   }
 }

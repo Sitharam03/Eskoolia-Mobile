@@ -8,6 +8,7 @@ import '../controllers/fees_type_controller.dart';
 import '../models/fees_type_model.dart';
 import '_fees_nav_tabs.dart';
 import '_fees_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class FeesTypeView extends StatelessWidget {
   const FeesTypeView({super.key});
@@ -26,7 +27,7 @@ class FeesTypeView extends StatelessWidget {
               if (_c.isLoading.value &&
                   _c.types.isEmpty &&
                   _c.academicYears.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,

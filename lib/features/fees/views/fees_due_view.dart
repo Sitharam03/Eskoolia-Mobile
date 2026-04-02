@@ -8,6 +8,7 @@ import '../controllers/fees_due_controller.dart';
 import '../models/fees_assignment_model.dart';
 import '_fees_nav_tabs.dart';
 import '_fees_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class FeesDueView extends StatelessWidget {
   const FeesDueView({super.key});
@@ -24,7 +25,7 @@ class FeesDueView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.overdueList.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,

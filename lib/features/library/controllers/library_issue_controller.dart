@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/library_models.dart';
 import '../repositories/library_repository.dart';
 
@@ -51,8 +52,8 @@ class LibraryIssueController extends GetxController {
       students.value = results[2] as List<LibraryStudent>;
       staffList.value = results[3] as List<LibraryStaff>;
       issues.value = results[4] as List<BookIssue>;
-    } catch (_) {
-      errorMsg.value = 'Unable to load library issues.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to load library issues.');
     } finally {
       isLoading.value = false;
     }
@@ -118,8 +119,8 @@ class LibraryIssueController extends GetxController {
       });
       resetForm();
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to issue book.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to issue book.');
     } finally {
       isSaving.value = false;
     }
@@ -133,8 +134,8 @@ class LibraryIssueController extends GetxController {
           '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
       await _repo.markReturned(issue.id, today);
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to mark return.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to mark return.');
     }
   }
 }

@@ -272,10 +272,44 @@ const kDashboardModules = <DashboardModule>[
       DashboardSubItem('Sell Items', 'Items sold', Icons.local_offer_rounded, Color(0xFF84CC16), AppRoutes.inventorySell),
     ],
   ),
+
+  // ── REPORTS (moved from bottom bar to dashboard grid) ─────────────────────
+  DashboardModule(
+    title: 'Reports',
+    description: 'All module reports & analytics',
+    icon: Icons.bar_chart_rounded,
+    gradient: [Color(0xFFF0F9FF), Color(0xFFDBEAFE)],
+    iconColor: Color(0xFF3B82F6),
+    items: [
+      DashboardSubItem('Student Mark Sheet', 'Individual exam results', Icons.description_rounded, Color(0xFFF97316), AppRoutes.examStudentReport),
+      DashboardSubItem('Merit List', 'Class-wise merit list', Icons.emoji_events_rounded, Color(0xFFEA580C), AppRoutes.examMeritReport),
+      DashboardSubItem('Exam Schedule', 'Schedule report', Icons.calendar_today_rounded, Color(0xFFF97316), AppRoutes.examScheduleReport),
+      DashboardSubItem('Exam Attendance', 'Exam attendance report', Icons.fact_check_rounded, Color(0xFFEA580C), AppRoutes.examAttendanceReport),
+      DashboardSubItem('Attendance Report', 'Subject-wise attendance', Icons.bar_chart_rounded, Color(0xFFEF4444), AppRoutes.studentSubjectWiseAttendanceReport),
+      DashboardSubItem('Homework Report', 'Homework evaluation', Icons.rate_review_rounded, Color(0xFF22C55E), AppRoutes.academicsHomeworkEvalReport),
+      DashboardSubItem('Student Incidents', 'Student incident history', Icons.report_rounded, Color(0xFFF59E0B), AppRoutes.behaviourStudentIncidentReport),
+      DashboardSubItem('Transport Report', 'Student transport details', Icons.directions_bus_rounded, Color(0xFFEA580C), AppRoutes.transportStudentReport),
+    ],
+  ),
+
+  // ── COMMUNICATION ─────────────────────────────────────────────────────────
+  DashboardModule(
+    title: 'Communication',
+    description: 'Notices, emails & holidays',
+    icon: Icons.campaign_rounded,
+    gradient: [Color(0xFFFFF1F2), Color(0xFFFFE4E6)],
+    iconColor: Color(0xFFE11D48),
+    items: [
+      DashboardSubItem('Notice Board', 'Create & publish notices', Icons.announcement_rounded, Color(0xFFE11D48), AppRoutes.communication),
+      DashboardSubItem('Send Email', 'Email campaigns', Icons.email_rounded, Color(0xFFBE123C), AppRoutes.communication),
+      DashboardSubItem('Email Logs', 'Email send history', Icons.history_rounded, Color(0xFFE11D48), AppRoutes.communication),
+      DashboardSubItem('Holiday Calendar', 'School holidays', Icons.event_rounded, Color(0xFFBE123C), AppRoutes.communication),
+    ],
+  ),
 ];
 
 // ── Bottom Bar Special Modules ─────────────────────────────────────────────────
-// These appear only in the bottom bar (Reports & Settings), not as dashboard cards.
+// Settings still appears in the bottom bar.
 
 const kReportsModule = DashboardModule(
   title: 'Reports',

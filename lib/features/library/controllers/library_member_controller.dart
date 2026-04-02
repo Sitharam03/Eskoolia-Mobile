@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/library_models.dart';
 import '../repositories/library_repository.dart';
 
@@ -45,8 +46,8 @@ class LibraryMemberController extends GetxController {
       members.value = results[0] as List<LibraryMember>;
       students.value = results[1] as List<LibraryStudent>;
       staffList.value = results[2] as List<LibraryStaff>;
-    } catch (_) {
-      errorMsg.value = 'Unable to load members.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to load members.');
     } finally {
       isLoading.value = false;
     }
@@ -127,8 +128,8 @@ class LibraryMemberController extends GetxController {
       }
       cancelEdit();
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to save member.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to save member.');
     } finally {
       isSaving.value = false;
     }
@@ -138,8 +139,8 @@ class LibraryMemberController extends GetxController {
     try {
       await _repo.deleteMember(id);
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to delete member.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to delete member.');
     }
   }
 }

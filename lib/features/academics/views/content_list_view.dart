@@ -8,6 +8,7 @@ import '../controllers/upload_content_controller.dart';
 import '../models/academics_models.dart';
 import '_academics_nav_tabs.dart';
 import '_academics_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class ContentListView extends StatefulWidget {
   final String title;
@@ -182,12 +183,7 @@ class _ContentItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (c.isLoading.value) {
-        return const Center(
-          child: Padding(
-            padding: EdgeInsets.all(40),
-            child: CircularProgressIndicator(color: Color(0xFF4F46E5)),
-          ),
-        );
+        return const SchoolLoader();
       }
       if (c.listError.value.isNotEmpty) {
         return Container(

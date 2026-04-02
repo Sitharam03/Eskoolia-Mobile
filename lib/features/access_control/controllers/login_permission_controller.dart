@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/login_access_model.dart';
 import '../repositories/access_control_repository.dart';
 
@@ -64,7 +65,7 @@ class LoginPermissionController extends GetxController {
       classes.assignAll(response.classes);
       sections.assignAll(response.sections);
     } catch (e) {
-      errorMessage.value = 'Failed to load criteria.';
+      errorMessage.value = ApiError.extract(e, 'Failed to load criteria.');
     } finally {
       isLoadingCriteria.value = false;
     }
@@ -99,7 +100,7 @@ class LoginPermissionController extends GetxController {
       );
       users.assignAll(fetched);
     } catch (e) {
-      errorMessage.value = 'Failed to load users.';
+      errorMessage.value = ApiError.extract(e, 'Failed to load users.');
       users.clear();
     } finally {
       isLoading.value = false;
@@ -139,7 +140,7 @@ class LoginPermissionController extends GetxController {
       }
       Get.snackbar('Success', 'Login permission updated.', backgroundColor: Colors.green, colorText: Colors.white);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update permission.', backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to update permission.'), backgroundColor: Colors.redAccent, colorText: Colors.white);
     } finally {
       actionUserId.value = null;
     }
@@ -162,7 +163,7 @@ class LoginPermissionController extends GetxController {
         passwordMap[userId] = '';
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to reset password.', backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to reset password.'), backgroundColor: Colors.redAccent, colorText: Colors.white);
     } finally {
       actionUserId.value = null;
     }

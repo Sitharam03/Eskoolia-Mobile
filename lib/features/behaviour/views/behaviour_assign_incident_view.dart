@@ -8,6 +8,7 @@ import '../controllers/behaviour_assignment_controller.dart';
 import '../models/behaviour_models.dart';
 import '_behaviour_nav_tabs.dart';
 import '_behaviour_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class BehaviourAssignIncidentView extends StatelessWidget {
   const BehaviourAssignIncidentView({super.key});
@@ -26,7 +27,7 @@ class BehaviourAssignIncidentView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.allStudents.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,

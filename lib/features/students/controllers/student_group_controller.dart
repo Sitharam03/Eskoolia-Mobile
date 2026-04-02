@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/student_group_model.dart';
 import '../repositories/students_repository.dart';
 
@@ -33,7 +34,7 @@ class StudentGroupController extends GetxController {
     try {
       groups.value = await _repo.getGroups();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load groups',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load groups'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -87,7 +88,7 @@ class StudentGroupController extends GetxController {
       await loadGroups();
       return true;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to save: $e',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to save group'),
           snackPosition: SnackPosition.BOTTOM);
       return false;
     } finally {
@@ -102,7 +103,7 @@ class StudentGroupController extends GetxController {
       Get.snackbar('Deleted', 'Group removed',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to delete: $e',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to delete group'),
           snackPosition: SnackPosition.BOTTOM);
     }
   }

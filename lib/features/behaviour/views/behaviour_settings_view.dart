@@ -7,6 +7,7 @@ import '../../../core/widgets/app_scaffold.dart';
 import '../controllers/behaviour_settings_controller.dart';
 import '_behaviour_nav_tabs.dart';
 import '_behaviour_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class BehaviourSettingsView extends StatefulWidget {
   const BehaviourSettingsView({super.key});
@@ -52,7 +53,7 @@ class _BehaviourSettingsViewState extends State<BehaviourSettingsView> {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,

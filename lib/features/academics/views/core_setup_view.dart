@@ -6,6 +6,7 @@ import '../../../core/widgets/app_scaffold.dart';
 import '../controllers/core_setup_controller.dart';
 import '../models/academics_models.dart';
 import '_academics_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class CoreSetupView extends GetView<CoreSetupController> {
   const CoreSetupView({super.key});
@@ -348,7 +349,7 @@ class _YearsTab extends StatelessWidget {
             if (c.yearsLoading.value) {
               return const Padding(
                   padding: EdgeInsets.all(32),
-                  child: Center(child: CircularProgressIndicator()));
+                  child: SchoolLoader());
             }
             if (c.years.isEmpty) {
               return Padding(
@@ -620,7 +621,7 @@ class _ClassesTab extends StatelessWidget {
             if (c.classesLoading.value) {
               return const Padding(
                   padding: EdgeInsets.all(32),
-                  child: Center(child: CircularProgressIndicator()));
+                  child: SchoolLoader());
             }
             if (c.classes.isEmpty) {
               return Padding(
@@ -956,7 +957,7 @@ class _SectionsTab extends StatelessWidget {
             if (c.sectionsLoading.value) {
               return const Padding(
                   padding: EdgeInsets.all(32),
-                  child: Center(child: CircularProgressIndicator()));
+                  child: SchoolLoader());
             }
             if (c.sections.isEmpty) {
               return Padding(
@@ -1262,7 +1263,7 @@ class _SubjectsTab extends StatelessWidget {
             if (c.subjectsLoading.value) {
               return const Padding(
                   padding: EdgeInsets.all(32),
-                  child: Center(child: CircularProgressIndicator()));
+                  child: SchoolLoader());
             }
             if (c.subjects.isEmpty) {
               return Padding(

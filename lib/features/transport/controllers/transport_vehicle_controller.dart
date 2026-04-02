@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/transport_models.dart';
 import '../repositories/transport_repository.dart';
 
@@ -63,8 +64,8 @@ class TransportVehicleController extends GetxController {
       ]);
       vehicles.value = results[0] as List<Vehicle>;
       drivers.value = results[1] as List<TransportDriver>;
-    } catch (_) {
-      errorMsg.value = 'Unable to load vehicles.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to load vehicles.');
     } finally {
       isLoading.value = false;
     }
@@ -123,8 +124,8 @@ class TransportVehicleController extends GetxController {
       }
       cancelEdit();
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to save vehicle.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to save vehicle.');
     } finally {
       isSaving.value = false;
     }
@@ -134,8 +135,8 @@ class TransportVehicleController extends GetxController {
     try {
       await _repo.deleteVehicle(id);
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to delete vehicle.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to delete vehicle.');
     }
   }
 }

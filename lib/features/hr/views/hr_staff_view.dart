@@ -6,6 +6,7 @@ import '../../../core/widgets/app_scaffold.dart';
 import '../../students/views/_student_shared.dart';
 import '../controllers/hr_staff_controller.dart';
 import '_hr_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Colour tokens
@@ -89,9 +90,7 @@ class HrStaffView extends StatelessWidget {
         Expanded(
           child: Obx(() {
             if (c.isLoading.value) {
-              return const Center(
-                child: CircularProgressIndicator(color: _kPrimary),
-              );
+              return const SchoolLoader();
             }
             return RefreshIndicator(
               color: _kPrimary,

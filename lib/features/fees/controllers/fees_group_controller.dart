@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/network/api_error.dart';
 import '../models/fees_assignment_model.dart';
 import '../models/fees_group_model.dart';
 import '../repositories/fees_repository.dart';
@@ -54,7 +55,7 @@ class FeesGroupController extends GetxController {
       academicYears.assignAll(results[0] as List<AcademicYearRef>);
       groups.assignAll(results[1] as List<FeesGroup>);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
@@ -127,7 +128,7 @@ class FeesGroupController extends GetxController {
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
@@ -146,7 +147,7 @@ class FeesGroupController extends GetxController {
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);

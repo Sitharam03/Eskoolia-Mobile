@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -42,8 +43,8 @@ class ExamScheduleReportController extends GetxController {
       examTypes.value = _parseList(data['exams'], ExamType.fromJson);
       classes.value = _parseList(data['classes'], SchoolClass.fromJson);
       sections.value = _parseList(data['sections'], SchoolSection.fromJson);
-    } catch (_) {
-      errorMsg.value = 'Failed to load schedule report page.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load schedule report page.');
     } finally {
       isLoading.value = false;
     }
@@ -65,7 +66,7 @@ class ExamScheduleReportController extends GetxController {
       rows.value = _parseList(data['records'], ScheduleReportRow.fromJson);
     } catch (e) {
       rows.value = [];
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Search failed. ');
+      errorMsg.value = ApiError.extract(e, 'Search failed');
     } finally {
       isSearching.value = false;
     }

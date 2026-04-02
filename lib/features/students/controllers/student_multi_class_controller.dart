@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/student_model.dart';
 import '../models/multi_class_record_model.dart';
 import '../repositories/students_repository.dart';
@@ -36,8 +37,8 @@ class StudentMultiClassController extends GetxController {
       students.value = results[0] as List<StudentRow>;
       classes.value = results[1] as List<Map<String, dynamic>>;
       sections.value = results[2] as List<Map<String, dynamic>>;
-    } catch (_) {
-      Get.snackbar('Error', 'Failed to load data',
+    } catch (e) {
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load data'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -134,7 +135,7 @@ class StudentMultiClassController extends GetxController {
           snackPosition: SnackPosition.BOTTOM);
       await selectStudent(student);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to save records: $e',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to save records'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSaving.value = false;

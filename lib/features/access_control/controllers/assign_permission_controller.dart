@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/role_model.dart';
 import '../models/permission_model.dart';
 import '../repositories/access_control_repository.dart';
@@ -52,7 +53,7 @@ class AssignPermissionController extends GetxController {
         await loadTree(selectedRoleId.value!);
       }
     } catch (e) {
-      errorMessage.value = 'Failed to load roles.';
+      errorMessage.value = ApiError.extract(e, 'Failed to load roles.');
     } finally {
       isLoadingRoles.value = false;
     }
@@ -91,7 +92,7 @@ class AssignPermissionController extends GetxController {
       }
       selectedPermissionIds.assignAll(nextSelected);
     } catch (e) {
-      errorMessage.value = 'Failed to load permission list.';
+      errorMessage.value = ApiError.extract(e, 'Failed to load permission list.');
       modules.clear();
       selectedPermissionIds.clear();
     } finally {
@@ -143,7 +144,7 @@ class AssignPermissionController extends GetxController {
       Get.snackbar('Success', 'Permissions updated successfully.', backgroundColor: Colors.green, colorText: Colors.white);
       await loadTree(selectedRoleId.value!);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update permissions.', backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to update permissions.'), backgroundColor: Colors.redAccent, colorText: Colors.white);
     } finally {
       isSaving.value = false;
     }

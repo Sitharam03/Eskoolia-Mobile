@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/network/api_error.dart';
 import '../models/behaviour_models.dart';
 import '../repositories/behaviour_repository.dart';
 
@@ -128,7 +129,7 @@ class BehaviourIncidentController extends GetxController {
       colorText: Colors.white,
       snackPosition: SnackPosition.BOTTOM);
 
-  void _err(Object e) => Get.snackbar('Error', e.toString(),
+  void _err(Object e) => Get.snackbar('Error', ApiError.extract(e),
       backgroundColor: const Color(0xFFDC2626),
       colorText: Colors.white,
       snackPosition: SnackPosition.BOTTOM);

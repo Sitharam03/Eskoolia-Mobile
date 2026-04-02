@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../../../core/routes/app_routes.dart';
 import '../controllers/student_delete_record_controller.dart';
 import '../models/student_model.dart';
@@ -102,8 +103,7 @@ class _StudentDeleteRecordViewState extends State<StudentDeleteRecordView> {
   Widget _buildList() {
     return Obx(() {
       if (_c.isLoading.value) {
-        return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+        return const SchoolLoader();
       }
       final items = _c.filtered;
       final isDeletedTab = _c.activeTab.value == 1;

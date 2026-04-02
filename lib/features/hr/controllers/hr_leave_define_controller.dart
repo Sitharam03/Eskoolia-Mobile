@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/hr_models.dart';
 import '../repositories/hr_repository.dart';
 
@@ -35,7 +36,7 @@ class HrLeaveDefineController extends GetxController {
       roles.value = results[1] as List<HrRole>;
       staff.value = results[2] as List<Staff>;
       leaveTypes.value = results[3] as List<LeaveType>;
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isLoading.value = false; }
   }
 
@@ -61,12 +62,12 @@ class HrLeaveDefineController extends GetxController {
       if (editingId.value != null) await _repo.updateLeaveDefine(editingId.value!, data);
       else await _repo.createLeaveDefine(data);
       cancelEdit(); await load();
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isSaving.value = false; }
   }
 
   Future<void> delete(int id) async {
     try { await _repo.deleteLeaveDefine(id); await load(); }
-    catch (e) { errorMsg.value = e.toString(); }
+    catch (e) { errorMsg.value = ApiError.extract(e); }
   }
 }

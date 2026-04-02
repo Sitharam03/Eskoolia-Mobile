@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -28,8 +29,8 @@ class ClassRoomController extends GetxController {
       isLoading.value = true;
       error.value = '';
       items.value = await _repo.getClassRooms();
-    } catch (_) {
-      error.value = 'Unable to load classrooms.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Unable to load classrooms.');
     } finally {
       isLoading.value = false;
     }
@@ -58,8 +59,8 @@ class ClassRoomController extends GetxController {
       message.value = editingId.value != null ? 'Classroom updated.' : 'Classroom added.';
       resetForm();
       await loadItems();
-    } catch (_) {
-      error.value = 'Failed to save classroom.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to save classroom.');
     } finally {
       isSaving.value = false;
     }
@@ -78,8 +79,8 @@ class ClassRoomController extends GetxController {
       error.value = '';
       await _repo.deleteClassRoom(id);
       await loadItems();
-    } catch (_) {
-      error.value = 'Failed to delete classroom.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete classroom.');
     }
   }
 

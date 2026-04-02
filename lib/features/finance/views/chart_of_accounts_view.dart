@@ -8,6 +8,7 @@ import '../controllers/chart_of_accounts_controller.dart';
 import '../models/finance_models.dart';
 import '_finance_nav_tabs.dart';
 import '_finance_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class ChartOfAccountsView extends StatelessWidget {
   const ChartOfAccountsView({super.key});
@@ -26,10 +27,7 @@ class ChartOfAccountsView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.accounts.isEmpty) {
-                return const SizedBox(
-                  height: 150,
-                  child: Center(child: CircularProgressIndicator()),
-                );
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,

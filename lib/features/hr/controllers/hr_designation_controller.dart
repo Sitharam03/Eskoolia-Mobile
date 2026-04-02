@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/hr_models.dart';
 import '../repositories/hr_repository.dart';
 
@@ -34,7 +35,7 @@ class HrDesignationController extends GetxController {
       final results = await Future.wait([_repo.getDesignations(), _repo.getDepartments(isActive: true)]);
       designations.value = results[0] as List<Designation>;
       departments.value = results[1] as List<Department>;
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isLoading.value = false; }
   }
 
@@ -56,12 +57,12 @@ class HrDesignationController extends GetxController {
       if (editingId.value != null) await _repo.updateDesignation(editingId.value!, data);
       else await _repo.createDesignation(data);
       cancelEdit(); await load();
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isSaving.value = false; }
   }
 
   Future<void> delete(int id) async {
     try { await _repo.deleteDesignation(id); await load(); }
-    catch (e) { errorMsg.value = e.toString(); }
+    catch (e) { errorMsg.value = ApiError.extract(e); }
   }
 }

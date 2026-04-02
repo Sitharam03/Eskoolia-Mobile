@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/transport_models.dart';
 import '../repositories/transport_repository.dart';
 
@@ -42,8 +43,8 @@ class TransportRouteController extends GetxController {
       isLoading.value = true;
       errorMsg.value = '';
       routes.value = await _repo.getRoutes();
-    } catch (_) {
-      errorMsg.value = 'Unable to load routes.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to load routes.');
     } finally {
       isLoading.value = false;
     }
@@ -91,8 +92,8 @@ class TransportRouteController extends GetxController {
       }
       cancelEdit();
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to save route.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to save route.');
     } finally {
       isSaving.value = false;
     }
@@ -102,8 +103,8 @@ class TransportRouteController extends GetxController {
     try {
       await _repo.deleteRoute(id);
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to delete route.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to delete route.');
     }
   }
 }

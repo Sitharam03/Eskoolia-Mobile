@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../../../core/routes/app_routes.dart';
 import '../controllers/student_list_controller.dart';
 import '../models/student_model.dart';
@@ -41,10 +42,7 @@ class _StudentExportViewState extends State<StudentExportView> {
         const StudentNavTabs(activeRoute: AppRoutes.studentExport),
         Obx(() {
           if (_c.isLoading.value) {
-            return const Expanded(
-                child: Center(
-                    child:
-                        CircularProgressIndicator(color: Color(0xFF4F46E5))));
+            return const Expanded(child: SchoolLoader());
           }
           return Expanded(
             child: SingleChildScrollView(
@@ -188,158 +186,231 @@ class _StudentExportViewState extends State<StudentExportView> {
   Widget _buildPreviewAndExport() {
     return Obx(() {
       final items = _c.filtered;
+      final activeCols = _selectedColumns.entries
+          .where((e) => e.value)
+          .map((e) => e.key)
+          .toList();
+
       return Container(
         decoration: sCardDecoration,
+        clipBehavior: Clip.antiAlias,
         child: Column(children: [
-          // Header
+          // ── Header with gradient ──
           Container(
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF5F3FF),
-              borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(12)),
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFF6366F1).withValues(alpha: 0.08),
+                  const Color(0xFF7C3AED).withValues(alpha: 0.04),
+                ],
+              ),
             ),
             child: Row(children: [
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  sectionHeader('Preview'),
-                  Text('${items.length} records will be exported',
-                      style: GoogleFonts.inter(
-                          fontSize: 12, color: const Color(0xFF6B7280))),
-                ],
-              )),
-            ]),
-          ),
-          // Export buttons
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(children: [
-              Expanded(child: ElevatedButton.icon(
-                onPressed: items.isEmpty ? null : () => _exportCsv(items),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF16A34A),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF6366F1), Color(0xFF7C3AED)],
+                  ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                icon: const Icon(Icons.download_rounded, size: 18),
-                label: Text('Export CSV',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
-              )),
-              const SizedBox(width: 12),
-              Expanded(child: ElevatedButton.icon(
-                onPressed: items.isEmpty ? null : () => _showPrintPreview(items),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4F46E5),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                icon: const Icon(Icons.picture_as_pdf_rounded, size: 18),
-                label: Text('Export PDF',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
-              )),
-            ]),
-          ),
-          // Preview table
-          if (items.isNotEmpty)
-            Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFE5E7EB)),
-                borderRadius: BorderRadius.circular(8),
+                child: const Icon(Icons.preview_rounded,
+                    color: Colors.white, size: 18),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    headingRowColor: WidgetStateProperty.all(
-                        const Color(0xFFF9FAFB)),
-                    dataRowMinHeight: 44,
-                    dataRowMaxHeight: 52,
-                    columnSpacing: 24,
-                    headingTextStyle: GoogleFonts.inter(
-                        fontWeight: FontWeight.w700,
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Preview',
+                        style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF111827))),
+                    Text('${items.length} records will be exported',
+                        style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: const Color(0xFF6B7280))),
+                  ],
+                ),
+              ),
+              // Record count badge
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF6366F1), Color(0xFF7C3AED)],
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text('${items.length}',
+                    style: GoogleFonts.poppins(
                         fontSize: 12,
-                        color: const Color(0xFF374151)),
-                    dataTextStyle: GoogleFonts.inter(
-                        fontSize: 12, color: const Color(0xFF111827)),
-                    columns: _buildColumns(),
-                    rows: _buildRows(items.take(10).toList()),
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white)),
+              ),
+            ]),
+          ),
+
+          // ── Export buttons ──
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
+            child: Row(children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF22C55E), Color(0xFF16A34A)],
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF22C55E)
+                            .withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton.icon(
+                    onPressed:
+                        items.isEmpty ? null : () => _exportCsv(items),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      foregroundColor: Colors.white,
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 13),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
+                    ),
+                    icon:
+                        const Icon(Icons.download_rounded, size: 18),
+                    label: Text('CSV',
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13)),
                   ),
                 ),
               ),
-            ),
-          if (items.length > 10)
+              const SizedBox(width: 10),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF6366F1), Color(0xFF4F46E5)],
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF6366F1)
+                            .withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton.icon(
+                    onPressed: items.isEmpty
+                        ? null
+                        : () => _showPrintPreview(items),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      foregroundColor: Colors.white,
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 13),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
+                    ),
+                    icon: const Icon(Icons.picture_as_pdf_rounded,
+                        size: 18),
+                    label: Text('PDF',
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13)),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+
+          // ── Student preview cards ──
+          if (items.isEmpty)
             Padding(
-              padding: const EdgeInsets.only(bottom: 14),
-              child: Text('Showing first 10 of ${items.length} records',
-                  style: GoogleFonts.inter(
-                      fontSize: 12, color: const Color(0xFF6B7280))),
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              child: sEmptyState('No students match your filters',
+                  Icons.person_off_rounded),
+            )
+          else ...[
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
+              itemCount: items.length > 10 ? 10 : items.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (_, i) => _PreviewCard(
+                index: i,
+                student: items[i],
+                columns: activeCols,
+                controller: _c,
+              ),
             ),
+            if (items.length > 10)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 14, top: 4),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF6366F1)
+                        .withValues(alpha: 0.06),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                      'Showing 10 of ${items.length} records',
+                      style: GoogleFonts.inter(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF6366F1))),
+                ),
+              ),
+          ],
         ]),
       );
     });
   }
 
-  List<DataColumn> _buildColumns() {
-    final cols = <DataColumn>[];
-    _selectedColumns.forEach((key, selected) {
-      if (selected) cols.add(DataColumn(label: Text(key)));
-    });
-    return cols.isEmpty ? [const DataColumn(label: Text('Name'))] : cols;
-  }
-
-  List<DataRow> _buildRows(List<StudentRow> items) {
-    return items.asMap().entries.map((entry) {
-      final i = entry.key;
-      final s = entry.value;
-      final cells = <DataCell>[];
-
-      _selectedColumns.forEach((key, selected) {
-        if (!selected) return;
-        switch (key) {
-          case 'SL':
-            cells.add(DataCell(Text('${i + 1}')));
-            break;
-          case 'Admission No':
-            cells.add(DataCell(Text(s.admissionNo)));
-            break;
-          case 'Roll No':
-            cells.add(DataCell(Text(s.rollNo ?? '—')));
-            break;
-          case 'Name':
-            cells.add(DataCell(Text(s.fullName)));
-            break;
-          case 'Class/Section':
-            cells.add(DataCell(Text(
-                '${_c.className(s.currentClass)} / ${_c.sectionName(s.currentSection)}')));
-            break;
-          case 'Gender':
-            cells.add(DataCell(Text(s.genderLabel)));
-            break;
-          case 'Date of Birth':
-            cells.add(DataCell(Text(s.dateOfBirth ?? '—')));
-            break;
-          case 'Status':
-            cells.add(DataCell(Text(s.isActive ? 'Active' : 'Inactive')));
-            break;
-          case 'Category':
-            cells.add(DataCell(Text(_c.categoryName(s.category))));
-            break;
-          case 'Guardian':
-            cells.add(DataCell(Text(_c.guardianName(s.guardian))));
-            break;
-          default:
-            cells.add(const DataCell(Text('—')));
-        }
-      });
-      return DataRow(cells: cells.isEmpty ? [const DataCell(Text(''))] : cells);
-    }).toList();
+  String _fieldValue(StudentRow s, String key, int index) {
+    switch (key) {
+      case 'SL':
+        return '${index + 1}';
+      case 'Admission No':
+        return s.admissionNo;
+      case 'Roll No':
+        return s.rollNo ?? '—';
+      case 'Name':
+        return s.fullName;
+      case 'Class/Section':
+        return '${_c.className(s.currentClass)} / ${_c.sectionName(s.currentSection)}';
+      case 'Gender':
+        return s.genderLabel;
+      case 'Date of Birth':
+        return s.dateOfBirth ?? '—';
+      case 'Status':
+        return s.isActive ? 'Active' : 'Inactive';
+      case 'Category':
+        return _c.categoryName(s.category);
+      case 'Guardian':
+        return _c.guardianName(s.guardian);
+      default:
+        return '—';
+    }
   }
 
   void _exportCsv(List<StudentRow> items) {
@@ -408,6 +479,251 @@ class _StudentExportViewState extends State<StudentExportView> {
       'PDF with ${items.length} records would open print dialog. Integrate the printing package for full PDF support.',
       snackPosition: SnackPosition.BOTTOM,
       duration: const Duration(seconds: 4),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PREVIEW CARD — responsive student card replacing the DataTable
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _PreviewCard extends StatelessWidget {
+  final int index;
+  final StudentRow student;
+  final List<String> columns;
+  final StudentListController controller;
+
+  const _PreviewCard({
+    required this.index,
+    required this.student,
+    required this.columns,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isActive = student.isActive;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: const Color(0xFF6366F1).withValues(alpha: 0.08),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF6366F1).withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // ── Top row: avatar + name + status ──
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+            child: Row(
+              children: [
+                // Serial number circle
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF6366F1).withValues(alpha: 0.12),
+                        const Color(0xFF7C3AED).withValues(alpha: 0.06),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text('${index + 1}',
+                      style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF6366F1))),
+                ),
+                const SizedBox(width: 10),
+                // Name + admission no
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(student.fullName,
+                          style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF111827)),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis),
+                      if (columns.contains('Admission No'))
+                        Text(student.admissionNo,
+                            style: GoogleFonts.inter(
+                                fontSize: 11,
+                                color: const Color(0xFF6B7280))),
+                    ],
+                  ),
+                ),
+                // Status badge
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: isActive
+                          ? [
+                              const Color(0xFF22C55E)
+                                  .withValues(alpha: 0.12),
+                              const Color(0xFF22C55E)
+                                  .withValues(alpha: 0.06),
+                            ]
+                          : [
+                              const Color(0xFF6B7280)
+                                  .withValues(alpha: 0.12),
+                              const Color(0xFF6B7280)
+                                  .withValues(alpha: 0.06),
+                            ],
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: (isActive
+                              ? const Color(0xFF22C55E)
+                              : const Color(0xFF6B7280))
+                          .withValues(alpha: 0.25),
+                    ),
+                  ),
+                  child: Text(
+                    isActive ? 'Active' : 'Inactive',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: isActive
+                          ? const Color(0xFF16A34A)
+                          : const Color(0xFF6B7280),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // ── Detail chips (selected columns) ──
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            child: Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: columns
+                  .where((c) =>
+                      c != 'SL' &&
+                      c != 'Name' &&
+                      c != 'Admission No' &&
+                      c != 'Status')
+                  .map((col) => _DetailChip(
+                        label: col,
+                        value: _getValue(col),
+                        icon: _getIcon(col),
+                      ))
+                  .toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getValue(String key) {
+    switch (key) {
+      case 'Roll No':
+        return student.rollNo ?? '—';
+      case 'Class/Section':
+        return '${controller.className(student.currentClass)} / ${controller.sectionName(student.currentSection)}';
+      case 'Gender':
+        return student.genderLabel;
+      case 'Date of Birth':
+        return student.dateOfBirth ?? '—';
+      case 'Category':
+        return controller.categoryName(student.category);
+      case 'Guardian':
+        return controller.guardianName(student.guardian);
+      default:
+        return '—';
+    }
+  }
+
+  IconData _getIcon(String key) {
+    switch (key) {
+      case 'Roll No':
+        return Icons.tag_rounded;
+      case 'Class/Section':
+        return Icons.class_rounded;
+      case 'Gender':
+        return Icons.person_rounded;
+      case 'Date of Birth':
+        return Icons.cake_rounded;
+      case 'Category':
+        return Icons.category_rounded;
+      case 'Guardian':
+        return Icons.family_restroom_rounded;
+      default:
+        return Icons.info_outline_rounded;
+    }
+  }
+}
+
+class _DetailChip extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+
+  const _DetailChip({
+    required this.label,
+    required this.value,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF5F3FF),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: const Color(0xFF6366F1).withValues(alpha: 0.08),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon,
+              size: 12,
+              color: const Color(0xFF6366F1).withValues(alpha: 0.5)),
+          const SizedBox(width: 4),
+          Text(
+            '$label: ',
+            style: GoogleFonts.inter(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF6B7280),
+            ),
+          ),
+          Flexible(
+            child: Text(
+              value,
+              style: GoogleFonts.inter(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF111827),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

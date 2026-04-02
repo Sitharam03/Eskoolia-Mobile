@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -99,8 +100,8 @@ class TopicController extends GetxController {
       isLoading.value = true;
       error.value = '';
       topicGroups.value = await _repo.getLessonTopicGroups();
-    } catch (_) {
-      error.value = 'Unable to load topic groups.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Unable to load topic groups.');
     } finally {
       isLoading.value = false;
     }
@@ -111,8 +112,8 @@ class TopicController extends GetxController {
       isLoading.value = true;
       error.value = '';
       topicDetails.value = await _repo.getLessonTopicDetails();
-    } catch (_) {
-      error.value = 'Unable to load topic details.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Unable to load topic details.');
     } finally {
       isLoading.value = false;
     }
@@ -152,8 +153,8 @@ class TopicController extends GetxController {
       message.value = '${titles.length} topic(s) added.';
       topicText.value = '';
       await Future.wait([loadTopicGroups(), loadTopicDetails()]);
-    } catch (_) {
-      error.value = 'Failed to add topics.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to add topics.');
     } finally {
       isSaving.value = false;
     }
@@ -182,8 +183,8 @@ class TopicController extends GetxController {
       editingTopicTitle.value = '';
       message.value = 'Topic updated.';
       await loadTopicDetails();
-    } catch (_) {
-      error.value = 'Failed to update topic.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to update topic.');
     } finally {
       isSaving.value = false;
     }
@@ -194,8 +195,8 @@ class TopicController extends GetxController {
       error.value = '';
       await _repo.deleteLessonTopicDetail(id);
       await Future.wait([loadTopicGroups(), loadTopicDetails()]);
-    } catch (_) {
-      error.value = 'Failed to delete topic.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete topic.');
     }
   }
 
@@ -204,8 +205,8 @@ class TopicController extends GetxController {
       error.value = '';
       await _repo.deleteLessonTopicGroup(groupId);
       await Future.wait([loadTopicGroups(), loadTopicDetails()]);
-    } catch (_) {
-      error.value = 'Failed to delete topic group.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete topic group.');
     }
   }
 }

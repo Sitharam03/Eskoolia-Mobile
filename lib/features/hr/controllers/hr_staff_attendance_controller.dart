@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/hr_models.dart';
 import '../repositories/hr_repository.dart';
 
@@ -59,7 +60,7 @@ class HrStaffAttendanceController extends GetxController {
         if (ex != null) { row.selectedType.value = ex.attendanceType; row.noteCtrl.text = ex.note; }
         return row;
       }).toList();
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isLoading.value = false; }
   }
 
@@ -74,7 +75,7 @@ class HrStaffAttendanceController extends GetxController {
       }).toList();
       await _repo.bulkStoreAttendance(rows);
       successMsg.value = 'Attendance saved successfully!';
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isSaving.value = false; }
   }
 }

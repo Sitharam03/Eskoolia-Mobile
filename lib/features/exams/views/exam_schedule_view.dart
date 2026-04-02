@@ -8,6 +8,7 @@ import '../../../features/students/views/_student_shared.dart';
 import '../controllers/exam_schedule_controller.dart';
 import '../models/exam_models.dart';
 import '_exam_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class ExamScheduleView extends StatelessWidget {
   const ExamScheduleView({super.key});
@@ -24,9 +25,7 @@ class ExamScheduleView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                        color: Color(0xFF4F46E5)));
+                return const SchoolLoader();
               }
               return SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),

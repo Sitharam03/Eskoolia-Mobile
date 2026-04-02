@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -56,7 +57,7 @@ class ExamSetupController extends GetxController {
       examTypes.value = _parseList(data['exam_types'], ExamType.fromJson);
       if (rows.isEmpty) rows.add(_SetupRow());
     } catch (e) {
-      errorMsg.value = 'Failed to load exam setup criteria';
+      errorMsg.value = ApiError.extract(e, 'Failed to load exam setup criteria');
     } finally {
       isLoading.value = false;
     }
@@ -138,7 +139,7 @@ class ExamSetupController extends GetxController {
       });
       successMsg.value = 'Operation successful';
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', '');
+      errorMsg.value = ApiError.extract(e);
     } finally {
       isSaving.value = false;
     }

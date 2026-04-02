@@ -8,6 +8,7 @@ import '../controllers/topic_controller.dart';
 import '../models/academics_models.dart';
 import '_academics_nav_tabs.dart';
 import '_academics_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class TopicView extends GetView<TopicController> {
   const TopicView({super.key});
@@ -213,12 +214,7 @@ class _TopicGroupsList extends StatelessWidget {
       icon: Icons.layers_rounded,
       child: Obx(() {
         if (c.isLoading.value) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: CircularProgressIndicator(color: Color(0xFF4F46E5)),
-            ),
-          );
+          return const SchoolLoader();
         }
         if (c.topicGroups.isEmpty) {
           return aEmptyState(

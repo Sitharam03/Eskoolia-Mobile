@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -90,8 +91,8 @@ class AssignSubjectController extends GetxController {
             ? null
             : (sectionIdOverride ?? filterSectionId.value),
       );
-    } catch (_) {
-      error.value = 'Unable to load subject assignments.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Unable to load subject assignments.');
     } finally {
       isLoading.value = false;
     }
@@ -122,8 +123,8 @@ class AssignSubjectController extends GetxController {
           editingId.value != null ? 'Subject assignment updated.' : 'Subject assigned.';
       resetForm();
       await loadItems();
-    } catch (_) {
-      error.value = 'Failed to save subject assignment.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to save subject assignment.');
     } finally {
       isSaving.value = false;
     }
@@ -146,8 +147,8 @@ class AssignSubjectController extends GetxController {
       error.value = '';
       await _repo.deleteClassSubject(id);
       await loadItems();
-    } catch (_) {
-      error.value = 'Failed to delete.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete.');
     }
   }
 

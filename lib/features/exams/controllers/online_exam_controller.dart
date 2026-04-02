@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -65,8 +66,8 @@ class OnlineExamController extends GetxController {
       classes.value = _parseList(data['classes'], SchoolClass.fromJson);
       sections.value = _parseList(data['sections'], SchoolSection.fromJson);
       subjects.value = _parseList(data['subjects'], SchoolSubject.fromJson);
-    } catch (_) {
-      errorMsg.value = 'Failed to load online exams.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load online exams.');
     } finally {
       isLoading.value = false;
     }
@@ -133,7 +134,7 @@ class OnlineExamController extends GetxController {
       cancelEdit();
       await _loadIndex();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Save failed. ');
+      errorMsg.value = ApiError.extract(e, 'Save failed');
     } finally {
       isSaving.value = false;
     }
@@ -144,7 +145,7 @@ class OnlineExamController extends GetxController {
       await _repo.deleteOnlineExam(id);
       await _loadIndex();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Delete failed. ');
+      errorMsg.value = ApiError.extract(e, 'Delete failed');
     }
   }
 
@@ -157,7 +158,7 @@ class OnlineExamController extends GetxController {
       }
       await _loadIndex();
     } catch (err) {
-      errorMsg.value = err.toString().replaceFirst('Exception: ', 'Action failed. ');
+      errorMsg.value = ApiError.extract(err, 'Action failed');
     }
   }
 }

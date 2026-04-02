@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -78,8 +79,8 @@ class AssignClassTeacherController extends GetxController {
         classId: filterClassId.value.isEmpty ? null : filterClassId.value,
         sectionId: filterSectionId.value.isEmpty ? null : filterSectionId.value,
       );
-    } catch (_) {
-      error.value = 'Unable to load class teacher assignments.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Unable to load class teacher assignments.');
     } finally {
       isLoading.value = false;
     }
@@ -108,8 +109,8 @@ class AssignClassTeacherController extends GetxController {
           editingId.value != null ? 'Assignment updated.' : 'Class teacher assigned.';
       resetForm();
       await loadItems();
-    } catch (_) {
-      error.value = 'Failed to save class teacher assignment.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to save class teacher assignment.');
     } finally {
       isSaving.value = false;
     }
@@ -130,8 +131,8 @@ class AssignClassTeacherController extends GetxController {
       error.value = '';
       await _repo.deleteClassTeacher(id);
       await loadItems();
-    } catch (_) {
-      error.value = 'Failed to delete.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete.');
     }
   }
 

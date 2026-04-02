@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -125,8 +126,8 @@ class HomeworkController extends GetxController {
       addSuccess.value = 'Homework added successfully.';
       _resetAddForm();
       await loadHomeworks();
-    } catch (_) {
-      addError.value = 'Failed to add homework.';
+    } catch (e) {
+      addError.value = ApiError.extract(e, 'Failed to add homework.');
     } finally {
       isSaving.value = false;
     }
@@ -164,8 +165,8 @@ class HomeworkController extends GetxController {
     try {
       await _repo.deleteHomework(id);
       await loadHomeworks();
-    } catch (_) {
-      addError.value = 'Failed to delete homework.';
+    } catch (e) {
+      addError.value = ApiError.extract(e, 'Failed to delete homework.');
     }
   }
 
@@ -224,8 +225,8 @@ class HomeworkController extends GetxController {
       await _repo.patchHomework(hw.id, {'evaluation_date': evaluationDate.value});
       await loadHomeworks();
       selectedHomework.value = null;
-    } catch (_) {
-      evalError.value = 'Failed to save evaluation.';
+    } catch (e) {
+      evalError.value = ApiError.extract(e, 'Failed to save evaluation.');
     } finally {
       savingEval.value = false;
     }
@@ -254,8 +255,8 @@ class HomeworkController extends GetxController {
         });
       }
       reportRows.value = rows;
-    } catch (_) {
-      reportError.value = 'Failed to load homework report.';
+    } catch (e) {
+      reportError.value = ApiError.extract(e, 'Failed to load homework report.');
     } finally {
       isReportLoading.value = false;
     }

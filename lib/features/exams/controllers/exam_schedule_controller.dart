@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -54,7 +55,7 @@ class ExamScheduleController extends GetxController {
       teachers.value = _parseList(data['teachers'], SchoolTeacher.fromJson);
       periods.value = _parseList(data['exam_periods'], ExamPeriod.fromJson);
     } catch (e) {
-      errorMsg.value = 'Failed to load schedule criteria';
+      errorMsg.value = ApiError.extract(e, 'Failed to load schedule criteria');
     } finally {
       isLoading.value = false;
     }
@@ -102,7 +103,7 @@ class ExamScheduleController extends GetxController {
         );
       }).toList();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'No Result Found');
+      errorMsg.value = ApiError.extract(e, 'No Result Found');
       subjects.value = [];
       routineRows.value = [];
       existingRoutines.value = [];
@@ -150,7 +151,7 @@ class ExamScheduleController extends GetxController {
       successMsg.value = 'Exam routine saved successfully';
       await search();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', '');
+      errorMsg.value = ApiError.extract(e);
     } finally {
       isSaving.value = false;
     }

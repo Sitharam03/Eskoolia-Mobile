@@ -7,6 +7,7 @@ import '../../students/views/_student_shared.dart';
 import '../controllers/library_issue_controller.dart';
 import '../models/library_models.dart';
 import '_library_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class LibraryIssueView extends StatelessWidget {
   const LibraryIssueView({super.key});
@@ -23,9 +24,7 @@ class LibraryIssueView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                        color: Color(0xFF4F46E5)));
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 color: const Color(0xFF4F46E5),

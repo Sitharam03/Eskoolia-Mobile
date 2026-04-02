@@ -304,6 +304,9 @@ class _AppScaffoldState extends State<AppScaffold>
   // Floating particles
   late final AnimationController _particleCtrl;
 
+  // School scene (bus, children)
+  late final AnimationController _sceneCtrl;
+
   // Header icon glow
   late final AnimationController _glowCtrl;
   late final Animation<double> _glowAnim;
@@ -329,6 +332,11 @@ class _AppScaffoldState extends State<AppScaffold>
       duration: const Duration(seconds: 10),
     )..repeat();
 
+    _sceneCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 18),
+    )..repeat();
+
     _glowCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
@@ -340,6 +348,7 @@ class _AppScaffoldState extends State<AppScaffold>
   void dispose() {
     _entranceCtrl.dispose();
     _particleCtrl.dispose();
+    _sceneCtrl.dispose();
     _glowCtrl.dispose();
     super.dispose();
   }
@@ -394,6 +403,15 @@ class _AppScaffoldState extends State<AppScaffold>
                   child: _ModuleParticles(
                     controller: _particleCtrl,
                     theme: _mt,
+                  ),
+                ),
+              ),
+              // ── School scene (bus, children, buildings) ──
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: _SchoolScene(
+                    controller: _sceneCtrl,
+                    color: _mt.primary,
                   ),
                 ),
               ),
@@ -600,7 +618,6 @@ class _ModuleParticles extends StatelessWidget {
     );
   }
 
-  // Simple sine approximation to avoid dart:math import
   static double _sin(double x) {
     x = x % 6.283;
     if (x > 3.1416) x -= 6.283;
@@ -608,3 +625,166 @@ class _ModuleParticles extends StatelessWidget {
     return x * (1.0 - x2 / 6.0 * (1.0 - x2 / 20.0));
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SCHOOL SCENE — big visible bus, playing children, classroom, trees
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _SchoolScene extends StatelessWidget {
+  final AnimationController controller;
+  final Color color;
+  const _SchoolScene({required this.controller, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
+
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (_, __) {
+        final t = controller.value;
+        // Bus drives across the bottom
+        final busX = (t * (w + 120)) - 60;
+        // Second bus (smaller, upper lane, opposite direction)
+        final bus2X = w - (((t * 0.7 + 0.5) % 1.0) * (w + 100)) + 50;
+        // Children bouncing
+        final bob = _ModuleParticles._sin;
+        final b1 = 6.0 * bob(t * 12.566);
+        final b2 = 5.0 * bob((t + 0.25) * 12.566);
+        final b3 = 7.0 * bob((t + 0.5) * 12.566);
+        final b4 = 4.0 * bob((t + 0.75) * 12.566);
+        // Ball bouncing high
+        final ballY = 18.0 * (bob(t * 18.85)).abs();
+        // Bird flying
+        final birdX = ((t * 1.4) % 1.0) * (w + 40) - 20;
+        final birdY = h * 0.08 + 8.0 * bob(t * 9.42);
+
+        return Stack(
+          children: [
+            // ── Ground strip with grass feel ──
+            Positioned(
+              left: 0, right: 0, bottom: 0, height: 36,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      color.withValues(alpha: 0.0),
+                      color.withValues(alpha: 0.06),
+                      color.withValues(alpha: 0.10),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // ── Road line ──
+            Positioned(
+              left: 0, right: 0, bottom: 18,
+              child: Container(
+                height: 1.5,
+                color: color.withValues(alpha: 0.08),
+              ),
+            ),
+
+            // ── School building (left) ──
+            Positioned(
+              left: 8, bottom: 20,
+              child: Icon(Icons.school_rounded,
+                  size: 44, color: color.withValues(alpha: 0.10)),
+            ),
+
+            // ── Trees ──
+            Positioned(
+              right: 12, bottom: 20,
+              child: Icon(Icons.park_rounded,
+                  size: 38, color: color.withValues(alpha: 0.08)),
+            ),
+            Positioned(
+              left: w * 0.38, bottom: 20,
+              child: Icon(Icons.nature_rounded,
+                  size: 30, color: color.withValues(alpha: 0.06)),
+            ),
+            Positioned(
+              right: w * 0.3, bottom: 22,
+              child: Icon(Icons.forest_rounded,
+                  size: 32, color: color.withValues(alpha: 0.05)),
+            ),
+
+            // ── Main bus (big, moving right) ──
+            Positioned(
+              left: busX, bottom: 20,
+              child: Icon(Icons.directions_bus_rounded,
+                  size: 36, color: color.withValues(alpha: 0.14)),
+            ),
+
+            // ── Second bus (smaller, upper lane, moving left) ──
+            Positioned(
+              left: bus2X, bottom: 28,
+              child: Icon(Icons.airport_shuttle_rounded,
+                  size: 24, color: color.withValues(alpha: 0.08)),
+            ),
+
+            // ── Playing children (big, bouncing) ──
+            Positioned(
+              left: w * 0.15, bottom: 36 + b1,
+              child: Icon(Icons.directions_run_rounded,
+                  size: 28, color: color.withValues(alpha: 0.12)),
+            ),
+            Positioned(
+              left: w * 0.32, bottom: 36 + b2,
+              child: Icon(Icons.directions_walk_rounded,
+                  size: 26, color: color.withValues(alpha: 0.10)),
+            ),
+            Positioned(
+              left: w * 0.62, bottom: 38 + b3,
+              child: Icon(Icons.boy_rounded,
+                  size: 28, color: color.withValues(alpha: 0.11)),
+            ),
+            Positioned(
+              left: w * 0.82, bottom: 36 + b4,
+              child: Icon(Icons.girl_rounded,
+                  size: 26, color: color.withValues(alpha: 0.09)),
+            ),
+
+            // ── Bouncing ball ──
+            Positioned(
+              left: w * 0.48, bottom: 38 + ballY,
+              child: Icon(Icons.sports_soccer_rounded,
+                  size: 16, color: color.withValues(alpha: 0.12)),
+            ),
+
+            // ── Teacher (classroom area, top-right) ──
+            Positioned(
+              right: 16, top: h * 0.18,
+              child: Icon(Icons.cast_for_education_rounded,
+                  size: 30, color: color.withValues(alpha: 0.06)),
+            ),
+
+            // ── Book stack (mid-left) ──
+            Positioned(
+              left: 12, top: h * 0.40,
+              child: Icon(Icons.auto_stories_rounded,
+                  size: 26, color: color.withValues(alpha: 0.05)),
+            ),
+
+            // ── Flying birds ──
+            Positioned(
+              left: birdX, top: birdY,
+              child: Icon(Icons.flutter_dash,
+                  size: 20, color: color.withValues(alpha: 0.07)),
+            ),
+            Positioned(
+              left: birdX - 30, top: birdY + 12,
+              child: Icon(Icons.flutter_dash,
+                  size: 14, color: color.withValues(alpha: 0.05)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+

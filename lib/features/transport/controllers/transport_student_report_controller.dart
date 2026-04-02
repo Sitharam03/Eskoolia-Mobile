@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/transport_models.dart';
 import '../repositories/transport_repository.dart';
 
@@ -34,8 +35,8 @@ class TransportStudentReportController extends GetxController {
       students.value = results[0] as List<StudentTransport>;
       routes.value = results[1] as List<TransportRoute>;
       vehicles.value = results[2] as List<Vehicle>;
-    } catch (_) {
-      errorMsg.value = 'Unable to load report data.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to load report data.');
     } finally {
       isLoading.value = false;
     }

@@ -8,6 +8,7 @@ import '../controllers/fees_group_controller.dart';
 import '../models/fees_group_model.dart';
 import '_fees_nav_tabs.dart';
 import '_fees_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class FeesGroupView extends StatelessWidget {
   const FeesGroupView({super.key});
@@ -24,7 +25,7 @@ class FeesGroupView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.groups.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,

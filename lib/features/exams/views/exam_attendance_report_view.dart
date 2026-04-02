@@ -7,6 +7,7 @@ import '../../students/views/_student_shared.dart';
 import '../controllers/exam_attendance_controller.dart';
 import '../models/exam_models.dart';
 import '_exam_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class ExamAttendanceReportView extends StatelessWidget {
   const ExamAttendanceReportView({super.key});
@@ -24,8 +25,7 @@ class ExamAttendanceReportView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value) {
-                return const Center(
-                    child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 color: const Color(0xFF4F46E5),

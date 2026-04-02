@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -28,7 +29,7 @@ class ExamTypeController extends GetxController {
       isLoading.value = true;
       examTypes.value = await _repo.getExamTypes();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load exam types',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load exam types'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -43,7 +44,7 @@ class ExamTypeController extends GetxController {
       isAverage.value = type.isAverage;
       averageMark.value = type.averageMark;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load exam type for editing',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load exam type for editing'),
           snackPosition: SnackPosition.BOTTOM);
     }
   }
@@ -88,7 +89,7 @@ class ExamTypeController extends GetxController {
       Get.snackbar('Success', isEditing ? 'Exam type updated' : 'Exam type created',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', e.toString().replaceFirst('Exception: ', ''),
+      Get.snackbar('Error', ApiError.extract(e),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSaving.value = false;
@@ -103,7 +104,7 @@ class ExamTypeController extends GetxController {
       Get.snackbar('Deleted', 'Exam type deleted',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to delete exam type',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to delete exam type'),
           snackPosition: SnackPosition.BOTTOM);
     }
   }

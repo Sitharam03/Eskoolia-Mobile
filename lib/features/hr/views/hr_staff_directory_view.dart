@@ -8,6 +8,27 @@ import '../controllers/hr_staff_directory_controller.dart';
 import '../controllers/hr_staff_controller.dart';
 import '../models/hr_models.dart';
 import '_hr_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
+
+// ── Design Constants ─────────────────────────────────────────────────────────
+
+const _kPri = Color(0xFF0EA5E9);
+const _kSec = Color(0xFF0284C7);
+const _kVio = Color(0xFF6366F1);
+
+Color _accentFor(String name) {
+  if (name.isEmpty) return _kPri;
+  final code = name.codeUnitAt(0) % 6;
+  const palette = [
+    Color(0xFF6366F1),
+    Color(0xFF0EA5E9),
+    Color(0xFF7C3AED),
+    Color(0xFF14B8A6),
+    Color(0xFFF59E0B),
+    Color(0xFFEC4899),
+  ];
+  return palette[code];
+}
 
 // ── Helper ────────────────────────────────────────────────────────────────────
 
@@ -32,13 +53,10 @@ class HrStaffDirectoryView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (c.isLoading.value) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                      color: Color(0xFF4F46E5)),
-                );
+                return const SchoolLoader();
               }
               return RefreshIndicator(
-                color: const Color(0xFF4F46E5),
+                color: _kPri,
                 onRefresh: c.load,
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -84,17 +102,17 @@ class _StatsGrid extends StatelessWidget {
           children: [
             Row(
               children: [
-                _StatTile(
+                _Stat(
                   value: '$total',
                   label: 'Total Staff',
-                  color: const Color(0xFF4F46E5),
+                  color: _kVio,
                   icon: Icons.people_rounded,
                 ),
                 const SizedBox(width: 8),
-                _StatTile(
+                _Stat(
                   value: '$active',
                   label: 'Active',
-                  color: const Color(0xFF059669),
+                  color: const Color(0xFF22C55E),
                   icon: Icons.check_circle_rounded,
                 ),
               ],
@@ -102,14 +120,14 @@ class _StatsGrid extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                _StatTile(
+                _Stat(
                   value: '$inactive',
                   label: 'Inactive',
                   color: const Color(0xFF9CA3AF),
                   icon: Icons.remove_circle_rounded,
                 ),
                 const SizedBox(width: 8),
-                _StatTile(
+                _Stat(
                   value: '$terminated',
                   label: 'Terminated',
                   color: const Color(0xFFDC2626),
@@ -122,12 +140,12 @@ class _StatsGrid extends StatelessWidget {
       });
 }
 
-class _StatTile extends StatelessWidget {
+class _Stat extends StatelessWidget {
   final String value;
   final String label;
   final Color color;
   final IconData icon;
-  const _StatTile({
+  const _Stat({
     required this.value,
     required this.label,
     required this.color,
@@ -138,17 +156,20 @@ class _StatTile extends StatelessWidget {
   Widget build(BuildContext context) => Expanded(
         child: Container(
           padding:
-              const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+              const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border:
-                Border.all(color: const Color(0xFFE5E7EB)),
-            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              colors: [Colors.white, color.withValues(alpha: 0.04)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border.all(color: color.withValues(alpha: 0.12)),
+            borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
+                color: color.withValues(alpha: 0.10),
+                blurRadius: 14,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
@@ -156,21 +177,32 @@ class _StatTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: [color, color.withValues(alpha: 0.7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.30),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 alignment: Alignment.center,
-                child: Icon(icon, size: 16, color: color),
+                child: Icon(icon, size: 18, color: Colors.white),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Text(
                 value,
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
                   color: const Color(0xFF111827),
                 ),
               ),
@@ -196,79 +228,96 @@ class _FilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: const Color(0xFFE5E7EB)),
-          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            colors: [Colors.white, _kPri.withValues(alpha: 0.03)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          border: Border.all(color: _kPri.withValues(alpha: 0.10)),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: _kPri.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             sSearchBar(
-              hint: 'Search by name, staff no, email…',
+              hint: 'Search by name, staff no, email...',
               onChanged: (v) => c.searchQuery.value = v,
             ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Text(
-                  'Status:',
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    color: const Color(0xFF6B7280),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: HrStaffDirectoryController.statusFilters
-                          .map(
-                            (s) => Obx(
-                              () => GestureDetector(
-                                onTap: () =>
-                                    c.selectedStatusFilter.value = s,
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.only(right: 6),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: c.selectedStatusFilter
-                                                .value ==
-                                            s
-                                        ? const Color(0xFF4F46E5)
-                                        : const Color(0xFFF3F4F6),
-                                    borderRadius:
-                                        BorderRadius.circular(16),
-                                  ),
-                                  child: Text(
-                                    s == 'all'
-                                        ? 'All'
-                                        : _capitalize(s),
-                                    style: GoogleFonts.inter(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      color: c.selectedStatusFilter
-                                                  .value ==
-                                              s
-                                          ? Colors.white
-                                          : const Color(0xFF6B7280),
-                                    ),
-                                  ),
+            const SizedBox(height: 12),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: HrStaffDirectoryController.statusFilters
+                    .map(
+                      (s) => Obx(
+                        () {
+                          final isActive =
+                              c.selectedStatusFilter.value == s;
+                          return GestureDetector(
+                            onTap: () =>
+                                c.selectedStatusFilter.value = s,
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(right: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 7),
+                              decoration: BoxDecoration(
+                                gradient: isActive
+                                    ? const LinearGradient(
+                                        colors: [_kPri, _kVio],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      )
+                                    : null,
+                                color: isActive ? null : Colors.white,
+                                borderRadius:
+                                    BorderRadius.circular(20),
+                                border: isActive
+                                    ? null
+                                    : Border.all(
+                                        color: const Color(0xFFE5E7EB)),
+                                boxShadow: isActive
+                                    ? [
+                                        BoxShadow(
+                                          color: _kPri
+                                              .withValues(alpha: 0.30),
+                                          blurRadius: 8,
+                                          offset:
+                                              const Offset(0, 2),
+                                        ),
+                                      ]
+                                    : null,
+                              ),
+                              child: Text(
+                                s == 'all'
+                                    ? 'All'
+                                    : _capitalize(s),
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: isActive
+                                      ? Colors.white
+                                      : const Color(0xFF6B7280),
                                 ),
                               ),
                             ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                ),
-              ],
+                          );
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Obx(
               () => sDropdown<int>(
                 value: c.selectedDeptFilter.value,
@@ -329,187 +378,221 @@ class _StaffCard extends StatelessWidget {
   final HrStaffDirectoryController c;
   const _StaffCard({required this.staff, required this.c});
 
-  Color get _statusColor {
-    switch (staff.status) {
-      case 'active':
-        return const Color(0xFF059669);
-      case 'inactive':
-        return const Color(0xFF9CA3AF);
-      case 'terminated':
-        return const Color(0xFFDC2626);
-      default:
-        return const Color(0xFF4F46E5);
-    }
-  }
-
   @override
-  Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: const Color(0xFFE5E7EB)),
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
+  Widget build(BuildContext context) {
+    final accent = _accentFor(staff.fullName);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.white, accent.withValues(alpha: 0.04)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        clipBehavior: Clip.hardEdge,
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(width: 4, color: _statusColor),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFF4F46E5),
-                                  Color(0xFF7C3AED),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              shape: BoxShape.circle,
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              staff.initials,
-                              style: GoogleFonts.inter(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  staff.fullName,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF111827),
-                                  ),
-                                ),
-                                Text(
-                                  staff.staffNo,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 11,
-                                    color: const Color(0xFF9CA3AF),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    if (staff.designationName
-                                        .isNotEmpty)
-                                      _InfoChip(
-                                        staff.designationName,
-                                        const Color(0xFF4F46E5),
-                                      ),
-                                    if (staff.designationName
-                                            .isNotEmpty &&
-                                        staff.departmentName.isNotEmpty)
-                                      const SizedBox(width: 4),
-                                    if (staff.departmentName.isNotEmpty)
-                                      _InfoChip(
-                                        staff.departmentName,
-                                        const Color(0xFF8B5CF6),
-                                      ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _ActionBtn(
-                                icon: Icons.edit_rounded,
-                                color: const Color(0xFF0EA5E9),
-                                onTap: () {
-                                  Get.find<HrStaffController>()
-                                      .startEdit(staff);
-                                  Get.toNamed(AppRoutes.hrStaff);
-                                },
-                              ),
-                              const SizedBox(height: 6),
-                              _ActionBtn(
-                                icon: Icons.delete_outline_rounded,
-                                color: const Color(0xFFDC2626),
-                                onTap: () => showDialog(
-                                  context: context,
-                                  builder: (_) => sDeleteDialog(
-                                    context: context,
-                                    message:
-                                        'Delete "${staff.fullName}"?',
-                                    onConfirm: () =>
-                                        c.delete(staff.id),
-                                  ),
-                                ),
-                              ),
-                            ],
+        border: Border.all(color: accent.withValues(alpha: 0.12)),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: 0.10),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        children: [
+          // Decorative circle bottom-right
+          Positioned(
+            right: -20,
+            bottom: -20,
+            child: Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: accent.withValues(alpha: 0.06),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    // Avatar with gradient and glow
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [accent, accent.withValues(alpha: 0.7)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: accent.withValues(alpha: 0.35),
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF9FAFB),
-                          borderRadius: BorderRadius.circular(8),
+                      alignment: Alignment.center,
+                      child: Text(
+                        staff.initials,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                        child: Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (staff.email.isNotEmpty)
-                              _ContactRow(
-                                  Icons.email_outlined, staff.email),
-                            if (staff.phone.isNotEmpty)
-                              _ContactRow(
-                                  Icons.phone_outlined, staff.phone),
-                            sBadge(
-                              staff.status == 'active'
-                                  ? 'Active'
-                                  : staff.status == 'terminated'
-                                      ? 'Terminated'
-                                      : 'Inactive',
-                              staff.status == 'active'
-                                  ? const Color(0xFF059669)
-                                  : staff.status == 'terminated'
-                                      ? const Color(0xFFDC2626)
-                                      : const Color(0xFF9CA3AF),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            staff.fullName,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF111827),
                             ),
-                          ],
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            staff.staffNo,
+                            style: GoogleFonts.inter(
+                              fontSize: 11,
+                              color: const Color(0xFF9CA3AF),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _ActionBtn(
+                          icon: Icons.edit_rounded,
+                          color: _kPri,
+                          onTap: () {
+                            Get.find<HrStaffController>()
+                                .startEdit(staff);
+                            Get.toNamed(AppRoutes.hrStaff);
+                          },
+                        ),
+                        const SizedBox(height: 6),
+                        _ActionBtn(
+                          icon: Icons.delete_outline_rounded,
+                          color: const Color(0xFFDC2626),
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (_) => sDeleteDialog(
+                              context: context,
+                              message:
+                                  'Delete "${staff.fullName}"?',
+                              onConfirm: () =>
+                                  c.delete(staff.id),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                // Info chips
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    if (staff.designationName.isNotEmpty)
+                      _InfoChip(
+                        label: staff.designationName,
+                        color: _kVio,
+                        icon: Icons.badge_rounded,
+                      ),
+                    if (staff.departmentName.isNotEmpty)
+                      _InfoChip(
+                        label: staff.departmentName,
+                        color: _kPri,
+                        icon: Icons.business_rounded,
+                      ),
+                    _InfoChip(
+                      label: staff.status == 'active'
+                          ? 'Active'
+                          : staff.status == 'terminated'
+                              ? 'Terminated'
+                              : 'Inactive',
+                      color: staff.status == 'active'
+                          ? const Color(0xFF22C55E)
+                          : staff.status == 'terminated'
+                              ? const Color(0xFFDC2626)
+                              : const Color(0xFF9CA3AF),
+                      icon: staff.status == 'active'
+                          ? Icons.check_circle_rounded
+                          : staff.status == 'terminated'
+                              ? Icons.block_rounded
+                              : Icons.remove_circle_rounded,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                // Contact info row
+                Row(
+                  children: [
+                    if (staff.email.isNotEmpty) ...[
+                      Icon(Icons.email_outlined,
+                          size: 13,
+                          color: accent.withValues(alpha: 0.50)),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          staff.email,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: const Color(0xFF6B7280),
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
-                  ),
+                    if (staff.email.isNotEmpty &&
+                        staff.phone.isNotEmpty)
+                      const SizedBox(width: 12),
+                    if (staff.phone.isNotEmpty) ...[
+                      Icon(Icons.phone_outlined,
+                          size: 13,
+                          color: accent.withValues(alpha: 0.50)),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          staff.phone,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: const Color(0xFF6B7280),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
+        ],
+      ),
+    );
+  }
 }
 
 // ── Info Chip ─────────────────────────────────────────────────────────────────
@@ -517,51 +600,47 @@ class _StaffCard extends StatelessWidget {
 class _InfoChip extends StatelessWidget {
   final String label;
   final Color color;
-  const _InfoChip(this.label, this.color);
+  final IconData icon;
+  const _InfoChip({
+    required this.label,
+    required this.color,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) => Container(
         padding:
-            const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Text(
-          label,
-          style: GoogleFonts.inter(
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: color,
+          gradient: LinearGradient(
+            colors: [
+              color.withValues(alpha: 0.10),
+              color.withValues(alpha: 0.05),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: color.withValues(alpha: 0.15)),
         ),
-      );
-}
-
-// ── Contact Row ───────────────────────────────────────────────────────────────
-
-class _ContactRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  const _ContactRow(this.icon, this.text);
-
-  @override
-  Widget build(BuildContext context) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 12, color: const Color(0xFF9CA3AF)),
-          const SizedBox(width: 4),
-          Flexible(
-            child: Text(
-              text,
-              style: GoogleFonts.inter(
-                fontSize: 11,
-                color: const Color(0xFF6B7280),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 11, color: color),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                label,
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: color,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-        ],
+          ],
+        ),
       );
 }
 
@@ -575,20 +654,32 @@ class _ListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        sectionHeader(title),
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF111827),
+          ),
+        ),
         Container(
           padding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           decoration: BoxDecoration(
-            color:
-                const Color(0xFF4F46E5).withValues(alpha: 0.08),
+            gradient: LinearGradient(
+              colors: [
+                _kPri.withValues(alpha: 0.10),
+                _kVio.withValues(alpha: 0.08),
+              ],
+            ),
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: _kPri.withValues(alpha: 0.12)),
           ),
           child: Text(
             '$count records',
             style: GoogleFonts.inter(
               fontSize: 12,
-              color: const Color(0xFF4F46E5),
+              color: _kPri,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -612,11 +703,19 @@ class _ActionBtn extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 34,
-          height: 34,
+          width: 36,
+          height: 36,
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(8),
+            gradient: LinearGradient(
+              colors: [
+                color.withValues(alpha: 0.10),
+                color.withValues(alpha: 0.05),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: color.withValues(alpha: 0.15)),
           ),
           alignment: Alignment.center,
           child: Icon(icon, size: 17, color: color),

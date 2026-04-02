@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/student_model.dart';
 import '../models/student_category_model.dart';
 import '../models/guardian_model.dart';
@@ -38,8 +39,8 @@ class StudentUnassignedController extends GetxController {
           .toList();
       categories.value = results[1] as List<StudentCategory>;
       guardians.value = results[2] as List<Guardian>;
-    } catch (_) {
-      Get.snackbar('Error', 'Failed to load unassigned students',
+    } catch (e) {
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load unassigned students'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -63,7 +64,7 @@ class StudentUnassignedController extends GetxController {
       Get.snackbar('Done', 'Student moved to deleted records',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed: $e', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to delete student'), snackPosition: SnackPosition.BOTTOM);
     }
   }
 

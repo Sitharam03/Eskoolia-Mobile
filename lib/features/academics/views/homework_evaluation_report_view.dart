@@ -8,6 +8,7 @@ import '../controllers/homework_controller.dart';
 import '../models/academics_models.dart';
 import '_academics_nav_tabs.dart';
 import '_academics_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class HomeworkEvaluationReportView extends GetView<HomeworkController> {
   const HomeworkEvaluationReportView({super.key});
@@ -140,12 +141,7 @@ class _ReportTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (c.isReportLoading.value) {
-        return const Center(
-          child: Padding(
-            padding: EdgeInsets.all(40),
-            child: CircularProgressIndicator(color: Color(0xFF4F46E5)),
-          ),
-        );
+        return const SchoolLoader();
       }
       if (c.reportError.value.isNotEmpty) {
         return Container(

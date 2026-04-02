@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/hr_models.dart';
 import '../repositories/hr_repository.dart';
 import 'hr_staff_directory_controller.dart';
@@ -135,7 +136,7 @@ class HrStaffController extends GetxController {
         } catch (_) {}
       }
     } catch (e) {
-      errorMsg.value = e.toString();
+      errorMsg.value = ApiError.extract(e);
     } finally {
       isLoading.value = false;
     }
@@ -270,7 +271,7 @@ class HrStaffController extends GetxController {
           break;
       }
     } catch (e) {
-      errorMsg.value = 'Could not pick file: $e';
+      errorMsg.value = ApiError.extract(e, 'Could not pick file');
     }
   }
 
@@ -397,7 +398,7 @@ class HrStaffController extends GetxController {
         Get.back();
       }
     } catch (e) {
-      errorMsg.value = e.toString();
+      errorMsg.value = ApiError.extract(e);
     } finally {
       isSaving.value = false;
     }

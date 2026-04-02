@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -51,8 +52,8 @@ class ExamAttendanceController extends GetxController {
       classes.value = _parseList(data['classes'], SchoolClass.fromJson);
       sections.value = _parseList(data['sections'], SchoolSection.fromJson);
       subjects.value = _parseList(data['subjects'], SchoolSubject.fromJson);
-    } catch (_) {
-      errorMsg.value = 'Failed to load attendance page.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load attendance page.');
     } finally {
       isLoading.value = false;
     }
@@ -88,7 +89,7 @@ class ExamAttendanceController extends GetxController {
     } catch (e) {
       students.value = [];
       attendanceState.value = {};
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Search failed. ');
+      errorMsg.value = ApiError.extract(e, 'Search failed');
     } finally {
       isSearching.value = false;
     }
@@ -129,7 +130,7 @@ class ExamAttendanceController extends GetxController {
       });
       successMsg.value = 'Attendance saved successfully.';
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Save failed. ');
+      errorMsg.value = ApiError.extract(e, 'Save failed');
     } finally {
       isSaving.value = false;
     }
@@ -179,8 +180,8 @@ class ExamAttendanceReportController extends GetxController {
       classes.value = _parseList(data['classes'], SchoolClass.fromJson);
       sections.value = _parseList(data['sections'], SchoolSection.fromJson);
       subjects.value = _parseList(data['subjects'], SchoolSubject.fromJson);
-    } catch (_) {
-      errorMsg.value = 'Failed to load attendance report page.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load attendance report page.');
     } finally {
       isLoading.value = false;
     }
@@ -206,7 +207,7 @@ class ExamAttendanceReportController extends GetxController {
       rows.value = _parseList(data['records'], AttendanceReportRow.fromJson);
     } catch (e) {
       rows.value = [];
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Search failed. ');
+      errorMsg.value = ApiError.extract(e, 'Search failed');
     } finally {
       isSearching.value = false;
     }

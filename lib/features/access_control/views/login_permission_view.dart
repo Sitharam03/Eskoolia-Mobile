@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../controllers/login_permission_controller.dart';
 import '../../../core/routes/app_routes.dart';
 
@@ -210,7 +211,7 @@ class LoginPermissionView extends GetView<LoginPermissionController> {
   Widget _buildUserList(BuildContext context) {
     return Obx(() {
       if (controller.isLoading.value && controller.users.isEmpty) {
-        return const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+        return const SchoolLoader();
       }
       if (controller.users.isEmpty) {
         return Center(

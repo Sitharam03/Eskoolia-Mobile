@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -83,8 +84,8 @@ class LessonController extends GetxController {
             l.subjectId.toString() == subjectId.value;
         return sMatch && subMatch;
       }).toList();
-    } catch (_) {
-      error.value = 'Unable to load lessons.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Unable to load lessons.');
     } finally {
       isLoading.value = false;
     }
@@ -132,8 +133,8 @@ class LessonController extends GetxController {
       lessonText.value = '';
       await loadLessons();
       await loadGroups();
-    } catch (_) {
-      error.value = 'Failed to add lessons.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to add lessons.');
     } finally {
       isSaving.value = false;
     }
@@ -160,8 +161,8 @@ class LessonController extends GetxController {
       editingTitle.value = '';
       message.value = 'Lesson updated.';
       await loadLessons();
-    } catch (_) {
-      error.value = 'Failed to update lesson.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to update lesson.');
     } finally {
       isSaving.value = false;
     }
@@ -173,8 +174,8 @@ class LessonController extends GetxController {
       await _repo.deleteLesson(id);
       await loadLessons();
       await loadGroups();
-    } catch (_) {
-      error.value = 'Failed to delete lesson.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete lesson.');
     }
   }
 
@@ -189,8 +190,8 @@ class LessonController extends GetxController {
       );
       await loadLessons();
       await loadGroups();
-    } catch (_) {
-      error.value = 'Failed to delete lesson group.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete lesson group.');
     }
   }
 }

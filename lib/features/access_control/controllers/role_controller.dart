@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/role_model.dart';
 import '../repositories/access_control_repository.dart';
 
@@ -36,7 +37,7 @@ class RoleController extends GetxController {
       final fetchedRoles = await repository.getRoles();
       roles.assignAll(fetchedRoles);
     } catch (e) {
-      errorMessage.value = 'Unable to load role list.';
+      errorMessage.value = ApiError.extract(e, 'Unable to load role list.');
     } finally {
       isLoading.value = false;
     }
@@ -78,7 +79,7 @@ class RoleController extends GetxController {
       resetForm();
       await loadRoles();
     } catch (e) {
-      Get.snackbar('Error', 'Unable to save role.', backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar('Error', ApiError.extract(e, 'Unable to save role.'), backgroundColor: Colors.redAccent, colorText: Colors.white);
     } finally {
       isSaving.value = false;
     }
@@ -108,7 +109,7 @@ class RoleController extends GetxController {
       Get.snackbar('Success', 'Role deleted successfully', backgroundColor: Colors.green, colorText: Colors.white);
       await loadRoles();
     } catch (e) {
-      Get.snackbar('Error', 'Unable to delete role.', backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar('Error', ApiError.extract(e, 'Unable to delete role.'), backgroundColor: Colors.redAccent, colorText: Colors.white);
     }
   }
 }

@@ -10,6 +10,7 @@ import '../models/id_card_model.dart';
 import '../models/certificate_model.dart';
 import '../models/admin_recipient_model.dart';
 import '../repositories/administration_repository.dart';
+import '../../../core/network/api_error.dart';
 import 'package:dio/dio.dart' as dio;
 
 class AdministrationController extends GetxController {
@@ -180,8 +181,8 @@ class AdministrationController extends GetxController {
     isLoading.value = true;
     try {
       visitors.assignAll(await repository.getVisitors());
-    } catch (_) {
-      _error('Unable to load visitor records.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load visitor records.'));
     } finally {
       isLoading.value = false;
     }
@@ -252,8 +253,8 @@ class AdministrationController extends GetxController {
       }
       resetVisitorForm();
       await loadVisitors();
-    } catch (_) {
-      _error('Unable to save visitor.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save visitor.'));
     } finally {
       isSaving.value = false;
     }
@@ -264,8 +265,8 @@ class AdministrationController extends GetxController {
       await repository.deleteVisitor(id);
       visitors.removeWhere((v) => v.id == id);
       _success('Visitor deleted.');
-    } catch (_) {
-      _error('Unable to delete visitor.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete visitor.'));
     }
   }
 
@@ -276,8 +277,8 @@ class AdministrationController extends GetxController {
     isLoading.value = true;
     try {
       complaints.assignAll(await repository.getComplaints());
-    } catch (_) {
-      _error('Unable to load complaints.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load complaints.'));
     } finally {
       isLoading.value = false;
     }
@@ -346,8 +347,8 @@ class AdministrationController extends GetxController {
       }
       resetComplaintForm();
       await loadComplaints();
-    } catch (_) {
-      _error('Unable to save complaint.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save complaint.'));
     } finally {
       isSaving.value = false;
     }
@@ -358,8 +359,8 @@ class AdministrationController extends GetxController {
       await repository.deleteComplaint(id);
       complaints.removeWhere((c) => c.id == id);
       _success('Complaint deleted.');
-    } catch (_) {
-      _error('Unable to delete complaint.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete complaint.'));
     }
   }
 
@@ -370,8 +371,8 @@ class AdministrationController extends GetxController {
     isLoading.value = true;
     try {
       phoneCalls.assignAll(await repository.getPhoneCallLogs());
-    } catch (_) {
-      _error('Unable to load phone call logs.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load phone call logs.'));
     } finally {
       isLoading.value = false;
     }
@@ -435,8 +436,8 @@ class AdministrationController extends GetxController {
       }
       resetPhoneCallForm();
       await loadPhoneCalls();
-    } catch (_) {
-      _error('Unable to save phone call.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save phone call.'));
     } finally {
       isSaving.value = false;
     }
@@ -447,8 +448,8 @@ class AdministrationController extends GetxController {
       await repository.deletePhoneCallLog(id);
       phoneCalls.removeWhere((p) => p.id == id);
       _success('Phone call deleted.');
-    } catch (_) {
-      _error('Unable to delete phone call.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete phone call.'));
     }
   }
 
@@ -459,8 +460,8 @@ class AdministrationController extends GetxController {
     isLoading.value = true;
     try {
       postalDispatch.assignAll(await repository.getPostalDispatch());
-    } catch (_) {
-      _error('Unable to load postal dispatch records.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load postal dispatch records.'));
     } finally {
       isLoading.value = false;
     }
@@ -524,8 +525,8 @@ class AdministrationController extends GetxController {
       }
       resetPostalForm();
       await loadPostalDispatch();
-    } catch (_) {
-      _error('Unable to save postal dispatch.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save postal dispatch.'));
     } finally {
       isSaving.value = false;
     }
@@ -536,8 +537,8 @@ class AdministrationController extends GetxController {
       await repository.deletePostalDispatch(id);
       postalDispatch.removeWhere((p) => p.id == id);
       _success('Postal dispatch deleted.');
-    } catch (_) {
-      _error('Unable to delete postal dispatch.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete postal dispatch.'));
     }
   }
 
@@ -548,8 +549,8 @@ class AdministrationController extends GetxController {
     isLoading.value = true;
     try {
       postalReceive.assignAll(await repository.getPostalReceive());
-    } catch (_) {
-      _error('Unable to load postal receive records.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load postal receive records.'));
     } finally {
       isLoading.value = false;
     }
@@ -593,8 +594,8 @@ class AdministrationController extends GetxController {
       }
       resetPostalForm();
       await loadPostalReceive();
-    } catch (_) {
-      _error('Unable to save postal receive.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save postal receive.'));
     } finally {
       isSaving.value = false;
     }
@@ -605,8 +606,8 @@ class AdministrationController extends GetxController {
       await repository.deletePostalReceive(id);
       postalReceive.removeWhere((p) => p.id == id);
       _success('Postal receive deleted.');
-    } catch (_) {
-      _error('Unable to delete postal receive.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete postal receive.'));
     }
   }
 
@@ -617,8 +618,8 @@ class AdministrationController extends GetxController {
     isLoading.value = true;
     try {
       adminSetups.assignAll(await repository.getAdminSetups());
-    } catch (_) {
-      _error('Unable to load admin setups.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load admin setups.'));
     } finally {
       isLoading.value = false;
     }
@@ -662,8 +663,8 @@ class AdministrationController extends GetxController {
       }
       resetSetupForm();
       await loadAdminSetups();
-    } catch (_) {
-      _error('Unable to save admin setup.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save admin setup.'));
     } finally {
       isSaving.value = false;
     }
@@ -674,8 +675,8 @@ class AdministrationController extends GetxController {
       await repository.deleteAdminSetup(id);
       adminSetups.removeWhere((s) => s.id == id);
       _success('Admin setup deleted.');
-    } catch (_) {
-      _error('Unable to delete admin setup.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete admin setup.'));
     }
   }
 
@@ -687,7 +688,7 @@ class AdministrationController extends GetxController {
     try {
       admissionQueries.assignAll(await repository.getAdmissionQueries());
     } catch (e) {
-      _error('Unable to load admission queries.');
+      _error(ApiError.extract(e, 'Unable to load admission queries.'));
     } finally {
       isLoading.value = false;
     }
@@ -771,8 +772,8 @@ class AdministrationController extends GetxController {
       }
       resetQueryForm();
       await loadAdmissionQueries();
-    } catch (_) {
-      _error('Unable to save admission query.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save admission query.'));
     } finally {
       isSaving.value = false;
     }
@@ -783,8 +784,8 @@ class AdministrationController extends GetxController {
       await repository.deleteAdmissionQuery(id);
       admissionQueries.removeWhere((a) => a.id == id);
       _success('Admission query deleted.');
-    } catch (_) {
-      _error('Unable to delete admission query.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete admission query.'));
     }
   }
 
@@ -795,8 +796,8 @@ class AdministrationController extends GetxController {
     isLoading.value = true;
     try {
       idCardTemplates.assignAll(await repository.getIdCardTemplates());
-    } catch (_) {
-      _error('Unable to load ID card templates.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load ID card templates.'));
     } finally {
       isLoading.value = false;
     }
@@ -814,8 +815,8 @@ class AdministrationController extends GetxController {
       }
       resetEdit();
       await loadIdCardTemplates();
-    } catch (_) {
-      _error('Unable to save ID card template.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save ID card template.'));
     } finally {
       isSaving.value = false;
     }
@@ -826,8 +827,8 @@ class AdministrationController extends GetxController {
       await repository.deleteIdCardTemplate(id);
       idCardTemplates.removeWhere((i) => i.id == id);
       _success('ID Card template deleted.');
-    } catch (_) {
-      _error('Unable to delete ID card template.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete ID card template.'));
     }
   }
 
@@ -835,8 +836,8 @@ class AdministrationController extends GetxController {
     isLoading.value = true;
     try {
       certificateTemplates.assignAll(await repository.getCertificateTemplates());
-    } catch (_) {
-      _error('Unable to load certificate templates.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load certificate templates.'));
     } finally {
       isLoading.value = false;
     }
@@ -854,8 +855,8 @@ class AdministrationController extends GetxController {
       }
       resetEdit();
       await loadCertificateTemplates();
-    } catch (_) {
-      _error('Unable to save certificate template.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to save certificate template.'));
     } finally {
       isSaving.value = false;
     }
@@ -866,8 +867,8 @@ class AdministrationController extends GetxController {
       await repository.deleteCertificateTemplate(id);
       certificateTemplates.removeWhere((c) => c.id == id);
       _success('Certificate template deleted.');
-    } catch (_) {
-      _error('Unable to delete certificate template.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to delete certificate template.'));
     }
   }
 
@@ -884,8 +885,8 @@ class AdministrationController extends GetxController {
         generateClasses.assignAll(setup.classes);
         generateSections.assignAll(setup.sections);
       }
-    } catch (_) {
-      _error('Unable to load roles/classes/sections.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load roles/classes/sections.'));
     } finally {
       isLoading.value = false;
     }
@@ -896,8 +897,8 @@ class AdministrationController extends GetxController {
     try {
       selectedRecipientIds.clear();
       generateRecipients.assignAll(await repository.getCertificateRecipients(roleId, classId, sectionId));
-    } catch (_) {
-      _error('Unable to load recipients.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load recipients.'));
     } finally {
       isLoading.value = false;
     }
@@ -918,8 +919,8 @@ class AdministrationController extends GetxController {
         return true;
       }).toList();
       generateRecipients.assignAll(filtered);
-    } catch (_) {
-      _error('Unable to load students.');
+    } catch (e) {
+      _error(ApiError.extract(e, 'Unable to load students.'));
     } finally {
       isLoading.value = false;
     }

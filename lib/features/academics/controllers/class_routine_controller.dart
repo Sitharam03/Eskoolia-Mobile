@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -135,8 +136,8 @@ class ClassRoutineController extends GetxController {
             : (sectionIdOverride ?? filterSectionId.value),
         day: dayOverride,
       );
-    } catch (_) {
-      error.value = 'Unable to load class routine.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Unable to load class routine.');
     } finally {
       isLoading.value = false;
     }
@@ -172,8 +173,8 @@ class ClassRoutineController extends GetxController {
       message.value = editingId.value != null ? 'Routine slot updated.' : 'Routine slot added.';
       resetForm();
       await loadItems();
-    } catch (_) {
-      error.value = 'Failed to save class routine.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to save class routine.');
     } finally {
       isSaving.value = false;
     }
@@ -202,8 +203,8 @@ class ClassRoutineController extends GetxController {
       error.value = '';
       await _repo.deleteClassRoutine(id);
       await loadItems();
-    } catch (_) {
-      error.value = 'Failed to delete routine slot.';
+    } catch (e) {
+      error.value = ApiError.extract(e, 'Failed to delete routine slot.');
     }
   }
 

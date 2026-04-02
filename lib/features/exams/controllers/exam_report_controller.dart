@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -44,8 +45,8 @@ class ExamMeritReportController extends GetxController {
       examTypes.value = _parseList(data['exams'], ExamType.fromJson);
       classes.value = _parseList(data['classes'], SchoolClass.fromJson);
       sections.value = _parseList(data['sections'], SchoolSection.fromJson);
-    } catch (_) {
-      errorMsg.value = 'Failed to load report page.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load report page.');
     } finally {
       isLoading.value = false;
     }
@@ -67,7 +68,7 @@ class ExamMeritReportController extends GetxController {
       rows.value = _parseList(data['records'], MeritRow.fromJson);
     } catch (e) {
       rows.value = [];
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Search failed. ');
+      errorMsg.value = ApiError.extract(e, 'Search failed');
     } finally {
       isSearching.value = false;
     }
@@ -118,8 +119,8 @@ class ExamStudentReportController extends GetxController {
       classes.value = _parseList(data['classes'], SchoolClass.fromJson);
       sections.value = _parseList(data['sections'], SchoolSection.fromJson);
       students.value = _parseList(data['students'], SimpleStudent.fromJson);
-    } catch (_) {
-      errorMsg.value = 'Failed to load student report page.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load student report page.');
     } finally {
       isLoading.value = false;
     }
@@ -144,7 +145,7 @@ class ExamStudentReportController extends GetxController {
       overallGrade = data['overall_grade'] as String? ?? '';
     } catch (e) {
       rows.value = [];
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Search failed. ');
+      errorMsg.value = ApiError.extract(e, 'Search failed');
     } finally {
       isSearching.value = false;
     }

@@ -8,6 +8,7 @@ import '../controllers/bank_account_controller.dart';
 import '../models/finance_models.dart';
 import '_finance_nav_tabs.dart';
 import '_finance_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class BankAccountView extends StatelessWidget {
   const BankAccountView({super.key});
@@ -24,10 +25,7 @@ class BankAccountView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.accounts.isEmpty) {
-                return const SizedBox(
-                  height: 150,
-                  child: Center(child: CircularProgressIndicator()),
-                );
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,
@@ -467,10 +465,7 @@ class _StatementSheet extends StatelessWidget {
             child: SingleChildScrollView(
               child: Obx(() {
                 if (controller.statementLoading.value) {
-                  return const SizedBox(
-                    height: 120,
-                    child: Center(child: CircularProgressIndicator()),
-                  );
+                  return const SchoolLoader();
                 }
                 final stmt = controller.statement.value;
                 if (stmt == null) {

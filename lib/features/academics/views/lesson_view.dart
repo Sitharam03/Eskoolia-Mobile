@@ -8,6 +8,7 @@ import '../controllers/lesson_controller.dart';
 import '../models/academics_models.dart';
 import '_academics_nav_tabs.dart';
 import '_academics_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class LessonView extends GetView<LessonController> {
   const LessonView({super.key});
@@ -249,12 +250,7 @@ class _LessonRowsCard extends StatelessWidget {
       icon: Icons.list_alt_rounded,
       child: Obx(() {
         if (c.isLoading.value) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: CircularProgressIndicator(color: Color(0xFF4F46E5)),
-            ),
-          );
+          return const SchoolLoader();
         }
         if (c.lessons.isEmpty) {
           return aEmptyState(

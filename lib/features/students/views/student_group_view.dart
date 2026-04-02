@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../../../core/routes/app_routes.dart';
 import '../controllers/student_group_controller.dart';
 import '../models/student_group_model.dart';
@@ -109,11 +110,7 @@ class _StudentGroupViewState extends State<StudentGroupView> {
   Widget _buildList() {
     return Obx(() {
       if (_c.isLoading.value) {
-        return const Center(
-            child: Padding(
-          padding: EdgeInsets.all(40),
-          child: CircularProgressIndicator(color: Color(0xFF4F46E5)),
-        ));
+        return const SchoolLoader();
       }
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [

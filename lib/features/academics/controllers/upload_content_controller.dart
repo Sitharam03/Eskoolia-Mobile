@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -114,8 +115,8 @@ class UploadContentController extends GetxController {
       uploadSuccess.value = 'Content uploaded successfully.';
       _resetForm();
       await loadItems();
-    } catch (_) {
-      uploadError.value = 'Failed to upload content.';
+    } catch (e) {
+      uploadError.value = ApiError.extract(e, 'Failed to upload content.');
     } finally {
       isSaving.value = false;
     }
@@ -147,8 +148,8 @@ class UploadContentController extends GetxController {
         sectionId: filterSectionId.value.isEmpty ? null : filterSectionId.value,
         contentType: effectiveType,
       );
-    } catch (_) {
-      listError.value = 'Unable to load uploaded content.';
+    } catch (e) {
+      listError.value = ApiError.extract(e, 'Unable to load uploaded content.');
     } finally {
       isLoading.value = false;
     }
@@ -159,8 +160,8 @@ class UploadContentController extends GetxController {
       listError.value = '';
       await _repo.deleteUploadedContent(id);
       await loadItems();
-    } catch (_) {
-      listError.value = 'Failed to delete content.';
+    } catch (e) {
+      listError.value = ApiError.extract(e, 'Failed to delete content.');
     }
   }
 
@@ -192,8 +193,8 @@ class UploadContentController extends GetxController {
       });
       editing.value = null;
       await loadItems();
-    } catch (_) {
-      listError.value = 'Failed to update content.';
+    } catch (e) {
+      listError.value = ApiError.extract(e, 'Failed to update content.');
     } finally {
       isSaving.value = false;
     }

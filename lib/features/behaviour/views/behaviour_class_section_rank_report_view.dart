@@ -8,6 +8,7 @@ import '../controllers/behaviour_settings_controller.dart';
 import '../models/behaviour_models.dart';
 import '_behaviour_nav_tabs.dart';
 import '_behaviour_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class BehaviourClassSectionRankReportView extends StatelessWidget {
   const BehaviourClassSectionRankReportView({super.key});
@@ -26,7 +27,7 @@ class BehaviourClassSectionRankReportView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadClassSectionRankReport,
@@ -156,10 +157,7 @@ class BehaviourClassSectionRankReportView extends StatelessWidget {
   Widget _buildResults() {
     return Obx(() {
       if (_c.reportLoading.value) {
-        return const SizedBox(
-          height: 150,
-          child: Center(child: CircularProgressIndicator()),
-        );
+        return const SchoolLoader();
       }
       if (_c.classRankRows.isEmpty) {
         return bEmptyState(

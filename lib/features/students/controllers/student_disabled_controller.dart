@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/student_model.dart';
 import '../models/student_category_model.dart';
 import '../models/guardian_model.dart';
@@ -42,8 +43,8 @@ class StudentDisabledController extends GetxController {
       guardians.value = results[2] as List<Guardian>;
       classes.value = results[3] as List<Map<String, dynamic>>;
       sections.value = results[4] as List<Map<String, dynamic>>;
-    } catch (_) {
-      Get.snackbar('Error', 'Failed to load disabled students',
+    } catch (e) {
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load disabled students'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -79,7 +80,7 @@ class StudentDisabledController extends GetxController {
       Get.snackbar('Success', 'Student enabled',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed: $e', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to enable student'), snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -90,7 +91,7 @@ class StudentDisabledController extends GetxController {
       Get.snackbar('Deleted', 'Student permanently deleted',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed: $e', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to delete student'), snackPosition: SnackPosition.BOTTOM);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/library_models.dart';
 import '../repositories/library_repository.dart';
 
@@ -35,8 +36,8 @@ class LibraryCategoryController extends GetxController {
       isLoading.value = true;
       errorMsg.value = '';
       categories.value = await _repo.getCategories();
-    } catch (_) {
-      errorMsg.value = 'Unable to load categories.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to load categories.');
     } finally {
       isLoading.value = false;
     }
@@ -79,8 +80,8 @@ class LibraryCategoryController extends GetxController {
       }
       cancelEdit();
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to save category.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to save category.');
     } finally {
       isSaving.value = false;
     }
@@ -90,8 +91,8 @@ class LibraryCategoryController extends GetxController {
     try {
       await _repo.deleteCategory(id);
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to delete category.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to delete category.');
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/student_model.dart';
 import '../repositories/students_repository.dart';
 
@@ -41,8 +42,8 @@ class StudentPromoteController extends GetxController {
       academicYears.value = results[0] as List<Map<String, dynamic>>;
       classes.value = results[1] as List<Map<String, dynamic>>;
       sections.value = results[2] as List<Map<String, dynamic>>;
-    } catch (_) {
-      Get.snackbar('Error', 'Failed to load data',
+    } catch (e) {
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load data'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -67,8 +68,8 @@ class StudentPromoteController extends GetxController {
       }
       students.value = await _repo.getStudents(queryParams: params);
       selectedStudentIds.clear();
-    } catch (_) {
-      Get.snackbar('Error', 'Failed to load students',
+    } catch (e) {
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load students'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -143,7 +144,7 @@ class StudentPromoteController extends GetxController {
       sourceClassId.value = null;
       sourceSectionId.value = null;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to promote students: $e',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to promote students'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isPromoting.value = false;

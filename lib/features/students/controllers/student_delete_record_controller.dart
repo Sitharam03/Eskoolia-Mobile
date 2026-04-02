@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/student_model.dart';
 import '../models/guardian_model.dart';
 import '../repositories/students_repository.dart';
@@ -39,8 +40,8 @@ class StudentDeleteRecordController extends GetxController {
       guardians.value = results[1] as List<Guardian>;
       classes.value = results[2] as List<Map<String, dynamic>>;
       sections.value = results[3] as List<Map<String, dynamic>>;
-    } catch (_) {
-      Get.snackbar('Error', 'Failed to load records',
+    } catch (e) {
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load records'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -88,7 +89,7 @@ class StudentDeleteRecordController extends GetxController {
       Get.snackbar('Deleted', 'Student moved to deleted records',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed: $e', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to delete student'), snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -103,7 +104,7 @@ class StudentDeleteRecordController extends GetxController {
       Get.snackbar('Restored', 'Student restored',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed: $e', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to restore student'), snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -115,7 +116,7 @@ class StudentDeleteRecordController extends GetxController {
       Get.snackbar('Deleted', 'Student permanently deleted',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed: $e', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to permanently delete student'), snackPosition: SnackPosition.BOTTOM);
     }
   }
 

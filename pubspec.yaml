@@ -30,6 +30,12 @@ dependencies:
   pdf: ^3.12.0
   printing: ^5.14.3
 
+  # Chat / WebSocket
+  web_socket_channel: ^3.0.2
+  record: ^5.2.1
+  path_provider: ^2.1.5
+  permission_handler: ^11.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

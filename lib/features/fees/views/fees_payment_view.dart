@@ -9,6 +9,7 @@ import '../models/fees_assignment_model.dart';
 import '../models/fees_payment_model.dart';
 import '_fees_nav_tabs.dart';
 import '_fees_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class FeesPaymentView extends StatelessWidget {
   const FeesPaymentView({super.key});
@@ -25,7 +26,7 @@ class FeesPaymentView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.allAssignments.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,
@@ -265,11 +266,7 @@ class FeesPaymentView extends StatelessWidget {
         const SizedBox(height: 12),
         Obx(() {
           if (_c.isLoading.value && _c.payments.isEmpty) {
-            return const Center(
-                child: Padding(
-              padding: EdgeInsets.all(24),
-              child: CircularProgressIndicator(),
-            ));
+            return const SchoolLoader();
           }
           if (_c.payments.isEmpty) {
             return fEmptyState('No payments recorded yet.',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/network/api_error.dart';
 import '../models/fees_assignment_model.dart';
 import '../models/fees_payment_model.dart';
 import '../repositories/fees_repository.dart';
@@ -75,7 +76,7 @@ class FeesPaymentController extends GetxController {
       payments.assignAll(results[0] as List<FeesPayment>);
       allAssignments.assignAll(results[1] as List<FeesAssignment>);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
@@ -163,7 +164,7 @@ class FeesPaymentController extends GetxController {
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
@@ -185,7 +186,7 @@ class FeesPaymentController extends GetxController {
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
@@ -200,7 +201,7 @@ class FeesPaymentController extends GetxController {
     try {
       receipt.value = await _repo.getReceipt(paymentId);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);

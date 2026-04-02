@@ -8,6 +8,7 @@ import '../controllers/fees_master_controller.dart';
 import '../models/fees_assignment_model.dart';
 import '_fees_nav_tabs.dart';
 import '_fees_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class FeesMasterView extends StatelessWidget {
   const FeesMasterView({super.key});
@@ -24,7 +25,7 @@ class FeesMasterView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.assignments.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,

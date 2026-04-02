@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/library_models.dart';
 import '../repositories/library_repository.dart';
 
@@ -51,8 +52,8 @@ class LibraryBookController extends GetxController {
       ]);
       books.value = results[0] as List<Book>;
       categories.value = results[1] as List<BookCategory>;
-    } catch (_) {
-      errorMsg.value = 'Unable to load books.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to load books.');
     } finally {
       isLoading.value = false;
     }
@@ -121,8 +122,8 @@ class LibraryBookController extends GetxController {
       }
       cancelEdit();
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to save book.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to save book.');
     } finally {
       isSaving.value = false;
     }
@@ -132,8 +133,8 @@ class LibraryBookController extends GetxController {
     try {
       await _repo.deleteBook(id);
       await load();
-    } catch (_) {
-      errorMsg.value = 'Unable to delete book.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Unable to delete book.');
     }
   }
 }

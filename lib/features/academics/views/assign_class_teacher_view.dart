@@ -7,6 +7,7 @@ import '../../../core/widgets/app_scaffold.dart';
 import '../controllers/assign_class_teacher_controller.dart';
 import '_academics_nav_tabs.dart';
 import '_academics_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
   const AssignClassTeacherView({super.key});
@@ -22,9 +23,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
           Expanded(
             child: Obx(() {
               if (controller.isLoading.value && controller.items.isEmpty) {
-                return const Center(
-                  child: CircularProgressIndicator(color: Color(0xFF4F46E5)),
-                );
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 color: const Color(0xFF4F46E5),

@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 class AppConstants {
   AppConstants._();
 
-  static const String kBaseUrl = 'http://187.127.137.154';
+  static const String kBaseUrl = 'https://app.eskoolia.com';
 
   // Secure storage keys (mirrors auth.ts)
   static const String kAccessTokenKey = 'school_erp_access_token';

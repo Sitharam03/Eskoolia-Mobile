@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/student_model.dart';
 import '../models/student_category_model.dart';
 import '../models/guardian_model.dart';
@@ -81,8 +82,8 @@ class StudentAddController extends GetxController {
       guardians.value = results[1] as List<Guardian>;
       classes.value = results[2] as List<Map<String, dynamic>>;
       sections.value = results[3] as List<Map<String, dynamic>>;
-    } catch (_) {
-      Get.snackbar('Error', 'Failed to load form data',
+    } catch (e) {
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load form data'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -180,7 +181,7 @@ class StudentAddController extends GetxController {
       resetForm();
       return true;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to save student: $e',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to save student'),
           snackPosition: SnackPosition.BOTTOM);
       return false;
     } finally {
@@ -213,7 +214,7 @@ class StudentAddController extends GetxController {
       Get.snackbar('Success', 'Guardian created',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to create guardian: $e',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to create guardian'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSaving.value = false;

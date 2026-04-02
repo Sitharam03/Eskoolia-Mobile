@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart' as dio;
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../../../core/routes/app_routes.dart';
 import '../controllers/administration_controller.dart';
 import '../models/id_card_model.dart';
@@ -144,7 +145,7 @@ class _IdCardViewState extends State<IdCardView> {
   Widget _buildList() {
     return Obx(() {
       if (_c.isLoading.value && _c.idCardTemplates.isEmpty)
-        return const Center(child: CircularProgressIndicator(color: Color(0xFF6366F1)));
+        return const SchoolLoader();
       final items = _c.idCardTemplates.where((i) => i.title.toLowerCase().contains(_c.searchQuery.value.trim().toLowerCase())).toList();
       if (items.isEmpty)
         return _empty('No templates found.', _c.loadIdCardTemplates);

@@ -8,6 +8,7 @@ import '../controllers/ledger_entry_controller.dart';
 import '../models/finance_models.dart';
 import '_finance_nav_tabs.dart';
 import '_finance_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class LedgerEntryView extends StatelessWidget {
   const LedgerEntryView({super.key});
@@ -24,10 +25,7 @@ class LedgerEntryView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (_c.isLoading.value && _c.entries.isEmpty) {
-                return const SizedBox(
-                  height: 150,
-                  child: Center(child: CircularProgressIndicator()),
-                );
+                return const SchoolLoader();
               }
               return RefreshIndicator(
                 onRefresh: _c.loadAll,
@@ -535,10 +533,7 @@ class _TrialBalanceSheet extends StatelessWidget {
           Flexible(
             child: Obx(() {
               if (controller.trialBalanceLoading.value) {
-                return const SizedBox(
-                  height: 150,
-                  child: Center(child: CircularProgressIndicator()),
-                );
+                return const SchoolLoader();
               }
               final tb = controller.trialBalance.value;
               if (tb == null || tb.accounts.isEmpty) {

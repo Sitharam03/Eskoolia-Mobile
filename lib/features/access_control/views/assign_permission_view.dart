@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../models/permission_model.dart';
 import '../controllers/assign_permission_controller.dart';
 import '../../../core/routes/app_routes.dart';
@@ -131,7 +132,7 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
   Widget _buildBody() {
     return Obx(() {
       if (controller.isLoadingTree.value && controller.modules.isEmpty) {
-        return const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+        return const SchoolLoader();
       }
       if (controller.modules.isEmpty) {
         return Center(
@@ -161,7 +162,7 @@ class AssignPermissionView extends GetView<AssignPermissionController> {
           if (controller.isSaving.value || controller.isLoadingTree.value)
             Container(
               color: Colors.black.withValues(alpha: 0.15),
-              child: const Center(child: CircularProgressIndicator(color: Color(0xFF4F46E5))),
+              child: const SchoolLoader(),
             ),
         ],
       );

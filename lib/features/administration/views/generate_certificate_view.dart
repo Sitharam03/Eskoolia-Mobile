@@ -6,6 +6,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../../../core/routes/app_routes.dart';
 import '../controllers/administration_controller.dart';
 import '../models/admin_recipient_model.dart';
@@ -236,7 +237,7 @@ class _GenerateCertificateViewState extends State<GenerateCertificateView> {
           const Divider(),
           Obx(() {
             if (_c.isLoading.value && _c.generateRecipients.isEmpty) {
-              return const Padding(padding: EdgeInsets.all(24), child: Center(child: CircularProgressIndicator()));
+              return const SchoolLoader();
             }
             if (_c.generateRecipients.isEmpty) {
               return Padding(padding: const EdgeInsets.all(24), child: Center(child: Text('No recipients found.', style: GoogleFonts.inter(color: Colors.grey))));

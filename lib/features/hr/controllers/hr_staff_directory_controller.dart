@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/hr_models.dart';
 import '../repositories/hr_repository.dart';
 
@@ -44,12 +45,12 @@ class HrStaffDirectoryController extends GetxController {
       staff.value = results[0] as List<Staff>;
       departments.value = results[1] as List<Department>;
       designations.value = results[2] as List<Designation>;
-    } catch (e) { errorMsg.value = e.toString(); }
+    } catch (e) { errorMsg.value = ApiError.extract(e); }
     finally { isLoading.value = false; }
   }
 
   Future<void> delete(int id) async {
     try { await _repo.deleteStaff(id); await load(); }
-    catch (e) { errorMsg.value = e.toString(); }
+    catch (e) { errorMsg.value = ApiError.extract(e); }
   }
 }

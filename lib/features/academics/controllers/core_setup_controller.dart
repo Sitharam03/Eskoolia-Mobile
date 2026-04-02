@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../repositories/academics_repository.dart';
 import '../models/academics_models.dart';
 
@@ -63,8 +64,8 @@ class CoreSetupController extends GetxController {
       yearsLoading.value = true;
       yearsError.value = '';
       years.value = await _repo.getAcademicYears();
-    } catch (_) {
-      yearsError.value = 'Unable to load academic years.';
+    } catch (e) {
+      yearsError.value = ApiError.extract(e, 'Unable to load academic years.');
     } finally {
       yearsLoading.value = false;
     }
@@ -104,10 +105,10 @@ class CoreSetupController extends GetxController {
       }, id: editingYearId.value);
       resetYearForm();
       await loadYears();
-    } catch (_) {
-      yearsError.value = editingYearId.value != null
+    } catch (e) {
+      yearsError.value = ApiError.extract(e, editingYearId.value != null
           ? 'Failed to update academic year.'
-          : 'Failed to create academic year.';
+          : 'Failed to create academic year.');
     } finally {
       yearsSaving.value = false;
     }
@@ -119,8 +120,8 @@ class CoreSetupController extends GetxController {
       await _repo.deleteAcademicYear(id);
       if (editingYearId.value == id) resetYearForm();
       await loadYears();
-    } catch (_) {
-      yearsError.value = 'Failed to delete academic year.';
+    } catch (e) {
+      yearsError.value = ApiError.extract(e, 'Failed to delete academic year.');
     }
   }
 
@@ -131,8 +132,8 @@ class CoreSetupController extends GetxController {
       classesLoading.value = true;
       classesError.value = '';
       classes.value = await _repo.getClasses();
-    } catch (_) {
-      classesError.value = 'Unable to load classes.';
+    } catch (e) {
+      classesError.value = ApiError.extract(e, 'Unable to load classes.');
     } finally {
       classesLoading.value = false;
     }
@@ -166,10 +167,10 @@ class CoreSetupController extends GetxController {
       }, id: editingClassId.value);
       resetClassForm();
       await loadClasses();
-    } catch (_) {
-      classesError.value = editingClassId.value != null
+    } catch (e) {
+      classesError.value = ApiError.extract(e, editingClassId.value != null
           ? 'Failed to update class.'
-          : 'Failed to create class.';
+          : 'Failed to create class.');
     } finally {
       classesSaving.value = false;
     }
@@ -182,8 +183,8 @@ class CoreSetupController extends GetxController {
       if (editingClassId.value == id) resetClassForm();
       await loadClasses();
       await loadSections(); // sections may have changed
-    } catch (_) {
-      classesError.value = 'Failed to delete class.';
+    } catch (e) {
+      classesError.value = ApiError.extract(e, 'Failed to delete class.');
     }
   }
 
@@ -194,8 +195,8 @@ class CoreSetupController extends GetxController {
       sectionsLoading.value = true;
       sectionsError.value = '';
       sections.value = await _repo.getSections();
-    } catch (_) {
-      sectionsError.value = 'Unable to load sections.';
+    } catch (e) {
+      sectionsError.value = ApiError.extract(e, 'Unable to load sections.');
     } finally {
       sectionsLoading.value = false;
     }
@@ -232,10 +233,10 @@ class CoreSetupController extends GetxController {
       }, id: editingSectionId.value);
       resetSectionForm();
       await loadSections();
-    } catch (_) {
-      sectionsError.value = editingSectionId.value != null
+    } catch (e) {
+      sectionsError.value = ApiError.extract(e, editingSectionId.value != null
           ? 'Failed to update section.'
-          : 'Failed to create section.';
+          : 'Failed to create section.');
     } finally {
       sectionsSaving.value = false;
     }
@@ -247,8 +248,8 @@ class CoreSetupController extends GetxController {
       await _repo.deleteSection(id);
       if (editingSectionId.value == id) resetSectionForm();
       await loadSections();
-    } catch (_) {
-      sectionsError.value = 'Failed to delete section.';
+    } catch (e) {
+      sectionsError.value = ApiError.extract(e, 'Failed to delete section.');
     }
   }
 
@@ -259,8 +260,8 @@ class CoreSetupController extends GetxController {
       subjectsLoading.value = true;
       subjectsError.value = '';
       subjects.value = await _repo.getSubjects();
-    } catch (_) {
-      subjectsError.value = 'Unable to load subjects.';
+    } catch (e) {
+      subjectsError.value = ApiError.extract(e, 'Unable to load subjects.');
     } finally {
       subjectsLoading.value = false;
     }
@@ -297,10 +298,10 @@ class CoreSetupController extends GetxController {
       }, id: editingSubjectId.value);
       resetSubjectForm();
       await loadSubjects();
-    } catch (_) {
-      subjectsError.value = editingSubjectId.value != null
+    } catch (e) {
+      subjectsError.value = ApiError.extract(e, editingSubjectId.value != null
           ? 'Failed to update subject.'
-          : 'Failed to create subject.';
+          : 'Failed to create subject.');
     } finally {
       subjectsSaving.value = false;
     }
@@ -312,8 +313,8 @@ class CoreSetupController extends GetxController {
       await _repo.deleteSubject(id);
       if (editingSubjectId.value == id) resetSubjectForm();
       await loadSubjects();
-    } catch (_) {
-      subjectsError.value = 'Failed to delete subject.';
+    } catch (e) {
+      subjectsError.value = ApiError.extract(e, 'Failed to delete subject.');
     }
   }
 

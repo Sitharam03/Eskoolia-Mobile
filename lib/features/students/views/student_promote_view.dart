@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../../../core/routes/app_routes.dart';
 import '../controllers/student_promote_controller.dart';
 import '_student_nav_tabs.dart';
@@ -25,10 +26,7 @@ class _StudentPromoteViewState extends State<StudentPromoteView> {
         const StudentNavTabs(activeRoute: AppRoutes.studentPromote),
         Obx(() {
           if (_c.isLoading.value && _c.classes.isEmpty) {
-            return const Expanded(
-                child: Center(
-                    child:
-                        CircularProgressIndicator(color: Color(0xFF4F46E5))));
+            return const Expanded(child: SchoolLoader());
           }
           return Expanded(
             child: SingleChildScrollView(

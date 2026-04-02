@@ -7,16 +7,32 @@ import '../../students/views/_student_shared.dart';
 import '../controllers/hr_payroll_controller.dart';
 import '../models/hr_models.dart';
 import '_hr_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Colour constants
+// Design constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-const _kPrimary = Color(0xFF4F46E5);
-const _kSuccess = Color(0xFF059669);
+const _kPri = Color(0xFF0EA5E9);
+const _kSec = Color(0xFF0284C7);
+const _kVio = Color(0xFF6366F1);
+
+const _kSuccess = Color(0xFF22C55E);
 const _kDanger = Color(0xFFDC2626);
-const _kInfo = Color(0xFF0EA5E9);
-const _kPurple = Color(0xFF7C3AED);
+
+Color _accentFor(String name) {
+  if (name.isEmpty) return _kPri;
+  final code = name.codeUnitAt(0) % 6;
+  const palette = [
+    Color(0xFF6366F1),
+    Color(0xFF0EA5E9),
+    Color(0xFF7C3AED),
+    Color(0xFF14B8A6),
+    Color(0xFFF59E0B),
+    Color(0xFFEC4899),
+  ];
+  return palette[code];
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main View
@@ -36,12 +52,10 @@ class HrPayrollView extends StatelessWidget {
         Expanded(
           child: Obx(() {
             if (c.isLoading.value) {
-              return const Center(
-                child: CircularProgressIndicator(color: _kPrimary),
-              );
+              return const SchoolLoader();
             }
             return RefreshIndicator(
-              color: _kPrimary,
+              color: _kPri,
               onRefresh: c.load,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -68,7 +82,7 @@ class HrPayrollView extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Summary Banner  (gradient + 2×2 metric grid)
+// Summary Banner
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _SummaryBanner extends StatelessWidget {
@@ -77,106 +91,125 @@ class _SummaryBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Obx(() => Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [_kPrimary, _kPurple],
+            colors: [_kPri, _kVio, Color(0xFF7C3AED)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: _kPrimary.withValues(alpha: 0.35),
+              color: _kPri.withValues(alpha: 0.35),
               blurRadius: 18,
               offset: const Offset(0, 6),
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            // ── Header row ──────────────────────────────────────────────────
-            Row(children: [
-              Container(
-                width: 42,
-                height: 42,
+            // Decorative circles
+            Positioned(
+              top: -20,
+              right: -15,
+              child: Container(
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.18),
-                  borderRadius: BorderRadius.circular(11),
-                ),
-                alignment: Alignment.center,
-                child: const Icon(Icons.account_balance_wallet_rounded,
-                    color: Colors.white, size: 22),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Payroll Overview',
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '${c.records.length} total records',
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: Colors.white.withValues(alpha: 0.75),
-                      ),
-                    ),
-                  ],
+                  color: Colors.white.withValues(alpha: 0.06),
+                  shape: BoxShape.circle,
                 ),
               ),
-            ]),
-            const SizedBox(height: 14),
+            ),
+            Positioned(
+              bottom: -30,
+              left: 40,
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.04),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            // Content
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header row
+                Row(children: [
+                  Container(
+                    width: 42,
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.18),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.account_balance_wallet_rounded,
+                        color: Colors.white, size: 22),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Payroll Overview',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          '${c.records.length} total records',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: Colors.white.withValues(alpha: 0.75),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+                const SizedBox(height: 16),
 
-            // ── Row 1: Basic | Allowance ──────────────────────────────────
-            Row(children: [
-              _MetricTile(
-                label: 'Basic Salary',
-                value: c.totalBasic.value,
-                icon: Icons.payments_rounded,
-                iconColor: Colors.white,
-                iconBg: Colors.white.withValues(alpha: 0.2),
-              ),
-              const SizedBox(width: 10),
-              _MetricTile(
-                label: 'Allowance',
-                value: c.totalAllowance.value,
-                icon: Icons.add_circle_outline_rounded,
-                iconColor: const Color(0xFF86EFAC),
-                iconBg: const Color(0xFF86EFAC).withValues(alpha: 0.2),
-                valueColor: const Color(0xFF86EFAC),
-              ),
-            ]),
-            const SizedBox(height: 10),
+                // Metric tiles on white overlay - Row 1
+                Row(children: [
+                  _MetricTile(
+                    label: 'Basic Salary',
+                    value: c.totalBasic.value,
+                    accentColor: _kPri,
+                  ),
+                  const SizedBox(width: 10),
+                  _MetricTile(
+                    label: 'Allowance',
+                    value: c.totalAllowance.value,
+                    accentColor: _kSuccess,
+                  ),
+                ]),
+                const SizedBox(height: 10),
 
-            // ── Row 2: Deduction | Net ────────────────────────────────────
-            Row(children: [
-              _MetricTile(
-                label: 'Deduction',
-                value: c.totalDeduction.value,
-                icon: Icons.remove_circle_outline_rounded,
-                iconColor: const Color(0xFFFCA5A5),
-                iconBg: const Color(0xFFFCA5A5).withValues(alpha: 0.2),
-                valueColor: const Color(0xFFFCA5A5),
-              ),
-              const SizedBox(width: 10),
-              _MetricTile(
-                label: 'Net Salary',
-                value: c.totalNet.value,
-                icon: Icons.monetization_on_rounded,
-                iconColor: const Color(0xFFFDE68A),
-                iconBg: const Color(0xFFFDE68A).withValues(alpha: 0.2),
-                valueColor: const Color(0xFFFDE68A),
-                highlighted: true,
-              ),
-            ]),
+                // Row 2
+                Row(children: [
+                  _MetricTile(
+                    label: 'Deduction',
+                    value: c.totalDeduction.value,
+                    accentColor: _kDanger,
+                  ),
+                  const SizedBox(width: 10),
+                  _MetricTile(
+                    label: 'Net Salary',
+                    value: c.totalNet.value,
+                    accentColor: const Color(0xFFF59E0B),
+                    highlighted: true,
+                  ),
+                ]),
+              ],
+            ),
           ],
         ),
       ));
@@ -185,19 +218,13 @@ class _SummaryBanner extends StatelessWidget {
 class _MetricTile extends StatelessWidget {
   final String label;
   final double value;
-  final IconData icon;
-  final Color iconColor;
-  final Color iconBg;
-  final Color? valueColor;
+  final Color accentColor;
   final bool highlighted;
 
   const _MetricTile({
     required this.label,
     required this.value,
-    required this.icon,
-    required this.iconColor,
-    required this.iconBg,
-    this.valueColor,
+    required this.accentColor,
     this.highlighted = false,
   });
 
@@ -206,34 +233,33 @@ class _MetricTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
-            color: highlighted
-                ? Colors.white.withValues(alpha: 0.15)
-                : Colors.white.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
+            color: Colors.white.withValues(alpha: highlighted ? 0.22 : 0.15),
+            borderRadius: BorderRadius.circular(14),
             border: highlighted
                 ? Border.all(color: Colors.white.withValues(alpha: 0.3))
                 : null,
           ),
           child: Row(children: [
+            // Accent bar on left
             Container(
-              width: 32,
+              width: 4,
               height: 32,
               decoration: BoxDecoration(
-                  color: iconBg, borderRadius: BorderRadius.circular(8)),
-              alignment: Alignment.center,
-              child: Icon(icon, size: 16, color: iconColor),
+                color: accentColor,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-            const SizedBox(width: 9),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     value.toStringAsFixed(0),
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
-                      color: valueColor ?? Colors.white,
+                      color: Colors.white,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -281,20 +307,26 @@ class _StatusFilterRow extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 margin: const EdgeInsets.only(right: 8),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
                 decoration: BoxDecoration(
-                  color: selected ? _kPrimary : Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: selected ? _kPrimary : const Color(0xFFE5E7EB),
-                    width: 1.5,
-                  ),
+                  gradient: selected
+                      ? const LinearGradient(
+                          colors: [_kPri, _kVio],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        )
+                      : null,
+                  color: selected ? null : Colors.white.withValues(alpha: 0.8),
+                  borderRadius: BorderRadius.circular(22),
+                  border: selected
+                      ? null
+                      : Border.all(color: _kPri.withValues(alpha: 0.12)),
                   boxShadow: selected
                       ? [
                           BoxShadow(
-                            color: _kPrimary.withValues(alpha: 0.28),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
+                            color: _kPri.withValues(alpha: 0.35),
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
                           )
                         ]
                       : null,
@@ -309,8 +341,8 @@ class _StatusFilterRow extends StatelessWidget {
                   const SizedBox(width: 6),
                   Text(
                     label,
-                    style: GoogleFonts.inter(
-                      fontSize: 13,
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
                       fontWeight:
                           selected ? FontWeight.w600 : FontWeight.w500,
                       color:
@@ -337,36 +369,56 @@ class _GenerateFormCard extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         decoration: sCardDecoration,
         child: Column(children: [
-          // ── Card header ──────────────────────────────────────────────────
+          // Gradient header
           Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF5F4FF),
-              border: Border(bottom: BorderSide(color: Color(0xFFE5E7EB))),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  _kPri.withValues(alpha: 0.08),
+                  _kVio.withValues(alpha: 0.04),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              border:
+                  const Border(bottom: BorderSide(color: Color(0xFFE5E7EB))),
               borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(12)),
+                  const BorderRadius.vertical(top: Radius.circular(12)),
             ),
             child: Row(children: [
+              // Gradient icon
               Container(
-                width: 36,
-                height: 36,
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
-                  color: _kPrimary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(9),
+                  gradient: const LinearGradient(
+                    colors: [_kPri, _kVio],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _kPri.withValues(alpha: 0.35),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 alignment: Alignment.center,
                 child: const Icon(Icons.calculate_rounded,
-                    size: 18, color: _kPrimary),
+                    size: 18, color: Colors.white),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Generate Payroll',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.poppins(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: const Color(0xFF111827),
@@ -385,7 +437,7 @@ class _GenerateFormCard extends StatelessWidget {
             ]),
           ),
 
-          // ── Form fields ─────────────────────────────────────────────────
+          // Form fields
           Padding(
             padding: const EdgeInsets.all(16),
             child: Obx(() => Column(
@@ -408,7 +460,7 @@ class _GenerateFormCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
 
-                    // Month & Year — side by side
+                    // Month & Year
                     Row(children: [
                       Expanded(
                         child: Column(
@@ -418,7 +470,7 @@ class _GenerateFormCard extends StatelessWidget {
                             const SizedBox(height: 6),
                             sTextField(
                               controller: c.monthCtrl,
-                              hint: '1 – 12',
+                              hint: '1 - 12',
                               keyboardType: TextInputType.number,
                             ),
                           ],
@@ -442,7 +494,7 @@ class _GenerateFormCard extends StatelessWidget {
                     ]),
                     const SizedBox(height: 14),
 
-                    // Basic & Allowance — side by side
+                    // Basic & Allowance
                     Row(children: [
                       Expanded(
                         child: Column(
@@ -482,7 +534,7 @@ class _GenerateFormCard extends StatelessWidget {
                     ]),
                     const SizedBox(height: 14),
 
-                    // Deduction — full width
+                    // Deduction
                     sFieldLabel('Deduction'),
                     const SizedBox(height: 6),
                     sTextField(
@@ -494,7 +546,7 @@ class _GenerateFormCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
 
-                    // Net preview (reactive)
+                    // Net preview
                     _NetPreviewCard(c: c),
                     const SizedBox(height: 14),
 
@@ -506,14 +558,28 @@ class _GenerateFormCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 14, vertical: 12),
                           decoration: BoxDecoration(
-                            color: _kDanger.withValues(alpha: 0.08),
+                            gradient: LinearGradient(
+                              colors: [
+                                _kDanger.withValues(alpha: 0.10),
+                                _kDanger.withValues(alpha: 0.04),
+                              ],
+                            ),
                             border: Border.all(
-                                color: _kDanger.withValues(alpha: 0.3)),
-                            borderRadius: BorderRadius.circular(10),
+                                color: _kDanger.withValues(alpha: 0.25)),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                           child: Row(children: [
-                            const Icon(Icons.error_rounded,
-                                size: 18, color: _kDanger),
+                            Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: _kDanger.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              alignment: Alignment.center,
+                              child: const Icon(Icons.error_rounded,
+                                  size: 16, color: _kDanger),
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
@@ -529,34 +595,60 @@ class _GenerateFormCard extends StatelessWidget {
                         ),
                       ),
 
-                    // Generate button
+                    // Generate button - gradient
                     SizedBox(
                       width: double.infinity,
                       height: 50,
-                      child: ElevatedButton.icon(
-                        onPressed:
-                            c.isSaving.value ? null : c.save,
-                        icon: c.isSaving.value
-                            ? sSavingIndicator()
-                            : const Icon(Icons.send_rounded, size: 18),
-                        label: Text(
-                          c.isSaving.value
-                              ? 'Generating…'
-                              : 'Generate Payroll',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                          ),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: c.isSaving.value
+                              ? LinearGradient(
+                                  colors: [
+                                    _kPri.withValues(alpha: 0.6),
+                                    _kVio.withValues(alpha: 0.6),
+                                  ],
+                                )
+                              : const LinearGradient(
+                                  colors: [_kPri, _kVio],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: c.isSaving.value
+                              ? null
+                              : [
+                                  BoxShadow(
+                                    color: _kPri.withValues(alpha: 0.35),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
                         ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: _kPrimary,
-                          foregroundColor: Colors.white,
-                          disabledBackgroundColor:
-                              _kPrimary.withValues(alpha: 0.6),
-                          disabledForegroundColor: Colors.white,
+                        child: MaterialButton(
+                          onPressed: c.isSaving.value ? null : c.save,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          elevation: 0,
+                              borderRadius: BorderRadius.circular(14)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (c.isSaving.value)
+                                sSavingIndicator()
+                              else
+                                const Icon(Icons.send_rounded,
+                                    size: 18, color: Colors.white),
+                              const SizedBox(width: 8),
+                              Text(
+                                c.isSaving.value
+                                    ? 'Generating...'
+                                    : 'Generate Payroll',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -568,7 +660,7 @@ class _GenerateFormCard extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Net Salary Preview  (stateful — reacts to text controller changes)
+// Net Salary Preview
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _NetPreviewCard extends StatefulWidget {
@@ -606,69 +698,77 @@ class _NetPreviewCardState extends State<_NetPreviewCard> {
     final net = basic + allow - deduct;
 
     return Container(
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            _kSuccess.withValues(alpha: 0.08),
-            _kSuccess.withValues(alpha: 0.03),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        border: Border.all(color: _kSuccess.withValues(alpha: 0.25)),
-        borderRadius: BorderRadius.circular(13),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: _kSuccess.withValues(alpha: 0.2)),
+        boxShadow: [
+          BoxShadow(
+            color: _kSuccess.withValues(alpha: 0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Row(children: [
-        // ── Icon ──────────────────────────────────────────────────────────
+        // Gradient accent strip on left
         Container(
-          width: 46,
-          height: 46,
+          width: 5,
+          height: 90,
           decoration: BoxDecoration(
-            color: _kSuccess.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(12),
+            gradient: const LinearGradient(
+              colors: [_kSuccess, Color(0xFF16A34A)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(14),
+            ),
           ),
-          alignment: Alignment.center,
-          child: const Icon(Icons.account_balance_rounded,
-              size: 22, color: _kSuccess),
         ),
         const SizedBox(width: 14),
 
-        // ── Net value ─────────────────────────────────────────────────────
+        // Net value
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Estimated Net Salary',
-                style: GoogleFonts.inter(
-                  fontSize: 11,
-                  color: const Color(0xFF374151),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Estimated Net Salary',
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    color: const Color(0xFF374151),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                net.toStringAsFixed(2),
-                style: GoogleFonts.inter(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: _kSuccess,
+                const SizedBox(height: 2),
+                Text(
+                  net.toStringAsFixed(2),
+                  style: GoogleFonts.poppins(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    color: _kSuccess,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
 
-        // ── Breakdown column ──────────────────────────────────────────────
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            _BreakLine('+', 'Basic', basic, _kPrimary),
-            const SizedBox(height: 3),
-            _BreakLine('+', 'Allow.', allow, _kSuccess),
-            const SizedBox(height: 3),
-            _BreakLine('−', 'Deduct.', deduct, _kDanger),
-          ],
+        // Breakdown column with colored indicators
+        Padding(
+          padding: const EdgeInsets.only(right: 14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              _BreakLine('+', 'Basic', basic, _kPri),
+              const SizedBox(height: 4),
+              _BreakLine('+', 'Allow.', allow, _kSuccess),
+              const SizedBox(height: 4),
+              _BreakLine('-', 'Deduct.', deduct, _kDanger),
+            ],
+          ),
         ),
       ]),
     );
@@ -686,6 +786,15 @@ class _BreakLine extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Container(
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 4),
           Text(
             '$sign $label',
             style: GoogleFonts.inter(
@@ -729,14 +838,21 @@ class _PayrollList extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: _kPrimary.withValues(alpha: 0.08),
+                    gradient: LinearGradient(
+                      colors: [
+                        _kVio.withValues(alpha: 0.12),
+                        _kVio.withValues(alpha: 0.06),
+                      ],
+                    ),
                     borderRadius: BorderRadius.circular(20),
+                    border:
+                        Border.all(color: _kVio.withValues(alpha: 0.15)),
                   ),
                   child: Text(
                     '${records.length} records',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.poppins(
                       fontSize: 12,
-                      color: _kPrimary,
+                      color: _kVio,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -759,7 +875,6 @@ class _PayrollCard extends StatelessWidget {
   final HrPayrollController c;
   const _PayrollCard({required this.record, required this.c});
 
-  // Generate initials from staff name
   String get _initials {
     final parts = record.staffName.trim().split(RegExp(r'\s+'));
     if (parts.length >= 2) {
@@ -771,191 +886,250 @@ class _PayrollCard extends StatelessWidget {
     return '?';
   }
 
-  // Deterministic gradient from first char code
-  List<Color> get _avatarGradient {
-    final gradients = [
-      [_kPrimary, _kPurple],
-      [_kInfo, const Color(0xFF0369A1)],
-      [_kSuccess, const Color(0xFF0D9488)],
-      [const Color(0xFFEA580C), _kDanger],
-      [const Color(0xFF8B5CF6), const Color(0xFF6D28D9)],
-    ];
-    final idx = record.staffName.isNotEmpty
-        ? record.staffName.codeUnitAt(0) % gradients.length
-        : 0;
-    return gradients[idx];
-  }
+  Color get _accent => _accentFor(record.staffName);
 
   Color get _statusColor {
     switch (record.status) {
       case 'paid':
         return _kSuccess;
       case 'processed':
-        return _kInfo;
+        return const Color(0xFFF59E0B);
       default:
         return const Color(0xFF6B7280);
     }
   }
 
   @override
-  Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.07),
-              blurRadius: 12,
-              offset: const Offset(0, 3),
-            ),
-          ],
+  Widget build(BuildContext context) {
+    final accent = _accent;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.white, accent.withValues(alpha: 0.04)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        child: Column(children: [
-          // ── Top: avatar + name + status ─────────────────────────────────
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
-            child: Row(children: [
-              // Gradient avatar
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: _avatarGradient,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  _initials,
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: accent.withValues(alpha: 0.15)),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: 0.10),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          // Decorative circle bottom-right
+          Positioned(
+            bottom: -15,
+            right: -15,
+            child: Container(
+              width: 55,
+              height: 55,
+              decoration: BoxDecoration(
+                color: accent.withValues(alpha: 0.05),
+                shape: BoxShape.circle,
               ),
-              const SizedBox(width: 12),
-
-              // Name + month badge
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      record.staffName,
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF111827),
-                      ),
+            ),
+          ),
+          // Content
+          Column(children: [
+            // Top: avatar + name + status
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+              child: Row(children: [
+                // Gradient avatar
+                Container(
+                  width: 46,
+                  height: 46,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [accent, accent.withValues(alpha: 0.7)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    const SizedBox(height: 4),
-                    Row(children: [
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: accent.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    _initials,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+
+                // Name + month badge
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        record.staffName,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF111827),
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      // Month badge gradient pill
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 9, vertical: 3),
+                            horizontal: 10, vertical: 3),
                         decoration: BoxDecoration(
-                          color: _kPrimary.withValues(alpha: 0.08),
+                          gradient: LinearGradient(
+                            colors: [
+                              _kPri.withValues(alpha: 0.12),
+                              _kVio.withValues(alpha: 0.08),
+                            ],
+                          ),
                           borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                              color: _kPri.withValues(alpha: 0.12)),
                         ),
                         child: Text(
                           '${record.monthName} ${record.payrollYear}',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.poppins(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
-                            color: _kPrimary,
+                            color: _kPri,
                           ),
                         ),
                       ),
-                    ]),
+                    ],
+                  ),
+                ),
+
+                // Status pill
+                _StatusPill(status: record.status),
+              ]),
+            ),
+
+            // Gradient divider
+            Container(
+              height: 1,
+              margin: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    accent.withValues(alpha: 0.0),
+                    accent.withValues(alpha: 0.12),
+                    accent.withValues(alpha: 0.0),
                   ],
                 ),
               ),
+            ),
 
-              // Status badge
-              _StatusPill(status: record.status),
-            ]),
-          ),
-
-          // ── Divider ──────────────────────────────────────────────────────
-          Container(height: 1, color: const Color(0xFFF3F4F6)),
-
-          // ── Salary breakdown row ─────────────────────────────────────────
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            child: Row(children: [
-              _AmountCell(
-                  label: 'Basic',
-                  value: record.basicSalary,
-                  color: _kPrimary),
-              const _CellDivider(),
-              _AmountCell(
-                  label: 'Allowance',
-                  value: record.allowance,
-                  color: _kSuccess),
-              const _CellDivider(),
-              _AmountCell(
-                  label: 'Deduction',
-                  value: record.deduction,
-                  color: _kDanger),
-              const _CellDivider(),
-              _AmountCell(
-                  label: 'Net',
-                  value: record.netSalary,
-                  color: _kInfo,
-                  bold: true),
-            ]),
-          ),
-
-          // ── Action row ───────────────────────────────────────────────────
-          Container(height: 1, color: const Color(0xFFF3F4F6)),
-          if (record.status != 'paid')
+            // Salary breakdown row - 4 mini cells
             Padding(
-              padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
-              child: SizedBox(
-                width: double.infinity,
-                height: 38,
-                child: OutlinedButton.icon(
-                  onPressed: () => c.markPaid(record.id),
-                  icon: const Icon(Icons.check_circle_outline_rounded,
-                      size: 16),
-                  label: Text(
-                    'Mark as Paid',
-                    style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w600, fontSize: 13),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: _kSuccess,
-                    side: const BorderSide(color: _kSuccess, width: 1.5),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
-              ),
-            )
-          else
-            Padding(
-              padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               child: Row(children: [
-                Icon(Icons.check_circle_rounded,
-                    size: 15, color: _kSuccess),
-                const SizedBox(width: 6),
-                Text(
-                  'Payment completed',
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    color: _kSuccess,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                _AmountCell(
+                    label: 'Basic',
+                    value: record.basicSalary,
+                    color: _kPri),
+                _AmountCell(
+                    label: 'Allowance',
+                    value: record.allowance,
+                    color: _kSuccess),
+                _AmountCell(
+                    label: 'Deduction',
+                    value: record.deduction,
+                    color: _kDanger),
+                _AmountCell(
+                    label: 'Net',
+                    value: record.netSalary,
+                    color: _kVio,
+                    bold: true),
               ]),
             ),
-        ]),
-      );
+
+            // Action row
+            if (record.status != 'paid')
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF22C55E), Color(0xFF16A34A)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color:
+                              const Color(0xFF22C55E).withValues(alpha: 0.35),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: MaterialButton(
+                      onPressed: () => c.markPaid(record.id),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.check_circle_outline_rounded,
+                              size: 16, color: Colors.white),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Mark as Paid',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                child: Row(children: [
+                  const Icon(Icons.check_circle_rounded,
+                      size: 15, color: _kSuccess),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Payment completed',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: _kSuccess,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ]),
+              ),
+          ]),
+        ],
+      ),
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -971,7 +1145,7 @@ class _StatusPill extends StatelessWidget {
       case 'paid':
         return _kSuccess;
       case 'processed':
-        return _kInfo;
+        return const Color(0xFFF59E0B);
       default:
         return const Color(0xFF6B7280);
     }
@@ -986,9 +1160,14 @@ class _StatusPill extends StatelessWidget {
         padding:
             const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          color: _color.withValues(alpha: 0.1),
+          gradient: LinearGradient(
+            colors: [
+              _color.withValues(alpha: 0.15),
+              _color.withValues(alpha: 0.06),
+            ],
+          ),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: _color.withValues(alpha: 0.3)),
+          border: Border.all(color: _color.withValues(alpha: 0.25)),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Container(
@@ -999,7 +1178,7 @@ class _StatusPill extends StatelessWidget {
           const SizedBox(width: 5),
           Text(
             _label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.poppins(
               fontSize: 11,
               fontWeight: FontWeight.w600,
               color: _color,
@@ -1022,38 +1201,41 @@ class _AmountCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Expanded(
-        child: Column(children: [
-          Text(
-            value.toStringAsFixed(2),
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              fontWeight: bold ? FontWeight.w800 : FontWeight.w700,
-              color: color,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3),
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                color.withValues(alpha: 0.08),
+                color.withValues(alpha: 0.03),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
+            borderRadius: BorderRadius.circular(10),
           ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: GoogleFonts.inter(
-              fontSize: 10,
-              color: const Color(0xFF9CA3AF),
+          child: Column(children: [
+            Text(
+              value.toStringAsFixed(2),
+              style: GoogleFonts.poppins(
+                fontSize: 11,
+                fontWeight: bold ? FontWeight.w800 : FontWeight.w700,
+                color: color,
+              ),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ]),
-      );
-}
-
-class _CellDivider extends StatelessWidget {
-  const _CellDivider();
-
-  @override
-  Widget build(BuildContext context) => Container(
-        width: 1,
-        height: 28,
-        color: const Color(0xFFF3F4F6),
-        margin: const EdgeInsets.symmetric(horizontal: 2),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 9,
+                color: const Color(0xFF9CA3AF),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ]),
+        ),
       );
 }

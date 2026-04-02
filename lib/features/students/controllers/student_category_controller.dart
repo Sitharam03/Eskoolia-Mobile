@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/student_category_model.dart';
 import '../repositories/students_repository.dart';
 
@@ -33,7 +34,7 @@ class StudentCategoryController extends GetxController {
     try {
       categories.value = await _repo.getCategories();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load categories',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to load categories'),
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
@@ -87,7 +88,7 @@ class StudentCategoryController extends GetxController {
       await loadCategories();
       return true;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to save: $e',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to save category'),
           snackPosition: SnackPosition.BOTTOM);
       return false;
     } finally {
@@ -102,7 +103,7 @@ class StudentCategoryController extends GetxController {
       Get.snackbar('Deleted', 'Category removed',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to delete: $e',
+      Get.snackbar('Error', ApiError.extract(e, 'Failed to delete category'),
           snackPosition: SnackPosition.BOTTOM);
     }
   }

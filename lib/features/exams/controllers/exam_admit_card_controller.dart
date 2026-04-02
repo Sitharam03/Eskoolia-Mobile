@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -58,8 +59,8 @@ class ExamAdmitCardController extends GetxController {
       if (settingData is Map<String, dynamic>) {
         setting.value = AdmitCardSetting.fromJson(settingData);
       }
-    } catch (_) {
-      errorMsg.value = 'Failed to load admit card page.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load admit card page.');
     } finally {
       isLoading.value = false;
     }
@@ -92,7 +93,7 @@ class ExamAdmitCardController extends GetxController {
       students.value = [];
       oldIds.value = [];
       selectedMap.value = {};
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Search failed.');
+      errorMsg.value = ApiError.extract(e, 'Search failed');
     } finally {
       isSearching.value = false;
     }
@@ -127,7 +128,7 @@ class ExamAdmitCardController extends GetxController {
       successMsg.value = 'Admit cards generated successfully';
       await search();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Generate failed.');
+      errorMsg.value = ApiError.extract(e, 'Generate failed');
     } finally {
       isGenerating.value = false;
     }
@@ -187,8 +188,8 @@ class ExamSeatPlanController extends GetxController {
       if (settingData is Map<String, dynamic>) {
         setting.value = AdmitCardSetting.fromJson(settingData);
       }
-    } catch (_) {
-      errorMsg.value = 'Failed to load seat plan page.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load seat plan page.');
     } finally {
       isLoading.value = false;
     }
@@ -221,7 +222,7 @@ class ExamSeatPlanController extends GetxController {
       students.value = [];
       oldIds.value = [];
       selectedMap.value = {};
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Search failed.');
+      errorMsg.value = ApiError.extract(e, 'Search failed');
     } finally {
       isSearching.value = false;
     }
@@ -256,7 +257,7 @@ class ExamSeatPlanController extends GetxController {
       successMsg.value = 'Seat plan generated successfully';
       await search();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Generate failed.');
+      errorMsg.value = ApiError.extract(e, 'Generate failed');
     } finally {
       isGenerating.value = false;
     }

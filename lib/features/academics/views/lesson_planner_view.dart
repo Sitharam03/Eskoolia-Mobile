@@ -8,6 +8,7 @@ import '../controllers/lesson_planner_controller.dart';
 import '../models/academics_models.dart';
 import '_academics_nav_tabs.dart';
 import '_academics_shared.dart';
+import '../../../core/widgets/school_loader.dart';
 
 class LessonPlannerView extends GetView<LessonPlannerController> {
   const LessonPlannerView({super.key});
@@ -384,12 +385,7 @@ class _PlannerRowsCard extends StatelessWidget {
       icon: Icons.table_rows_rounded,
       child: Obx(() {
         if (c.isLoading.value) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: CircularProgressIndicator(color: Color(0xFF4F46E5)),
-            ),
-          );
+          return const SchoolLoader();
         }
         if (c.planners.isEmpty) {
           return aEmptyState('No lesson plans found.');

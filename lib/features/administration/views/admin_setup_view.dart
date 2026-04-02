@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/school_loader.dart';
 import '../../../core/routes/app_routes.dart';
 import '../controllers/administration_controller.dart';
 import '../models/admin_setup_model.dart';
@@ -69,8 +70,7 @@ class _AdminSetupViewState extends State<AdminSetupView> {
   Widget _buildGroupedList() {
     return Obx(() {
       if (_c.isLoading.value)
-        return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF6366F1)));
+        return const SchoolLoader();
       return RefreshIndicator(
         color: const Color(0xFF6366F1),
         onRefresh: _c.loadAdminSetups,

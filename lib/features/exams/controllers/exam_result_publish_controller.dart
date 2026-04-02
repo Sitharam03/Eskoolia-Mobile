@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -44,8 +45,8 @@ class ExamResultPublishController extends GetxController {
       examTypes.value = _parseList(data['exams'], ExamType.fromJson);
       classes.value = _parseList(data['classes'], SchoolClass.fromJson);
       sections.value = _parseList(data['sections'], SchoolSection.fromJson);
-    } catch (_) {
-      errorMsg.value = 'Failed to load result publish page.';
+    } catch (e) {
+      errorMsg.value = ApiError.extract(e, 'Failed to load result publish page.');
     } finally {
       isLoading.value = false;
     }
@@ -72,7 +73,7 @@ class ExamResultPublishController extends GetxController {
       }
     } catch (e) {
       result.value = null;
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Search failed. ');
+      errorMsg.value = ApiError.extract(e, 'Search failed');
     } finally {
       isSearching.value = false;
     }
@@ -95,7 +96,7 @@ class ExamResultPublishController extends GetxController {
       successMsg.value = 'Result published successfully.';
       await search();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Publish failed. ');
+      errorMsg.value = ApiError.extract(e, 'Publish failed');
     } finally {
       isPublishing.value = false;
     }
@@ -118,7 +119,7 @@ class ExamResultPublishController extends GetxController {
       successMsg.value = 'Result unpublished.';
       await search();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'Unpublish failed. ');
+      errorMsg.value = ApiError.extract(e, 'Unpublish failed');
     } finally {
       isPublishing.value = false;
     }

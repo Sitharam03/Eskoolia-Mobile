@@ -7,6 +7,37 @@ import '../../students/views/_student_shared.dart';
 import '../controllers/hr_leave_request_controller.dart';
 import '../models/hr_models.dart';
 import '_hr_nav_tabs.dart';
+import '../../../core/widgets/school_loader.dart';
+
+// ── Design Constants ─────────────────────────────────────────────────────────
+
+const _kPri = Color(0xFF0EA5E9);
+const _kSec = Color(0xFF0284C7);
+const _kVio = Color(0xFF6366F1);
+
+Color _statusColor(String status) {
+  switch (status) {
+    case 'approved':
+      return const Color(0xFF22C55E);
+    case 'rejected':
+      return const Color(0xFFDC2626);
+    default:
+      return const Color(0xFFF59E0B);
+  }
+}
+
+IconData _statusIcon(String status) {
+  switch (status) {
+    case 'approved':
+      return Icons.check_circle_rounded;
+    case 'rejected':
+      return Icons.cancel_rounded;
+    default:
+      return Icons.hourglass_top_rounded;
+  }
+}
+
+// ── View ──────────────────────────────────────────────────────────────────────
 
 class HrLeaveRequestView extends StatelessWidget {
   const HrLeaveRequestView({super.key});
@@ -20,11 +51,10 @@ class HrLeaveRequestView extends StatelessWidget {
         const HrNavTabs(activeRoute: AppRoutes.hrLeaveRequests),
         Expanded(child: Obx(() {
           if (_c.isLoading.value) {
-            return const Center(
-                child: CircularProgressIndicator(color: Color(0xFF4F46E5)));
+            return const SchoolLoader();
           }
           return RefreshIndicator(
-            color: const Color(0xFF4F46E5),
+            color: _kPri,
             onRefresh: _c.load,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -66,21 +96,21 @@ class _StatsRow extends StatelessWidget {
           _Stat(
             value: '$total',
             label: 'Total',
-            color: const Color(0xFF4F46E5),
+            color: _kVio,
             icon: Icons.event_note_rounded,
           ),
           const SizedBox(width: 8),
           _Stat(
             value: '$pending',
             label: 'Pending',
-            color: const Color(0xFFEA580C),
+            color: const Color(0xFFF59E0B),
             icon: Icons.pending_rounded,
           ),
           const SizedBox(width: 8),
           _Stat(
             value: '$approved',
             label: 'Approved',
-            color: const Color(0xFF059669),
+            color: const Color(0xFF22C55E),
             icon: Icons.check_circle_rounded,
           ),
         ]);
@@ -102,37 +132,52 @@ class _Stat extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Expanded(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: const Color(0xFFE5E7EB)),
-            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              colors: [Colors.white, color.withValues(alpha: 0.04)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border.all(color: color.withValues(alpha: 0.12)),
+            borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-              )
+                color: color.withValues(alpha: 0.10),
+                blurRadius: 14,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [color, color.withValues(alpha: 0.7)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withValues(alpha: 0.30),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               alignment: Alignment.center,
-              child: Icon(icon, size: 16, color: color),
+              child: Icon(icon, size: 18, color: Colors.white),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
               value,
-              style: GoogleFonts.inter(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
                 color: const Color(0xFF111827),
               ),
             ),
@@ -157,7 +202,18 @@ class _FormCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: sCardDecoration,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: _kPri.withValues(alpha: 0.10)),
+          boxShadow: [
+            BoxShadow(
+              color: _kPri.withValues(alpha: 0.08),
+              blurRadius: 14,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
         clipBehavior: Clip.hardEdge,
         child: Obx(() => Column(children: [
               _FormHeader(
@@ -216,7 +272,7 @@ class _FormCard extends StatelessWidget {
                     const SizedBox(height: 6),
                     sTextField(
                       controller: c.reasonCtrl,
-                      hint: 'Describe the reason for leave…',
+                      hint: 'Describe the reason for leave...',
                       maxLines: 3,
                     ),
 
@@ -249,7 +305,7 @@ class _FormCard extends StatelessWidget {
             builder: (ctx, child) => Theme(
               data: ThemeData.light().copyWith(
                   colorScheme: const ColorScheme.light(
-                      primary: Color(0xFF4F46E5))),
+                      primary: _kPri)),
               child: child!,
             ),
           );
@@ -262,8 +318,8 @@ class _FormCard extends StatelessWidget {
           child: sTextField(
             controller: ctrl,
             hint: 'YYYY-MM-DD',
-            suffixIcon: const Icon(Icons.calendar_today_rounded,
-                size: 18, color: Color(0xFF9CA3AF)),
+            suffixIcon: Icon(Icons.calendar_today_rounded,
+                size: 18, color: _kPri.withValues(alpha: 0.50)),
           ),
         ),
       ),
@@ -314,146 +370,151 @@ class _RequestCard extends StatelessWidget {
     required this.onDelete,
   });
 
-  Color get _accentColor {
-    switch (request.status) {
-      case 'approved':
-        return const Color(0xFF059669);
-      case 'rejected':
-        return const Color(0xFFDC2626);
-      default:
-        return const Color(0xFFEA580C);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final accent = _accentColor;
+    final sColor = _statusColor(request.status);
     final isPending = request.status == 'pending';
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xFFE5E7EB)),
-        borderRadius: BorderRadius.circular(10),
+        gradient: LinearGradient(
+          colors: [Colors.white, sColor.withValues(alpha: 0.04)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        border: Border.all(color: sColor.withValues(alpha: 0.12)),
+        borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          )
+            color: sColor.withValues(alpha: 0.10),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
         ],
       ),
       clipBehavior: Clip.hardEdge,
-      child: IntrinsicHeight(
-        child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Container(width: 4, color: accent),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: accent.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(10),
+      child: Stack(
+        children: [
+          // Decorative circle
+          Positioned(
+            right: -20,
+            bottom: -20,
+            child: Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: sColor.withValues(alpha: 0.06),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Status icon with gradient
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [sColor, sColor.withValues(alpha: 0.7)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.event_note_rounded,
-                      size: 22,
-                      color: accent,
-                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: sColor.withValues(alpha: 0.35),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Leave type name (bold)
+                  alignment: Alignment.center,
+                  child: Icon(
+                    _statusIcon(request.status),
+                    size: 24,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Leave type name
+                      Text(
+                        request.leaveTypeName.isNotEmpty
+                            ? request.leaveTypeName
+                            : '---',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF111827),
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 6),
+
+                      // Info chips
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          // Date range chip
+                          _InfoChip(
+                            label:
+                                '${request.fromDate} - ${request.toDate}',
+                            color: _kPri,
+                            icon: Icons.date_range_rounded,
+                          ),
+                          // Staff name chip
+                          if (request.staffName.isNotEmpty)
+                            _InfoChip(
+                              label: request.staffName,
+                              color: _kVio,
+                              icon: Icons.person_outline_rounded,
+                            ),
+                          // Status badge chip
+                          _InfoChip(
+                            label: request.statusLabel,
+                            color: sColor,
+                            icon: _statusIcon(request.status),
+                          ),
+                        ],
+                      ),
+
+                      // Reason (italic grey)
+                      if (request.reason.isNotEmpty) ...[
+                        const SizedBox(height: 8),
                         Text(
-                          request.leaveTypeName.isNotEmpty
-                              ? request.leaveTypeName
-                              : '—',
+                          request.reason,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF111827),
+                            fontSize: 12,
+                            color: const Color(0xFF9CA3AF),
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
-                        const SizedBox(height: 3),
-
-                        // Date range
-                        Row(children: [
-                          const Icon(Icons.date_range_rounded,
-                              size: 12, color: Color(0xFF9CA3AF)),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              '${request.fromDate} → ${request.toDate}',
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.inter(
-                                fontSize: 12,
-                                color: const Color(0xFF6B7280),
-                              ),
-                            ),
-                          ),
-                        ]),
-
-                        // Staff name (if present)
-                        if (request.staffName.isNotEmpty) ...[
-                          const SizedBox(height: 2),
-                          Row(children: [
-                            const Icon(Icons.person_outline_rounded,
-                                size: 12, color: Color(0xFF9CA3AF)),
-                            const SizedBox(width: 4),
-                            Expanded(
-                              child: Text(
-                                request.staffName,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  color: const Color(0xFF6B7280),
-                                ),
-                              ),
-                            ),
-                          ]),
-                        ],
-
-                        const SizedBox(height: 5),
-
-                        // Status badge
-                        sBadge(request.statusLabel, accent),
-
-                        // Reason (italic grey)
-                        if (request.reason.isNotEmpty) ...[
-                          const SizedBox(height: 5),
-                          Text(
-                            request.reason,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: const Color(0xFF9CA3AF),
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ],
                       ],
-                    ),
+                    ],
                   ),
+                ),
 
-                  // Action buttons — only for pending
-                  if (isPending)
-                    Column(
+                // Action buttons -- only for pending
+                if (isPending)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _ActionBtn(
                           icon: Icons.edit_rounded,
-                          color: const Color(0xFF0EA5E9),
+                          color: _kPri,
                           onTap: onEdit,
                         ),
                         const SizedBox(height: 6),
@@ -464,17 +525,17 @@ class _RequestCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
-        ]),
+        ],
       ),
     );
   }
 }
 
-// ── Shared Private Widgets ─────────────────────────────────────────────────────
+// ── Shared Private Widgets ───────────────────────────────────────────────────
 
 class _FormHeader extends StatelessWidget {
   final IconData icon;
@@ -492,30 +553,48 @@ class _FormHeader extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: const Color(0xFF4F46E5).withValues(alpha: 0.05),
-          border: const Border(
-            bottom: BorderSide(color: Color(0xFFE5E7EB)),
+          gradient: LinearGradient(
+            colors: [
+              _kPri.withValues(alpha: 0.08),
+              _kVio.withValues(alpha: 0.04),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          border: Border(
+            bottom: BorderSide(color: _kPri.withValues(alpha: 0.10)),
           ),
         ),
         child: Row(children: [
           Container(
-            width: 36,
-            height: 36,
+            width: 38,
+            height: 38,
             decoration: BoxDecoration(
-              color: const Color(0xFF4F46E5).withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(9),
+              gradient: LinearGradient(
+                colors: [_kPri, _kVio],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: _kPri.withValues(alpha: 0.30),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             alignment: Alignment.center,
-            child: Icon(icon, size: 18, color: const Color(0xFF4F46E5)),
+            child: Icon(icon, size: 18, color: Colors.white),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.poppins(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: const Color(0xFF111827),
@@ -539,6 +618,7 @@ class _FormHeader extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: const Color(0xFFF3F4F6),
                   borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFFE5E7EB)),
                 ),
                 child: const Icon(
                   Icons.close_rounded,
@@ -565,30 +645,48 @@ class _SaveBtn extends StatelessWidget {
   Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         height: 48,
-        child: ElevatedButton.icon(
-          onPressed: isSaving ? null : onPressed,
-          icon: isSaving
-              ? sSavingIndicator()
-              : Icon(
-                  isEditing ? Icons.update_rounded : Icons.send_rounded,
-                  size: 18,
-                ),
-          label: Text(
-            isSaving
-                ? 'Submitting…'
-                : (isEditing ? 'Update Request' : 'Submit Request'),
-            style: GoogleFonts.inter(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [_kPri, _kVio],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
             ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: _kPri.withValues(alpha: 0.35),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF4F46E5),
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+          child: ElevatedButton.icon(
+            onPressed: isSaving ? null : onPressed,
+            icon: isSaving
+                ? sSavingIndicator()
+                : Icon(
+                    isEditing ? Icons.update_rounded : Icons.send_rounded,
+                    size: 18,
+                  ),
+            label: Text(
+              isSaving
+                  ? 'Submitting...'
+                  : (isEditing ? 'Update Request' : 'Submit Request'),
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
             ),
-            elevation: 0,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 0,
+            ),
           ),
         ),
       );
@@ -602,18 +700,31 @@ class _ListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        sectionHeader(title),
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF111827),
+          ),
+        ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           decoration: BoxDecoration(
-            color: const Color(0xFF4F46E5).withValues(alpha: 0.08),
+            gradient: LinearGradient(
+              colors: [
+                _kPri.withValues(alpha: 0.10),
+                _kVio.withValues(alpha: 0.08),
+              ],
+            ),
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: _kPri.withValues(alpha: 0.12)),
           ),
           child: Text(
             '$count records',
             style: GoogleFonts.inter(
               fontSize: 12,
-              color: const Color(0xFF4F46E5),
+              color: _kPri,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -635,11 +746,19 @@ class _ActionBtn extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 34,
-          height: 34,
+          width: 36,
+          height: 36,
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(8),
+            gradient: LinearGradient(
+              colors: [
+                color.withValues(alpha: 0.10),
+                color.withValues(alpha: 0.05),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: color.withValues(alpha: 0.15)),
           ),
           alignment: Alignment.center,
           child: Icon(icon, size: 17, color: color),
@@ -655,28 +774,94 @@ class _ErrorBanner extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: const Color(0xFFDC2626).withValues(alpha: 0.08),
-          border: Border.all(
-            color: const Color(0xFFDC2626).withValues(alpha: 0.3),
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xFFDC2626).withValues(alpha: 0.08),
+              const Color(0xFFDC2626).withValues(alpha: 0.04),
+            ],
           ),
-          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: const Color(0xFFDC2626).withValues(alpha: 0.20),
+          ),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Row(children: [
-          const Icon(
-            Icons.error_outline_rounded,
-            color: Color(0xFFDC2626),
-            size: 18,
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFFDC2626),
+                  const Color(0xFFDC2626).withValues(alpha: 0.7),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            alignment: Alignment.center,
+            child: const Icon(
+              Icons.error_outline_rounded,
+              color: Colors.white,
+              size: 16,
+            ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               msg,
               style: GoogleFonts.inter(
                 fontSize: 13,
                 color: const Color(0xFFDC2626),
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
         ]),
+      );
+}
+
+class _InfoChip extends StatelessWidget {
+  final String label;
+  final Color color;
+  final IconData icon;
+  const _InfoChip({
+    required this.label,
+    required this.color,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              color.withValues(alpha: 0.10),
+              color.withValues(alpha: 0.05),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: color.withValues(alpha: 0.15)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 11, color: color),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                label,
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: color,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       );
 }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_error.dart';
 import '../models/exam_models.dart';
 import '../repositories/exam_repository.dart';
 
@@ -57,7 +58,7 @@ class ExamMarksController extends GetxController {
       sections.value = _parseList(data['sections'], SchoolSection.fromJson);
       subjects.value = _parseList(data['subjects'], SchoolSubject.fromJson);
     } catch (e) {
-      errorMsg.value = 'Failed to load marks criteria';
+      errorMsg.value = ApiError.extract(e, 'Failed to load marks criteria');
     } finally {
       isLoading.value = false;
     }
@@ -111,7 +112,7 @@ class ExamMarksController extends GetxController {
     } catch (e) {
       students.value = [];
       parts.value = [];
-      errorMsg.value = e.toString().replaceFirst('Exception: ', 'No Result Found');
+      errorMsg.value = ApiError.extract(e, 'No Result Found');
     } finally {
       isSearching.value = false;
     }
@@ -177,7 +178,7 @@ class ExamMarksController extends GetxController {
       successMsg.value = 'Marks saved successfully';
       await search();
     } catch (e) {
-      errorMsg.value = e.toString().replaceFirst('Exception: ', '');
+      errorMsg.value = ApiError.extract(e);
     } finally {
       isSaving.value = false;
     }

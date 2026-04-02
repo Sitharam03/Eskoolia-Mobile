@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/network/api_error.dart';
 import '../models/fees_assignment_model.dart';
 import '../repositories/fees_repository.dart';
 
@@ -33,7 +34,7 @@ class FeesCarryForwardController extends GetxController {
     try {
       academicYears.assignAll(await _repo.getAcademicYears());
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
@@ -74,7 +75,7 @@ class FeesCarryForwardController extends GetxController {
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('Error', ApiError.extract(e),
           backgroundColor: const Color(0xFFDC2626),
           colorText: const Color(0xFFFFFFFF),
           snackPosition: SnackPosition.BOTTOM);
