@@ -24,6 +24,7 @@ class DashboardModule {
   final List<Color> gradient;
   final Color iconColor;
   final List<DashboardSubItem> items;
+  final String emoji; // 3D-style emoji for dashboard card display
 
   const DashboardModule({
     required this.title,
@@ -32,6 +33,7 @@ class DashboardModule {
     required this.gradient,
     required this.iconColor,
     required this.items,
+    this.emoji = '',
   });
 }
 
@@ -45,6 +47,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.face_rounded,
     gradient: [Color(0xFFEEF2FF), Color(0xFFE0E7FF)],
     iconColor: Color(0xFF6366F1),
+    emoji: '🎒',
     items: [
       DashboardSubItem('Student List', 'View all students', Icons.list_alt_rounded, Color(0xFF6366F1), AppRoutes.studentList),
       DashboardSubItem('Add Student', 'Enroll new student', Icons.person_add_rounded, Color(0xFF8B5CF6), AppRoutes.studentAdd),
@@ -73,6 +76,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.school_rounded,
     gradient: [Color(0xFFF0FDF4), Color(0xFFDCFCE7)],
     iconColor: Color(0xFF22C55E),
+    emoji: '🎓',
     items: [
       DashboardSubItem('Core Setup', 'Classes & subjects', Icons.tune_rounded, Color(0xFF22C55E), AppRoutes.academicsCoreSetup),
       DashboardSubItem('Assign Teacher', 'Class teacher assignment', Icons.assignment_ind_rounded, Color(0xFF16A34A), AppRoutes.academicsAssignClassTeacher),
@@ -100,6 +104,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.assignment_rounded,
     gradient: [Color(0xFFFFF7ED), Color(0xFFFFEDD5)],
     iconColor: Color(0xFFF97316),
+    emoji: '📋',
     items: [
       DashboardSubItem('Exam Type', 'Define exam types', Icons.category_rounded, Color(0xFFF97316), AppRoutes.examType),
       DashboardSubItem('Exam Setup', 'Configure exams', Icons.tune_rounded, Color(0xFFEA580C), AppRoutes.examSetup),
@@ -125,6 +130,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.payments_rounded,
     gradient: [Color(0xFFF0FDFA), Color(0xFFCCFBF1)],
     iconColor: Color(0xFF14B8A6),
+    emoji: '💰',
     items: [
       DashboardSubItem('Collect Fees', 'Payment collection', Icons.payments_rounded, Color(0xFF14B8A6), AppRoutes.feesPayments),
       DashboardSubItem('Due Fees', 'Pending payments', Icons.receipt_long_rounded, Color(0xFF0D9488), AppRoutes.feesDue),
@@ -142,6 +148,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.people_alt_rounded,
     gradient: [Color(0xFFF0F9FF), Color(0xFFE0F2FE)],
     iconColor: Color(0xFF0EA5E9),
+    emoji: '👥',
     items: [
       DashboardSubItem('Staff', 'Add & manage staff', Icons.badge_rounded, Color(0xFF0EA5E9), AppRoutes.hrStaff),
       DashboardSubItem('Staff Directory', 'Staff directory', Icons.contacts_rounded, Color(0xFF0284C7), AppRoutes.hrStaffDirectory),
@@ -162,6 +169,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.account_balance_rounded,
     gradient: [Color(0xFFF0FDF4), Color(0xFFD1FAE5)],
     iconColor: Color(0xFF10B981),
+    emoji: '🧮',
     items: [
       DashboardSubItem('Chart of Accounts', 'Account hierarchy', Icons.account_tree_rounded, Color(0xFF10B981), AppRoutes.financeChartOfAccounts),
       DashboardSubItem('Bank Accounts', 'Bank management', Icons.account_balance_rounded, Color(0xFF059669), AppRoutes.financeBankAccounts),
@@ -177,6 +185,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.psychology_rounded,
     gradient: [Color(0xFFFFFBEB), Color(0xFFFEF3C7)],
     iconColor: Color(0xFFF59E0B),
+    emoji: '📏',
     items: [
       DashboardSubItem('Incidents', 'Define incidents', Icons.report_rounded, Color(0xFFF59E0B), AppRoutes.behaviourIncidents),
       DashboardSubItem('Assign Incident', 'Assign to students', Icons.assignment_ind_rounded, Color(0xFFD97706), AppRoutes.behaviourAssignIncident),
@@ -195,6 +204,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.admin_panel_settings_rounded,
     gradient: [Color(0xFFFDF4FF), Color(0xFFF3E8FF)],
     iconColor: Color(0xFFA855F7),
+    emoji: '🏢',
     items: [
       DashboardSubItem('Visitor Book', 'Visitor log', Icons.book_rounded, Color(0xFFA855F7), AppRoutes.adminVisitorBook),
       DashboardSubItem('Complaints', 'Complaint register', Icons.feedback_rounded, Color(0xFF9333EA), AppRoutes.adminComplaint),
@@ -217,6 +227,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.shield_rounded,
     gradient: [Color(0xFFF5F3FF), Color(0xFFEDE9FE)],
     iconColor: Color(0xFF6D28D9),
+    emoji: '🔐',
     items: [
       DashboardSubItem('Roles', 'Create & manage roles', Icons.security_rounded, Color(0xFF6D28D9), AppRoutes.roles),
       DashboardSubItem('Assign Permission', 'Map permissions to roles', Icons.lock_open_rounded, Color(0xFF7C3AED), AppRoutes.assignPermissionRoot),
@@ -232,6 +243,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.local_library_rounded,
     gradient: [Color(0xFFF0F9FF), Color(0xFFDBEAFE)],
     iconColor: Color(0xFF3B82F6),
+    emoji: '📚',
     items: [
       DashboardSubItem('Books', 'Manage book catalog', Icons.menu_book_rounded, Color(0xFF3B82F6), AppRoutes.libraryBooks),
       DashboardSubItem('Book Issues', 'Issue & return books', Icons.bookmark_rounded, Color(0xFF2563EB), AppRoutes.libraryIssues),
@@ -247,6 +259,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.directions_bus_rounded,
     gradient: [Color(0xFFFFF7ED), Color(0xFFFFEDD5)],
     iconColor: Color(0xFFEA580C),
+    emoji: '🚌',
     items: [
       DashboardSubItem('Vehicles', 'Fleet management', Icons.directions_bus_rounded, Color(0xFFEA580C), AppRoutes.transportVehicles),
       DashboardSubItem('Routes', 'Route planning', Icons.route_rounded, Color(0xFFC2410C), AppRoutes.transportRoutes),
@@ -262,6 +275,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.inventory_2_rounded,
     gradient: [Color(0xFFF7FEE7), Color(0xFFECFCCB)],
     iconColor: Color(0xFF84CC16),
+    emoji: '📦',
     items: [
       DashboardSubItem('Item Categories', 'Category management', Icons.category_rounded, Color(0xFF84CC16), AppRoutes.inventoryCategories),
       DashboardSubItem('Stores', 'Store locations', Icons.store_rounded, Color(0xFF65A30D), AppRoutes.inventoryStores),
@@ -280,6 +294,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.bar_chart_rounded,
     gradient: [Color(0xFFF0F9FF), Color(0xFFDBEAFE)],
     iconColor: Color(0xFF3B82F6),
+    emoji: '📊',
     items: [
       DashboardSubItem('Student Mark Sheet', 'Individual exam results', Icons.description_rounded, Color(0xFFF97316), AppRoutes.examStudentReport),
       DashboardSubItem('Merit List', 'Class-wise merit list', Icons.emoji_events_rounded, Color(0xFFEA580C), AppRoutes.examMeritReport),
@@ -299,6 +314,7 @@ const kDashboardModules = <DashboardModule>[
     icon: Icons.campaign_rounded,
     gradient: [Color(0xFFFFF1F2), Color(0xFFFFE4E6)],
     iconColor: Color(0xFFE11D48),
+    emoji: '📣',
     items: [
       DashboardSubItem('Notice Board', 'Create & publish notices', Icons.announcement_rounded, Color(0xFFE11D48), AppRoutes.communication),
       DashboardSubItem('Send Email', 'Email campaigns', Icons.email_rounded, Color(0xFFBE123C), AppRoutes.communication),
