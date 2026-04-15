@@ -1,8 +1,8 @@
-name: eskoolia_mobile
+name: eSkoolia
 description: "Eskoolia School ERP Mobile App"
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: ^3.5.0
