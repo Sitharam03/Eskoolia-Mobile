@@ -37,7 +37,7 @@ class EskooliaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Eskoolia ERP',
+      title: 'eSkoolia',
       debugShowCheckedModeBanner: false,
       initialRoute: initialRoute,
       getPages: AppPages.routes,
