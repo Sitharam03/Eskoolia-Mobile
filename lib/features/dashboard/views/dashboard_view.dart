@@ -63,7 +63,7 @@ class _DashboardViewState extends State<DashboardView>
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFEFEFEB),
         bottomNavigationBar: _BottomBar(
           onChat: () => Get.toNamed(AppRoutes.chat),
           onSettings: () => ModulePopup.show(context, kSettingsModule),
@@ -300,9 +300,9 @@ class _DashboardViewState extends State<DashboardView>
         ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          crossAxisSpacing: 2,
-          mainAxisSpacing: 0,
-          childAspectRatio: 0.78,
+          crossAxisSpacing: 14,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.75,
         ),
       ),
     );
@@ -322,50 +322,25 @@ class _ModuleCard extends StatefulWidget {
   State<_ModuleCard> createState() => _ModuleCardState();
 }
 
-class _ModuleCardState extends State<_ModuleCard> with TickerProviderStateMixin {
+class _ModuleCardState extends State<_ModuleCard> with SingleTickerProviderStateMixin {
   late final AnimationController _tap;
   late final Animation<double> _scale;
-  late final AnimationController _shineCtrl;
-  late final Animation<double> _shine;
-  // Bounce animation for emoji on idle
-  late final AnimationController _bounceCtrl;
-  late final Animation<double> _bounce;
-  bool _disposed = false;
 
   @override
   void initState() {
     super.initState();
-    _tap = AnimationController(vsync: this, duration: const Duration(milliseconds: 100),
-        reverseDuration: const Duration(milliseconds: 200));
-    _scale = Tween<double>(begin: 1.0, end: 0.90)
+    _tap = AnimationController(vsync: this, duration: const Duration(milliseconds: 80),
+        reverseDuration: const Duration(milliseconds: 150));
+    _scale = Tween<double>(begin: 1.0, end: 0.92)
         .animate(CurvedAnimation(parent: _tap, curve: Curves.easeIn));
-    _shineCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
-    _shine = CurvedAnimation(parent: _shineCtrl, curve: Curves.easeInOut);
-    // Bounce: emoji gently bobs up and down
-    _bounceCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800))
-      ..repeat(reverse: true);
-    _bounce = Tween<double>(begin: 0, end: -4).animate(
-        CurvedAnimation(parent: _bounceCtrl, curve: Curves.easeInOut));
-    Future.delayed(Duration(milliseconds: 2000 + widget.index * 200), () {
-      if (!_disposed) _loopShine();
-    });
-  }
-
-  void _loopShine() {
-    _shineCtrl.forward(from: 0).then((_) async {
-      if (_disposed) return;
-      await Future.delayed(const Duration(milliseconds: 5000));
-      if (!_disposed) _loopShine();
-    });
   }
 
   @override
-  void dispose() { _disposed = true; _tap.dispose(); _shineCtrl.dispose(); _bounceCtrl.dispose(); super.dispose(); }
+  void dispose() { _tap.dispose(); super.dispose(); }
 
   @override
   Widget build(BuildContext context) {
     final m = widget.module;
-    final c = m.iconColor;
     final hasEmoji = m.emoji.isNotEmpty;
 
     return ScaleTransition(
@@ -375,43 +350,49 @@ class _ModuleCardState extends State<_ModuleCard> with TickerProviderStateMixin 
         onTapCancel: () => _tap.reverse(),
         onTapUp: (_) { _tap.reverse(); widget.onTap(); },
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Large bouncing emoji or icon
-            AnimatedBuilder(
-              animation: _bounce,
-              builder: (_, child) => Transform.translate(
-                offset: Offset(0, _bounce.value),
-                child: child,
-              ),
-              child: hasEmoji
-                  ? Text(m.emoji, style: const TextStyle(fontSize: 85))
-                  : Container(
-                      width: 76, height: 76,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [c.withValues(alpha: 0.8), c]),
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: [BoxShadow(color: c.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4))],
-                      ),
-                      child: Icon(m.icon, color: Colors.white, size: 42),
+            // ── Square white card with emoji ──
+            AspectRatio(
+              aspectRatio: 1.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF9F8F6),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1),
                     ),
-            ),
-            const SizedBox(height: 4),
-            // Module name
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                m.title,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF1A1A2E),
-                  height: 1.15,
+                  ],
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                child: Container(
+                  margin: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Center(
+                    child: hasEmoji
+                        ? Text(m.emoji, style: const TextStyle(fontSize: 44))
+                        : Icon(m.icon, color: m.iconColor, size: 38),
+                  ),
+                ),
               ),
+            ),
+            const SizedBox(height: 6),
+            // ── Module name below card ──
+            Text(
+              m.title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF1F2937),
+                height: 1.2,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

@@ -37,11 +37,20 @@ class ChatRepository {
 
   // ── 1-to-1 Messaging ──────────────────────────────────────────────────────
 
-  /// Get all connected users for sidebar.
+  /// Get all connected users (contacts).
   Future<List<ChatUser>> getConnectedUsers() async {
     final r = await ApiClient.dio.get('$_base/messages/connected_users/');
     return _extractList(r.data, 'users')
         .map((u) => ChatUser.fromJson(u as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Get recent conversations (all messages for current user).
+  /// Returns raw Conversation list — controller groups by user.
+  Future<List<Conversation>> getRecentConversations() async {
+    final r = await ApiClient.dio.get('$_base/messages/');
+    return _extractList(r.data)
+        .map((m) => Conversation.fromJson(m as Map<String, dynamic>))
         .toList();
   }
 

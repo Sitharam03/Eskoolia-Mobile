@@ -170,17 +170,17 @@ class ChatSidebar extends StatelessWidget {
       if (_ctrl.isLoadingUsers.value) {
         return const Center(child: CircularProgressIndicator());
       }
-      final users = _ctrl.filteredUsers;
-      if (users.isEmpty) {
+      final threads = _ctrl.filteredRecentChats;
+      if (threads.isEmpty) {
         return _buildEmptyDm();
       }
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        itemCount: users.length,
+        itemCount: threads.length,
         itemBuilder: (_, i) => _ConversationTile(
-          user: users[i],
-          isSelected: _ctrl.selectedUser.value?.id == users[i].id,
-          onTap: () => _ctrl.selectUser(users[i]),
+          thread: threads[i],
+          isSelected: _ctrl.selectedUser.value?.id == threads[i].user.id,
+          onTap: () => _ctrl.selectUser(threads[i].user),
         ),
       );
     });
@@ -318,22 +318,54 @@ class ChatSidebar extends StatelessWidget {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 class _ConversationTile extends StatelessWidget {
-  final ChatUser user;
+  final ChatThread thread;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _ConversationTile({
-    required this.user,
+    required this.thread,
     required this.isSelected,
     required this.onTap,
   });
 
+  String _timeAgo(DateTime dt) {
+    final diff = DateTime.now().difference(dt);
+    if (diff.inMinutes < 1) return 'now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m';
+    if (diff.inHours < 24) return '${diff.inHours}h';
+    if (diff.inDays < 7) return '${diff.inDays}d';
+    return '${dt.day}/${dt.month}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = thread.user;
+    final lastMsg = thread.lastMessage;
+    final unread = thread.unreadCount;
     final gradIdx = user.fullName.isNotEmpty
         ? user.fullName.codeUnitAt(0) % 6
         : 0;
     final avatarColors = _avatarGradients[gradIdx];
+
+    // Last message preview text
+    String subtitle;
+    if (lastMsg != null) {
+      if (lastMsg.message.isNotEmpty) {
+        subtitle = lastMsg.message;
+      } else if (lastMsg.messageType == MessageType.image) {
+        subtitle = '📷 Image';
+      } else if (lastMsg.messageType == MessageType.pdf) {
+        subtitle = '📄 PDF';
+      } else if (lastMsg.messageType == MessageType.doc) {
+        subtitle = '📎 Document';
+      } else if (lastMsg.messageType == MessageType.voice) {
+        subtitle = '🎤 Voice message';
+      } else {
+        subtitle = 'Sent a message';
+      }
+    } else {
+      subtitle = 'No messages yet';
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
@@ -411,32 +443,75 @@ class _ConversationTile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                // ── Name + subtitle ──
+                // ── Name + last message ──
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        user.fullName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF1E1B4B),
+                      Row(children: [
+                        Expanded(
+                          child: Text(
+                            user.fullName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.poppins(
+                              fontSize: 13.5,
+                              fontWeight: unread > 0 ? FontWeight.w700 : FontWeight.w600,
+                              color: const Color(0xFF1E1B4B),
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'Tap to start chatting',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          color: const Color(0xFF9CA3AF),
-                          fontWeight: FontWeight.w400,
+                        if (lastMsg != null)
+                          Text(
+                            _timeAgo(lastMsg.createdAt),
+                            style: GoogleFonts.inter(
+                              fontSize: 11,
+                              color: unread > 0
+                                  ? _kPri
+                                  : const Color(0xFF9CA3AF),
+                              fontWeight: unread > 0
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
+                            ),
+                          ),
+                      ]),
+                      const SizedBox(height: 3),
+                      Row(children: [
+                        Expanded(
+                          child: Text(
+                            subtitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: unread > 0
+                                  ? const Color(0xFF374151)
+                                  : const Color(0xFF9CA3AF),
+                              fontWeight: unread > 0
+                                  ? FontWeight.w500
+                                  : FontWeight.w400,
+                            ),
+                          ),
                         ),
-                      ),
+                        if (unread > 0)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 2),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                  colors: [_kPri, _kVio]),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '$unread',
+                              style: GoogleFonts.inter(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                      ]),
                     ],
                   ),
                 ),

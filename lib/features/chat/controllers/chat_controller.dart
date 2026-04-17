@@ -15,6 +15,7 @@ class ChatController extends GetxController {
   // ── State variables ───────────────────────────────────────────────────────
 
   final connectedUsers = <ChatUser>[].obs;
+  final recentChats = <ChatThread>[].obs; // recent conversations grouped by user
   final groups = <ChatGroup>[].obs;
   final currentMessages = <Conversation>[].obs;
   final currentGroupMessages = <GroupMessage>[].obs;
@@ -68,6 +69,16 @@ class ChatController extends GetxController {
         .where((u) =>
             u.fullName.toLowerCase().contains(q) ||
             u.username.toLowerCase().contains(q))
+        .toList();
+  }
+
+  List<ChatThread> get filteredRecentChats {
+    if (searchQuery.value.isEmpty) return recentChats;
+    final q = searchQuery.value.toLowerCase();
+    return recentChats
+        .where((t) =>
+            t.user.fullName.toLowerCase().contains(q) ||
+            t.user.username.toLowerCase().contains(q))
         .toList();
   }
 
@@ -176,10 +187,66 @@ class ChatController extends GetxController {
       isLoadingUsers.value = true;
       final users = await _repo.getConnectedUsers();
       connectedUsers.assignAll(users);
+      await loadRecentChats();
     } catch (e) {
       Get.snackbar('Error', ApiError.extract(e));
     } finally {
       isLoadingUsers.value = false;
+    }
+  }
+
+  /// Load recent conversations, group by the other user, keep last message.
+  Future<void> loadRecentChats() async {
+    try {
+      final allMsgs = await _repo.getRecentConversations();
+      if (allMsgs.isEmpty) {
+        recentChats.clear();
+        return;
+      }
+
+      // Determine current user id from first message
+      // The current user is the one who appears in both from_user and to_user across messages
+      final firstMsg = allMsgs.first;
+      int? myId;
+      // Heuristic: count which user id appears most as from_user
+      final fromCounts = <int, int>{};
+      for (final m in allMsgs) {
+        fromCounts[m.fromUser.id] = (fromCounts[m.fromUser.id] ?? 0) + 1;
+      }
+      myId = fromCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+
+      // Group messages by the OTHER user
+      final threadMap = <int, ChatThread>{};
+      for (final msg in allMsgs) {
+        final otherUser = msg.fromUser.id == myId ? msg.toUser : msg.fromUser;
+        final existing = threadMap[otherUser.id];
+        if (existing == null) {
+          threadMap[otherUser.id] = ChatThread(
+            user: otherUser,
+            lastMessage: msg,
+            unreadCount: (msg.toUser.id == myId && !msg.isRead) ? 1 : 0,
+          );
+        } else {
+          // Keep the most recent message
+          if (msg.createdAt.isAfter(existing.lastMessage!.createdAt)) {
+            existing.lastMessage = msg;
+          }
+          if (msg.toUser.id == myId && !msg.isRead) {
+            existing.unreadCount++;
+          }
+        }
+      }
+
+      // Sort by most recent first
+      final threads = threadMap.values.toList()
+        ..sort((a, b) =>
+            (b.lastMessage?.createdAt ?? DateTime(2000))
+                .compareTo(a.lastMessage?.createdAt ?? DateTime(2000)));
+
+      recentChats.assignAll(threads);
+    } catch (e) {
+      // If recent conversations fail, just leave empty — not critical
+      debugPrint('[Chat] loadRecentChats error: $e');
     }
   }
 

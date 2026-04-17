@@ -289,7 +289,7 @@ class Invitation {
 // ── Helper: wrap a user + their last message for sidebar display ─────────────
 class ChatThread {
   final ChatUser user;
-  final Conversation? lastMessage;
+  Conversation? lastMessage;
   int unreadCount;
 
   ChatThread({
